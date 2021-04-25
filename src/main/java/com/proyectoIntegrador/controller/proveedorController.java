@@ -1,22 +1,14 @@
 package com.proyectoIntegrador.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.proyectoIntegrador.entity.Marca;
 import com.proyectoIntegrador.entity.Proveedor;
-import com.proyectoIntegrador.service.MarcaService;
 import com.proyectoIntegrador.service.ProveedorServicio;
 
 @Controller

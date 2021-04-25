@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.service.FechasServiciosService;
-import com.proyectoIntegrador.service.HorariosServiciosService;
-import com.proyectoIntegrador.service.ServicioService;
 
 @Controller
 public class detalleServicioController {
