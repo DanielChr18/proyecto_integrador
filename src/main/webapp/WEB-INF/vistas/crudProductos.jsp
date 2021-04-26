@@ -55,7 +55,7 @@
 </style>
 </head>
 <body class="">
-	<c:if test="${objCargo != 'Personal de Ventas'}">
+	<c:if test="${objCargo == 'Personal de Ventas'}">
 		<div class="wrapper ">
 			<jsp:include page="menuLateral.jsp" />
 			<div class="main-panel">
@@ -433,7 +433,7 @@
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo == 'Personal de Ventas'}">
+	<c:if test="${objCargo != 'Personal de Ventas'}">
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>

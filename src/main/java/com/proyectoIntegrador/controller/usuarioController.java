@@ -48,6 +48,11 @@ public class usuarioController {
 		return "error404";
 	}
 
+	@RequestMapping("/principal")
+	public String principal() {
+		return "principal";
+	}
+
 	@RequestMapping("/validacionLogin")
 	@ResponseBody
 	public Map<String, Object> validacionLogin(HttpServletRequest request, String nom_usuario, String con_usuario) {

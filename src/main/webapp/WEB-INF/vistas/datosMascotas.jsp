@@ -106,7 +106,7 @@
 								<div class="card card-profile">
 									<div class="card-avatar">
 										<a href="javascript:;"> <img class="img"
-											src="img/faces/marc.jpg" />
+											src="images/marc.jpg" />
 										</a>
 									</div>
 									<div class="card-body">
