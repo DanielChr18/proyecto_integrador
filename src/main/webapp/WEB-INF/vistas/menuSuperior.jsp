@@ -21,8 +21,8 @@
 				</a>
 					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="navbarDropdownProfile">
-						<a class="dropdown-item" href="#">Profile</a> <a
-							class="dropdown-item" href="#">Settings</a>
+						<a class="dropdown-item" href="datosClientes">Perfil</a> <a
+							class="dropdown-item" href="#">Configuración</a>
 						<div class="dropdown-divider"></div>
 						<c:if test="${objCargo == null}">
 							<a class="dropdown-item" href="login">Login</a>

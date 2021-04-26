@@ -4,17 +4,17 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.FechasServicios;
+import com.proyectoIntegrador.entity.Servicio;
 import com.proyectoIntegrador.service.FechasServiciosService;
+import com.proyectoIntegrador.service.ServicioService;
 
 @Controller
 public class detalleServicioController {
@@ -22,33 +22,39 @@ public class detalleServicioController {
 	@Autowired
 	private FechasServiciosService service;
 
+	@Autowired
+	private ServicioService serviceSer;
+
 	@RequestMapping("/detalleServicios")
 	public String detalleServicios(@RequestParam(value = "idServicio", required = false) String idServicio,
-			@RequestParam(value = "dia", required = false) String dia, HttpServletRequest request) {
-		HttpSession session = request.getSession(true);
+			Model modal) {
 		if (idServicio == null) {
 			return "redirect:error404";
+		} else {
+			int idSer = Integer.parseInt(idServicio);
+			Servicio servicio = serviceSer.listaServiciosId(idSer);
+			servicio.setNombre(servicio.getNombre().toUpperCase());
+			modal.addAttribute("servicio", servicio);
+			int numSemana = 0;
+			switch (servicio.getDia()) {
+			case "Lunes":
+				numSemana = 1;
+				break;
+			case "Martes":
+				numSemana = 2;
+				break;
+			case "Miércoles":
+				numSemana = 3;
+				break;
+			case "Jueves":
+				numSemana = 4;
+				break;
+			case "Viernes":
+				numSemana = 5;
+			}
+			modal.addAttribute("objNumeroDia", numSemana);
+			return "detalleServicios";
 		}
-		session.setAttribute("objIdServicio", idServicio);
-		int numSemana = 0;
-		switch (dia) {
-		case "Lunes":
-			numSemana = 1;
-			break;
-		case "Martes":
-			numSemana = 2;
-			break;
-		case "Miércoles":
-			numSemana = 3;
-			break;
-		case "Jueves":
-			numSemana = 4;
-			break;
-		case "Viernes":
-			numSemana = 5;
-		}
-		session.setAttribute("objNumeroDia", numSemana);
-		return "detalleServicios";
 	}
 
 	@RequestMapping("/fechas")

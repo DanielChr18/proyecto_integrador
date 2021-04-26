@@ -44,6 +44,13 @@ public class productoController {
 		return "listaProductos";
 	}
 
+	@RequestMapping("/obtenerHtmlProducto")
+	@ResponseBody
+	public Producto obtenerHtmlProducto(String idProducto) {
+		int id = Integer.parseInt(idProducto);
+		return service.listaProductosId(id);
+	}
+
 	@RequestMapping("/listadoProductoNombre")
 	@ResponseBody
 	public List<Producto> listadoProductosNombre(String nombreArticulo) {
@@ -70,6 +77,7 @@ public class productoController {
 		try {
 			if (obj.getNombre() != null) {
 				System.out.println(imagen.getOriginalFilename());
+				System.out.println(obj.getDescripcionLarga());
 				List<Producto> lista = service.listaProductos();
 				Path rutaCompleta = Paths.get(
 						rutaAbsoluta + "//" + "PRODUCTO" + (lista.get(lista.size() - 1).getIdProducto() + 1) + ".jpeg");

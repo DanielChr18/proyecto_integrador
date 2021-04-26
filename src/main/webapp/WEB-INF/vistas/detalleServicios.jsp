@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://ckeditor.com" prefix="ckeditor"%>
 <!DOCTYPE html>
 <html lang="esS">
 <head>
@@ -33,25 +34,44 @@
 									<h3 class="card-title">Detalles de Servicio</h3>
 								</div>
 								<div class="card-body">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-12">
-													<form accept-charset="UTF-8">
-														<div class="card-body" style="padding: 20px 10px;">
-															<div class="row" hidden="hidden">
-																<input class="form-control" type="text"
-																	id="id_idServicio" name="idServicio"
-																	value="${objIdServicio}"> <input
-																	class="form-control" type="text" id="id_diaServicio"
-																	name="dia" value="${objNumeroDia}">
+									<form accept-charset="UTF-8">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row" hidden="hidden">
+													<input class="form-control" type="text" id="id_idServicio"
+														name="idServicio" value="${servicio.idServicio}">
+													<input class="form-control" type="text" id="id_diaServicio"
+														name="dia" value="${objNumeroDia}">
+												</div>
+												<div class="card-header"
+													style="border-bottom: #9c27b0 1px solid;">
+													<h2 class="card-title" style="color: #9c27b0">
+														<strong>${servicio.nombre}</strong>
+													</h2>
+												</div>
+												<div class="card-body" style="padding: 20px 10px;">
+													<div class="row">
+														<div class="col-md-8">
+															<div class="form-group" id="div_stockModificar">
+																<h5 class="card-title">
+																	<strong>${servicio.descripcion}</strong>
+																</h5>
 															</div>
-															<div class="row">
+														</div>
+														<div class="col-md-4">
+															<img src="images/servicios/${servicio.imagen}"
+																width="300px" height="300px" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row" style="padding-left: 15px;">
 																<div style="width: 240px; height: auto;">
 																	<div class="form-group" id="div_nombreModificar">
-																		<label class="bmd-label">Fecha</label> <br> <input
-																			class="form-control" type="text" id="id_fechaCita"
-																			name="fechaCita" readonly="readonly">
+																		<label class="bmd-label">Separa tu Cita : </label> <br>
+																		<input class="form-control" type="text"
+																			id="id_fechaCita" name="fechaCita"
+																			readonly="readonly">
 																	</div>
 																	<div id="datepicker"></div>
 																</div>
@@ -59,14 +79,18 @@
 																	style="width: 100px; height: auto; padding-top: 75px;">
 																</div>
 															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-12">
 															<button type="button" onclick="history.go(-1)"
 																class="btn btn-primary pull-left">Regresar</button>
 														</div>
-													</form>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -76,7 +100,8 @@
 		</div>
 	</div>
 
-	<script>
+
+	<script type="text/javascript">
 		$('#id_menuServicios').addClass('active');
 		$(function() {
 			var ayuda = $("#id_diaServicio").val();

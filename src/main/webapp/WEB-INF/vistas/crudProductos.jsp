@@ -12,12 +12,13 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
+<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
 <link rel="stylesheet" type="text/css" href="vendor/main.css">
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 <style type="text/css">
 .caja {
-	margin-top: 10px;
+	margin-bottom: 15px;
 	border: 1px solid #d9d9d9;
 	overflow: hidden;
 	position: relative;
@@ -54,7 +55,7 @@
 </style>
 </head>
 <body class="">
-	<c:if test="${objCargo == 'Personal de Ventas'}">
+	<c:if test="${objCargo != 'Personal de Ventas'}">
 		<div class="wrapper ">
 			<jsp:include page="menuLateral.jsp" />
 			<div class="main-panel">
@@ -151,8 +152,6 @@
 			</div>
 
 
-
-
 			<!-- Modal de Registro de Producto -->
 
 			<div class="modal fade" id="idModalRegistraProducto"
@@ -168,7 +167,7 @@
 								<form accept-charset="UTF-8" id="id_formRegistrarProducto"
 									action="registrarProducto" method="post"
 									enctype="multipart/form-data">
-									<div class="row">
+									<div class="row" id="id_divNombreRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Nombre de Artículo</label>
@@ -177,7 +176,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divPrecioRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Precio</label> <input
@@ -186,7 +185,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divStockRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Stock</label> <input
@@ -195,7 +194,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divSerieRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Serie</label> <input
@@ -204,8 +203,9 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divMarcaRegistrar">
 										<div class="col-md-12">
+											<label class="bmd-label">Marca</label>
 											<div class="caja">
 												<select id="id_marcaRegistrar" class="estilo-select"
 													name="idMarca.idMarca">
@@ -217,8 +217,9 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divProveedorRegistrar">
 										<div class="col-md-12">
+											<label class="bmd-label">Proveedor</label>
 											<div class="caja">
 												<select id="id_proveedorRegistrar" class="estilo-select"
 													name="idProveedor.idProveedor">
@@ -230,13 +231,19 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" style="margin-top: 15px;">
+									<div class="row" id="id_divDescripcionRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
-												<label class="bmd-label-floating">Descripción</label> <input
-													class="form-control" type="text"
+												<label class="bmd-label-floating">Descripción Corta</label>
+												<input class="form-control" type="text"
 													id="id_descripcionRegistrar" name="descripcion">
 											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label class="bmd-label-floating">Descripción Larga</label>
+											<textarea id="editor1" name="descripcionLarga"></textarea>
 										</div>
 									</div>
 									<div class="row">
@@ -246,7 +253,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divImagenRegistrar">
 										<div class="col-md-12">
 											<input class="form-control-imagen" type="file"
 												id="id_imagenRegistrar" name="imagenProductoRegistrar">
@@ -263,12 +270,7 @@
 				</div>
 			</div>
 
-			<!-- Modal de Registro de Producto -->
-
-
-
 			<!-- Modal de Modificar Producto -->
-
 			<div class="modal fade" id="idModalModificaProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
@@ -283,12 +285,8 @@
 									action="modificarProducto" method="post"
 									enctype="multipart/form-data">
 									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													id="id_codigoModificar" name="idProducto">
-											</div>
-										</div>
+										<input class="form-control" type="text"
+											id="id_codigoModificar" name="idProducto">
 									</div>
 									<div class="row">
 										<div class="col-md-12">
@@ -328,6 +326,7 @@
 									</div>
 									<div class="row">
 										<div class="col-md-12">
+											<label class="bmd-label">Marca</label>
 											<div class="caja">
 												<select id="id_marcaModificar" class="estilo-select"
 													name="idMarca.idMarca">
@@ -341,6 +340,7 @@
 									</div>
 									<div class="row">
 										<div class="col-md-12">
+											<label class="bmd-label">Proveedor</label>
 											<div class="caja">
 												<select id="id_proveedorModificar" class="estilo-select"
 													name="idProveedor.idProveedor">
@@ -352,13 +352,19 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" style="margin-top: 15px;">
+									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group" id="div_descripcionModificar">
 												<label class="bmd-label-floating">Descripción</label> <input
 													class="form-control" type="text"
 													id="id_descripcionModificar" name="descripcion">
 											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label class="bmd-label-floating">Descripción Larga</label>
+											<textarea id="editor2" name="descripcionLarga"></textarea>
 										</div>
 									</div>
 									<div class="row">
@@ -385,12 +391,7 @@
 				</div>
 			</div>
 
-			<!-- Modal de Modificar Producto -->
-
-
-
 			<!-- Modal de Eliminar Producto -->
-
 			<div class="modal fade" id="idModalEliminaProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
@@ -432,10 +433,90 @@
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo != 'Personal de Ventas'}">
+	<c:if test="${objCargo == 'Personal de Ventas'}">
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
+
+
+
+	<!-- Script de TextArea  -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			modificarTextArea('editor1');
+			modificarTextArea('editor2');
+		});
+
+		function modificarTextArea(identificador) {
+			CKEDITOR
+					.replace(
+							identificador,
+							{
+								allowedContent : true,
+								removePlugins : 'resize',
+								language : 'es',
+								toolbarGroups : [
+										{
+											name : 'clipboard',
+											groups : [ 'undo', 'clipboard' ]
+										},
+										{
+											name : 'editing',
+											groups : [ 'find', 'selection',
+													'spellchecker', 'editing' ]
+										},
+										{
+											name : 'links',
+											groups : [ 'links' ]
+										},
+										{
+											name : 'insert',
+											groups : [ 'insert' ]
+										},
+										{
+											name : 'forms',
+											groups : [ 'forms' ]
+										},
+										{
+											name : 'tools',
+											groups : [ 'tools' ]
+										},
+										{
+											name : 'others',
+											groups : [ 'others' ]
+										},
+										'/',
+										{
+											name : 'basicstyles',
+											groups : [ 'basicstyles', 'cleanup' ]
+										},
+										{
+											name : 'paragraph',
+											groups : [ 'list', 'indent',
+													'blocks', 'align', 'bidi',
+													'paragraph' ]
+										},
+										{
+											name : 'styles',
+											groups : [ 'styles' ]
+										},
+										{
+											name : 'colors',
+											groups : [ 'colors' ]
+										},
+										{
+											name : 'about',
+											groups : [ 'about' ]
+										},
+										{
+											name : 'document',
+											groups : [ 'mode', 'document',
+													'doctools' ]
+										} ],
+								removeButtons : 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source'
+							});
+		}
+	</script>
 
 	<!-- Validación de Registrar  -->
 	<script type="text/javascript">
@@ -516,7 +597,7 @@
 														selector : "#id_descripcionRegistrar",
 														validators : {
 															notEmpty : {
-																message : 'El descripción es obligatorio'
+																message : 'La descripción es obligatoria'
 															},
 														}
 													},
@@ -608,12 +689,62 @@
 														selector : "#id_descripcionModificar",
 														validators : {
 															notEmpty : {
-																message : 'El descripción es obligatorio'
+																message : 'La descripción es obligatorio'
 															},
 														}
 													},
 												}
 											});
+						});
+	</script>
+
+	<script type="text/javascript">
+		$("#id_formRegistrarProducto")
+				.on(
+						'submit',
+						function(evt) {
+							if ($("#id_nombreRegistrar").val() == "") {
+								$(
+										"#id_divNombreRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_precioRegistrar").val() == "") {
+								$(
+										"#id_divPrecioRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_stockRegistrar").val() == "") {
+								$(
+										"#id_divStockRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_serieRegistrar").val() == "") {
+								$(
+										"#id_divSerieRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_marcaRegistrar").val() == "") {
+								$(
+										"#id_divMarcaRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_proveedorRegistrar").val() == "") {
+								$(
+										"#id_divProveedorRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_descripcionRegistrar").val() == "") {
+								$(
+										"#id_divDescripcionRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if ($("#id_imagenRegistrar").val() == "") {
+								$(
+										"#id_divImagenRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							}
+							if (CKEDITOR.instances['editor2'].getData() == "") {
+							}
 						});
 	</script>
 
@@ -626,12 +757,13 @@
 		}
 
 		function cerrarModalProductoRegistra() {
-			$('#idModalRegistraProducto').modal("hide");
 			$("#idModalRegistraProducto input").val("");
+			CKEDITOR.instances['editor1'].setData('');
 			$("#idModalRegistraProducto small").css("display", "none");
 			$("#idModalRegistraProducto div.form-group").removeClass(
 					"is-filled has-success");
 			$("#id_btnRegistrarProducto").attr("disabled", false);
+			$('#idModalRegistraProducto').modal("hide");
 		}
 
 		function verModalProductoModifica(id, nombre, precio, stock, serie,
@@ -651,6 +783,11 @@
 			$("#div_proveedorModificar").addClass('is-filled');
 			$("#id_descripcionModificar").val(descripcion);
 			$("#div_descripcionModificar").addClass('is-filled');
+			$.getJSON('obtenerHtmlProducto', {
+				"idProducto" : id
+			}, function(data) {
+				CKEDITOR.instances['editor2'].setData(data.descripcionLarga);
+			});
 			$('#idModalModificaProducto').modal("show");
 		}
 

@@ -365,7 +365,7 @@
 	<!-- Restricción de Acceso -->
 
 	<script type="text/javascript">
-		$("#id_menuClientes").addClass("active");
+		$("#id_menuMascotas").addClass("active");
 
 		function verModalMascotaRegistra() {
 			$('#idModalRegistraMascota').modal("show");
