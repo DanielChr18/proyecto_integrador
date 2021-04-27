@@ -234,9 +234,6 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript">
-			$("#id_menuClientes").addClass("active");
-		</script>
 	</c:if>
 
 	<c:if test="${objCargo == 'Cliente'}">
@@ -452,7 +449,7 @@
 	<script src="vendor/main.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-	<!-- Cambios de Datos del Cliente Verificando la Contraseña -->
+
 	<script type="text/javascript">
 		function verModalConfirmarContrasenia() {
 			var validator = $('#form_modificarCliente').data(
@@ -514,6 +511,7 @@
 
 	<!-- Validar Contraseña de Registrar Usuario -->
 	<script type="text/javascript">
+		$("#id_menuClientes").addClass("active");
 		$(document).ready(function() {
 			$('#mensaje_errorConfirmar').hide();
 		});

@@ -40,7 +40,9 @@
 													method="post">
 													<input hidden="hidden" class="form-control" type="text"
 														name="idServicio" value="${servicio.idServicio}">
-													<i><img class="servicioImagen"
+													<input hidden="hidden" class="form-control" type="text"
+														name="dia" value="${servicio.dia}"> <i><img
+														class="servicioImagen"
 														src="images/servicios/${servicio.imagen}" /></i>
 													<h3>
 														<button type="submit"

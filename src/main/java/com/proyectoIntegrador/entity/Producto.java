@@ -49,9 +49,6 @@ public class Producto {
 	@Column(name = "descripcion")
 	private String descripcion;
 
-	@Column(name = "descripcionlarga")
-	private String descripcionLarga;
-
 	@Column(name = "imagen")
 	private String imagen;
 

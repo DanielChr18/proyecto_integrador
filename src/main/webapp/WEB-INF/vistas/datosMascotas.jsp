@@ -106,7 +106,7 @@
 								<div class="card card-profile">
 									<div class="card-avatar">
 										<a href="javascript:;"> <img class="img"
-											src="images/marc.jpg" />
+											src="img/faces/marc.jpg" />
 										</a>
 									</div>
 									<div class="card-body">
@@ -365,7 +365,7 @@
 	<!-- Restricción de Acceso -->
 
 	<script type="text/javascript">
-		$("#id_menuMascotas").addClass("active");
+		$("#id_menuClientes").addClass("active");
 
 		function verModalMascotaRegistra() {
 			$('#idModalRegistraMascota').modal("show");

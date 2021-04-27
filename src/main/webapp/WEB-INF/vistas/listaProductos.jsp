@@ -33,7 +33,8 @@
 									</h3>
 								</div>
 								<div class="card-body">
-									<form accept-charset="UTF-8" id="id_formDatosCliente">
+									<form accept-charset="UTF-8" id="id_formDatosCliente"
+										method="post">
 										<div class="row">
 											<div class="col-md-9">
 												<div class="form-group" style="padding-left: 10px;">
@@ -82,6 +83,9 @@
 			</div>
 		</div>
 	</div>
+
+
+
 
 	<script type="text/javascript">
 		$('#id_menuProductos').addClass("active");
