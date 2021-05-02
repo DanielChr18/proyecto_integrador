@@ -13,7 +13,6 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -48,41 +47,43 @@
 																		Marca</button>
 																</div>
 																<br />
-																<div class="row">
-																	<table id="tablaMarcas" class="table table-hover">
-																		<thead class="text-primary">
-																			<tr>
-																				<th style="width: 40px;">ID</th>
-																				<th>Nombre</th>
-																				<th style="width: 102.4px;">Editar</th>
-																				<th style="width: 102.4px;">Eliminar</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<c:forEach items="${marcas}" var="marca">
+																<div class="row" style="overflow: auto;">
+																	<div class="col-md-12">
+																		<table id="tablaMarcas" class="table table-hover">
+																			<thead class="text-primary">
 																				<tr>
-																					<td>${marca.idMarca}</td>
-																					<td>${marca.nombre}</td>
-																					<td>
-																						<button type="button"
-																							onclick="verModalMarcaModifica('${marca.idMarca}','${marca.nombre}');"
-																							class="btn btn-primary">
-																							<img src="images/edit.gif" width="auto"
-																								height="auto" />
-																						</button>
-																					</td>
-																					<td>
-																						<button type="button"
-																							onclick="verModalMarcaElimina('${marca.idMarca}');"
-																							class="btn btn-primary">
-																							<img src="images/delete.gif" width="auto"
-																								height="auto" />
-																						</button>
-																					</td>
+																					<th style="width: 40px;">ID</th>
+																					<th>Nombre</th>
+																					<th style="width: 102.4px;">Editar</th>
+																					<th style="width: 102.4px;">Eliminar</th>
 																				</tr>
-																			</c:forEach>
-																		</tbody>
-																	</table>
+																			</thead>
+																			<tbody>
+																				<c:forEach items="${marcas}" var="marca">
+																					<tr>
+																						<td>${marca.idMarca}</td>
+																						<td>${marca.nombre}</td>
+																						<td>
+																							<button type="button"
+																								onclick="verModalMarcaModifica('${marca.idMarca}','${marca.nombre}');"
+																								class="btn btn-primary">
+																								<img src="images/edit.gif" width="auto"
+																									height="auto" />
+																							</button>
+																						</td>
+																						<td>
+																							<button type="button"
+																								onclick="verModalMarcaElimina('${marca.idMarca}');"
+																								class="btn btn-primary">
+																								<img src="images/delete.gif" width="auto"
+																									height="auto" />
+																							</button>
+																						</td>
+																					</tr>
+																				</c:forEach>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</form>

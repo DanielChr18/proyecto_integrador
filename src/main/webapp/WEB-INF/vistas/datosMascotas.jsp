@@ -13,7 +13,6 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css">
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
 </head>
@@ -51,7 +50,7 @@
 																Mascota</button>
 														</div>
 														<br />
-														<div class="row">
+														<div class="row" style="overflow: auto;">
 															<table id="tablaMascotas" class="table table-hover">
 																<thead class="text-primary">
 																	<tr>
@@ -106,7 +105,7 @@
 								<div class="card card-profile">
 									<div class="card-avatar">
 										<a href="javascript:;"> <img class="img"
-											src="img/faces/marc.jpg" />
+											src="images/marc.jpg" />
 										</a>
 									</div>
 									<div class="card-body">
@@ -363,7 +362,6 @@
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-
 	<script type="text/javascript">
 		$("#id_menuClientes").addClass("active");
 

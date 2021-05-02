@@ -108,3 +108,106 @@
 .title {
 	text-align: center;
 }
+
+/* Estilo para Input[File] */
+
+/* Estilo 1 para Input[File] */
+input[type="file"] {
+	display: none;
+}
+
+.custom-file-upload {
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+/* Estilo 1 para Input[File] */
+
+/* Estilo 2 para Input[File] */
+.invoiceBox>input {
+	display: none;
+}
+
+.invoiceBox label {
+	display: block;
+}
+
+.boxFile {
+	display: inline-block;
+	width: 100%;
+	border: 1px solid grey;
+	background: #fff;
+	color: grey;
+	padding: 10px;
+	text-align: center;
+	font-weight: 500;
+	font-size: 14px;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.boxFile:hover {
+	cursor: pointer;
+	background: #d1d1d1;
+	color: #fff;
+}
+
+.boxFile i {
+	display: block;
+	font-size: 26px;
+	margin-bottom: 5px;
+}
+
+.attached, .attached:hover, .attached:focus {
+	background: #9c27b0;
+	color: #fff;
+	border: 1px solid #9c27b0;
+}
+/* Estilo 2 para Input[File] */
+
+/* Estilo para Input[File] */
+.caja {
+	border: 1px solid #d9d9d9;
+	overflow: hidden;
+	position: relative;
+	color: #AAAAAA;
+}
+
+.estilo-select {
+	background: transparent;
+	border: none;
+	font-size: 14px;
+	height: 30px;
+	padding-left: 5px;
+	width: 100%;
+	color: #AAAAAA;
+}
+
+.estilo-select>option {
+	background: transparent;
+	border: none;
+	font-size: 14px;
+	height: 30px;
+	padding-left: 5px;
+	width: 100%;
+	color: #AAAAAA;
+}
+
+.estilo-select:focus {
+	outline: none;
+}
+
+.caja::after {
+	content: "\025be";
+	display: table-cell;
+	padding-top: 5px;
+	text-align: center;
+	width: 30px;
+	height: 31px;
+	background-color: #d9d9d9;
+	position: absolute;
+	top: 0;
+	right: 0px;
+	pointer-events: none;
+}

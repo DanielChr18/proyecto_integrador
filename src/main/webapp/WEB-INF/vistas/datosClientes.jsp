@@ -14,58 +14,7 @@
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
 <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-
-<link rel="stylesheet" type="text/css" href="vendor/main.css">
-<link rel="stylesheet" href="css/estilo1.1.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
-
-<style type="text/css">
-.alert-validate::before {
-	content: attr(data-validate);
-	position: absolute;
-	max-width: 70%;
-	background-color: #fff;
-	border: 1px solid #c80000;
-	border-radius: 2px;
-	padding: 2px 25px 2px 10px;
-	margin-bottom: 15px;
-	-webkit-transform: translateY(50%);
-	-moz-transform: translateY(50%);
-	-ms-transform: translateY(50%);
-	-o-transform: translateY(50%);
-	transform: translateY(50%);
-	right: 2px;
-	pointer-events: none;
-	font-family: Poppins-Regular;
-	color: #c80000;
-	font-size: 13px;
-	line-height: 1.4;
-	text-align: left;
-	visibility: hidden;
-	opacity: 0;
-	-webkit-transition: opacity 0.4s;
-	-o-transition: opacity 0.4s;
-	-moz-transition: opacity 0.4s;
-	transition: opacity 0.4s;
-	bottom: calc(100%)/2);
-}
-
-.alert-validate::after {
-	content: "\f06a";
-	font-family: FontAwesome;
-	display: block;
-	position: absolute;
-	color: #c80000;
-	font-size: 16px;
-	margin-bottom: 15px;
-	-webkit-transform: translateY(50%);
-	-moz-transform: translateY(50%);
-	-ms-transform: translateY(50%);
-	-o-transform: translateY(50%);
-	transform: translateY(50%);
-	right: 8px;
-}
-</style>
 
 </head>
 <body class="">
@@ -445,10 +394,6 @@
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
-
-	<script src="vendor/main.js"></script>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 
 	<script type="text/javascript">
 		function verModalConfirmarContrasenia() {

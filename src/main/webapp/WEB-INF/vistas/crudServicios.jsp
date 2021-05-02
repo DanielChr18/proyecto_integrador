@@ -13,7 +13,6 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -55,7 +54,7 @@
 																	</div>
 																</div>
 																<br />
-																<div class="row">
+																<div class="row" style="overflow: auto;">
 																	<table id="tablaServicios" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
@@ -223,12 +222,15 @@
 											<div class="form-group">
 												<label class="bmd-label">Imagen</label>
 											</div>
-										</div>
-									</div>
-									<div class="row" id="id_divImagenRegistrar">
-										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenRegistrar" name="imagenServicioRegistrar">
+											<div class="invoiceBox">
+												<label for="id_imagenRegistrar" id="boxFileRegistrar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagenRegistrar"
+													name="imagenServicioRegistrar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+											<small id="id_mensajeImagenRegistrar" style="color: #cc0000;">Seleccionar
+												Imagen</small>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalServicioRegistra();"
@@ -350,12 +352,13 @@
 											<div class="form-group">
 												<label class="bmd-label">Imagen</label>
 											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenModificar" name="imagenServicioModificar">
+											<div class="invoiceBox">
+												<label for="id_imagenModificar" id="boxFileModificar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagenModificar"
+													name="imagenServicioModificar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalServicioModifica();"
@@ -428,9 +431,9 @@
 				url : 'validarFechas',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
-						swal("Excelente!", data.MENSAJE, "success");
+						swal("¡Excelente!", data.MENSAJE, "success");
 					} else {
-						swal("Aviso!", data.MENSAJE, "warning");
+						swal("¡Aviso!", data.MENSAJE, "warning");
 					}
 				},
 				error : function() {
@@ -442,10 +445,12 @@
 
 	<!-- Validación de Horarios -->
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#id_mensajeHoraConfirmarRegistrar').hide();
-			$('#id_mensajeHoraConfirmarModificar').hide();
-		});
+		$('#id_mensajeHoraConfirmarRegistrar').hide();
+		$('#id_mensajeHoraConfirmarModificar').hide();
+		$('#id_mensajeImagenRegistrar').hide();
+		imagen('#id_imagenRegistrar', '#boxFileRegistrar',
+				'#id_mensajeImagenRegistrar');
+		imagen('#id_imagenModificar', '#boxFileModificar', null);
 
 		$("#id_formRegistrarServicio")
 				.on(
@@ -474,6 +479,14 @@
 							}
 							if (confirmHora == "") {
 								$('#id_mensajeHoraConfirmarRegistrar').show();
+								$("#id_btnRegistrarServicio").attr("disabled",
+										false);
+								evt.preventDefault();
+							}
+							if ($("#id_imagenRegistrar").val() === "") {
+								$("#id_btnRegistrarServicio").attr("disabled",
+										false);
+								$('#id_mensajeImagenRegistrar').show();
 								evt.preventDefault();
 							}
 						});
@@ -492,13 +505,6 @@
 		var contadorReg = 0;
 		var horasReg = [];
 		var confirmarReg = 0;
-
-		function validaNumericos(event) {
-			if (event.charCode >= 48 && event.charCode <= 57) {
-				return true;
-			}
-			return false;
-		}
 
 		function agregarHorarioRegistrar() {
 			var horaReg = $("#id_horarioRegistrar").val();

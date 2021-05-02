@@ -13,24 +13,15 @@
 	href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
-	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	href="vendor/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
-	href="fonts/iconic/css/material-design-iconic-font.min.css">
+	href="vendor/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
-	href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-<link rel="stylesheet" type="text/css"
 	href="vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-<link rel="stylesheet" type="text/css"
-	href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-<link rel="stylesheet" type="text/css"
-	href="vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="vendor/util.css">
 <link rel="stylesheet" type="text/css" href="vendor/main.css">
@@ -87,16 +78,9 @@
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<!--===============================================================================================-->
 	<script src="vendor/main.js"></script>
 	<!--===============================================================================================-->
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="js/plugins/sweetalert2.js"></script>
 	<!--===============================================================================================-->
 
 	<script type="text/javascript">
@@ -116,14 +100,15 @@
 					success : function(data) {
 						if (data.CONFIRMACION == 'SI') {
 							if (data.CLIENTE != null) {
-								swal("Bienvenido!", data.CLIENTE, "success");
+								swal("¡Bienvenido!", data.CLIENTE, "success");
 							} else {
-								swal("Bienvenido!", "", "success");
-							}setTimeout(function() {
+								swal("¡Bienvenido!", "", "success");
+							}
+							setTimeout(function() {
 								event.target.submit();
 							}, 1000);
 						} else {
-							swal("Error!", data.MENSAJE, "error");
+							swal("¡Error!", data.MENSAJE, "error");
 						}
 					},
 					error : function() {

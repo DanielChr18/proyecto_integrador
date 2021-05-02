@@ -1,5 +1,6 @@
 package com.proyectoIntegrador.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,13 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	public List<Producto> listaProductos() {
-		return repository.findAll();
+		List<Producto> lista = repository.findAll();
+		List<Producto> listaProductos = new ArrayList<Producto>();
+		for (Producto p : lista) {
+			if(p.getEstado().equals("activado"))
+				listaProductos.add(p);
+		}
+		return listaProductos;
 	}
 
 	@Override
@@ -37,10 +44,5 @@ public class ProductoServiceImpl implements ProductoService {
 	@Override
 	public Producto modificarProducto(Producto obj) {
 		return repository.save(obj);
-	}
-
-	@Override
-	public void eliminarProducto(int idProducto) {
-		repository.deleteById(idProducto);
 	}
 }

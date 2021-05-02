@@ -13,7 +13,6 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -30,7 +29,8 @@
 								<div class="card">
 									<div class="card-header card-header-primary">
 										<h3 class="card-title">
-											<i class="material-icons">content_paste</i> Datos de Proveedor
+											<i class="material-icons">content_paste</i> Datos de
+											Proveedor
 										</h3>
 										<p class="card-category">Mantenimiento</p>
 									</div>
@@ -48,7 +48,7 @@
 																		Proveedor</button>
 																</div>
 																<br />
-																<div class="row">
+																<div class="row" style="overflow: auto;">
 																	<table id="tablaProveedores" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
@@ -59,7 +59,7 @@
 																				<th>Telefono</th>
 																				<th>Celular</th>
 																				<th>Contacto</th>
-																				
+
 																				<th style="width: 102.4px;">Editar</th>
 																				<th style="width: 102.4px;">Eliminar</th>
 																			</tr>
@@ -133,8 +133,8 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Razon Social</label> <input
-													class="form-control" type="text" id="id_razonSocialRegistrar"
-													name="razonSocial">
+													class="form-control" type="text"
+													id="id_razonSocialRegistrar" name="razonSocial">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -210,8 +210,8 @@
 										<div class="col-md-12">
 											<div class="form-group" id="div_razonSocialModificar">
 												<label class="bmd-label-floating">Razon Social</label> <input
-													class="form-control" type="text" id="id_razonSocialModificar"
-													name="razonSocial">
+													class="form-control" type="text"
+													id="id_razonSocialModificar" name="razonSocial">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -285,8 +285,8 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group">
-												<span class="pull-center">¿Desea eliminar el Proveedor
-													seleccionado?</span>
+												<span class="pull-center">¿Desea eliminar el
+													Proveedor seleccionado?</span>
 											</div>
 										</div>
 									</div>

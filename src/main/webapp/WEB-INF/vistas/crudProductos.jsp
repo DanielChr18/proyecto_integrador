@@ -14,45 +14,10 @@
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css">
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
-<style type="text/css">
-.caja {
-	margin-bottom: 15px;
-	border: 1px solid #d9d9d9;
-	overflow: hidden;
-	position: relative;
-	color: #AAAAAA;
-}
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 
-.estilo-select {
-	background: transparent;
-	border: none;
-	font-size: 14px;
-	height: 30px;
-	padding-left: 5px;
-	width: 100%;
-	color: #AAAAAA;
-}
-
-.estilo-select:focus {
-	outline: none;
-}
-
-.caja::after {
-	content: "\025be";
-	display: table-cell;
-	padding-top: 5px;
-	text-align: center;
-	width: 30px;
-	height: 31px;
-	background-color: #d9d9d9;
-	position: absolute;
-	top: 0;
-	right: 0px;
-	pointer-events: none;
-}
-</style>
 </head>
 <body class="">
 	<c:if test="${objCargo == 'Personal de Ventas'}">
@@ -85,7 +50,7 @@
 																		Producto</button>
 																</div>
 																<br />
-																<div class="row">
+																<div class="row" style="overflow: auto;">
 																	<table id="tablaProductos" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
@@ -98,8 +63,7 @@
 																				<th>Proveedor</th>
 																				<th>Descripción</th>
 																				<th>Imagen</th>
-																				<th style="width: 102.4px;">Editar</th>
-																				<th style="width: 102.4px;">Eliminar</th>
+																				<th>Acción</th>
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -114,22 +78,16 @@
 																					<td>${producto.idProveedor.razonSocial}</td>
 																					<td>${producto.descripcion}</td>
 																					<td><img
-																						src="images/productos/${producto.imagen}"
+																						src="images/productos/${producto.imagen1}"
 																						alt="img" width="50px" height="50px"></td>
 																					<td>
 																						<button type="button"
-																							onclick="verModalProductoModifica('${producto.idProducto}','${producto.nombre}','${producto.precio}','${producto.stock}','${producto.serie}','${producto.idMarca.idMarca}','${producto.idProveedor.idProveedor}','${producto.descripcion}');"
-																							class="btn btn-primary">
-																							<img src="images/edit.gif" width="auto"
-																								height="auto" />
+																							onclick="verModalProductoModifica('${producto.idProducto}','${producto.nombre}','${producto.precio}','${producto.stock}','${producto.serie}','${producto.idMarca.idMarca}','${producto.idProveedor.idProveedor}','${producto.descripcion}');">
+																							<span class="material-icons"> edit </span>
 																						</button>
-																					</td>
-																					<td>
 																						<button type="button"
-																							onclick="verModalProductoElimina('${producto.idProducto}');"
-																							class="btn btn-primary">
-																							<img src="images/delete.gif" width="auto"
-																								height="auto" />
+																							onclick="verModalProductoElimina('${producto.idProducto}');">
+																							<span class="material-icons"> delete </span>
 																						</button>
 																					</td>
 																				</tr>
@@ -156,7 +114,7 @@
 
 			<div class="modal fade" id="idModalRegistraProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 55%; margin: 60px auto 0;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -176,26 +134,22 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" id="id_divPrecioRegistrar">
-										<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4" id="id_divPrecioRegistrar">
 											<div class="form-group">
 												<label class="bmd-label-floating">Precio</label> <input
 													class="form-control" type="text" id="id_precioRegistrar"
 													name="precio">
 											</div>
 										</div>
-									</div>
-									<div class="row" id="id_divStockRegistrar">
-										<div class="col-md-12">
+										<div class="col-md-4" id="id_divStockRegistrar">
 											<div class="form-group">
 												<label class="bmd-label-floating">Stock</label> <input
 													class="form-control" type="text" id="id_stockRegistrar"
 													name="stock">
 											</div>
 										</div>
-									</div>
-									<div class="row" id="id_divSerieRegistrar">
-										<div class="col-md-12">
+										<div class="col-md-4" id="id_divSerieRegistrar">
 											<div class="form-group">
 												<label class="bmd-label-floating">Serie</label> <input
 													class="form-control" type="text" id="id_serieRegistrar"
@@ -203,8 +157,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" id="id_divMarcaRegistrar">
-										<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-6" id="id_divMarcaRegistrar">
 											<label class="bmd-label">Marca</label>
 											<div class="caja">
 												<select id="id_marcaRegistrar" class="estilo-select"
@@ -216,9 +170,7 @@
 												</select>
 											</div>
 										</div>
-									</div>
-									<div class="row" id="id_divProveedorRegistrar">
-										<div class="col-md-12">
+										<div class="col-md-6" id="id_divProveedorRegistrar">
 											<label class="bmd-label">Proveedor</label>
 											<div class="caja">
 												<select id="id_proveedorRegistrar" class="estilo-select"
@@ -231,7 +183,8 @@
 											</div>
 										</div>
 									</div>
-									<div class="row" id="id_divDescripcionRegistrar">
+									<div class="row" id="id_divDescripcionRegistrar"
+										style="margin-top: 15px;">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Descripción Corta</label>
@@ -244,19 +197,57 @@
 										<div class="col-md-12">
 											<label class="bmd-label-floating">Descripción Larga</label>
 											<textarea id="editor1" name="descripcionLarga"></textarea>
+											<small id="id_mensajeDescripcionLargaRegistrar"
+												style="color: #cc0000;">La descripción larga no
+												puede estar vacía</small>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group">
-												<label class="bmd-label">Imagen</label>
+												<label class="bmd-label">Imagen 1</label>
 											</div>
+											<div class="invoiceBox">
+												<label for="id_imagen1Registrar" id="boxFile1Registrar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen1Registrar"
+													name="imagen1ProductoRegistrar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+											<small id="id_mensajeImagen1Registrar"
+												style="color: #cc0000;">Seleccionar Imagen</small>
 										</div>
 									</div>
-									<div class="row" id="id_divImagenRegistrar">
+									<div class="row">
 										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenRegistrar" name="imagenProductoRegistrar">
+											<div class="form-group">
+												<label class="bmd-label">Imagen 2</label>
+											</div>
+											<div class="invoiceBox">
+												<label for="id_imagen2Registrar" id="boxFile2Registrar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen2Registrar"
+													name="imagen2ProductoRegistrar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+											<small id="id_mensajeImagen2Registrar"
+												style="color: #cc0000;">Seleccionar Imagen</small>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label">Imagen 3</label>
+											</div>
+											<div class="invoiceBox">
+												<label for="id_imagen3Registrar" id="boxFile3Registrar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen3Registrar"
+													name="imagen3ProductoRegistrar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+											<small id="id_mensajeImagen3Registrar"
+												style="color: #cc0000;">Seleccionar Imagen</small>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalProductoRegistra();"
@@ -273,7 +264,7 @@
 			<!-- Modal de Modificar Producto -->
 			<div class="modal fade" id="idModalModificaProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 55%; margin: 60px auto 0;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -298,25 +289,21 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-4">
 											<div class="form-group" id="div_precioModificar">
 												<label class="bmd-label-floating">Precio</label> <input
 													class="form-control" type="text" id="id_precioModificar"
 													name="precio">
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-4">
 											<div class="form-group" id="div_stockModificar">
 												<label class="bmd-label-floating">Stock</label> <input
 													class="form-control" type="text" id="id_stockModificar"
 													name="stock">
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-4">
 											<div class="form-group" id="div_serieModificar">
 												<label class="bmd-label-floating">Serie</label> <input
 													class="form-control" type="text" id="id_serieModificar"
@@ -325,7 +312,7 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-6">
 											<label class="bmd-label">Marca</label>
 											<div class="caja">
 												<select id="id_marcaModificar" class="estilo-select"
@@ -337,9 +324,7 @@
 												</select>
 											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-6">
 											<label class="bmd-label">Proveedor</label>
 											<div class="caja">
 												<select id="id_proveedorModificar" class="estilo-select"
@@ -352,7 +337,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" style="margin-top: 15px;">
 										<div class="col-md-12">
 											<div class="form-group" id="div_descripcionModificar">
 												<label class="bmd-label-floating">Descripción</label> <input
@@ -365,19 +350,54 @@
 										<div class="col-md-12">
 											<label class="bmd-label-floating">Descripción Larga</label>
 											<textarea id="editor2" name="descripcionLarga"></textarea>
+											<small id="id_mensajeDescripcionLargaModificar"
+												style="color: #cc0000;">La descripción larga no
+												puede estar vacía</small>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group">
-												<label class="bmd-label">Imagen</label>
+												<label class="bmd-label">Imagen 1</label>
+											</div>
+											<div class="img" id="imagen1"></div>
+											<div class="invoiceBox">
+												<label for="id_imagen1Modificar" id="boxFile1Modificar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen1Modificar"
+													name="imagen1ProductoModificar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenModificar" name="imagenProductoModificar">
+											<div class="form-group">
+												<label class="bmd-label">Imagen 2</label>
+											</div>
+											<div class="img" id="imagen2"></div>
+											<div class="invoiceBox">
+												<label for="id_imagen2Modificar" id="boxFile2Modificar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen2Modificar"
+													name="imagen2ProductoModificar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label">Imagen 3</label>
+											</div>
+											<div class="img" id="imagen3"></div>
+											<div class="invoiceBox">
+												<label for="id_imagen3Modificar" id="boxFile3Modificar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagen3Modificar"
+													name="imagen3ProductoModificar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalProductoModifica();"
@@ -439,15 +459,190 @@
 	</c:if>
 
 
+	<script type="text/javascript">
+		imagen('#id_imagen1Registrar', '#boxFile1Registrar',
+				'#id_mensajeImagen1Registrar');
+		imagen('#id_imagen2Registrar', '#boxFile2Registrar',
+				'#id_mensajeImagen2Registrar');
+		imagen('#id_imagen3Registrar', '#boxFile3Registrar',
+				'#id_mensajeImagen3Registrar');
+		imagen('#id_imagen1Modificar', '#boxFile1Modificar', null);
+		imagen('#id_imagen2Modificar', '#boxFile2Modificar', null);
+		imagen('#id_imagen3Modificar', '#boxFile3Modificar', null);
+		$('#id_mensajeImagen1Registrar').hide();
+		$('#id_mensajeImagen2Registrar').hide();
+		$('#id_mensajeImagen3Registrar').hide();
+		$('#id_mensajeDescripcionLargaRegistrar').hide();
+		$('#id_mensajeDescripcionLargaModificar').hide();
+	</script>
+
+
+	<script type="text/javascript">
+		$("#id_formRegistrarProducto")
+				.on(
+						'submit',
+						function(evt) {
+							if ($("#id_nombreRegistrar").val() == "")
+								$(
+										"#id_divNombreRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_precioRegistrar").val() == "")
+								$(
+										"#id_divPrecioRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_stockRegistrar").val() == "")
+								$(
+										"#id_divStockRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_serieRegistrar").val() == "")
+								$(
+										"#id_divSerieRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_marcaRegistrar").val() == "")
+								$(
+										"#id_divMarcaRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_proveedorRegistrar").val() == "")
+								$(
+										"#id_divProveedorRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_descripcionRegistrar").val() == "")
+								$(
+										"#id_divDescripcionRegistrar small[data-bv-validator='notEmpty']")
+										.css("display", "inline");
+							if ($("#id_imagen1Registrar").val() === "") {
+								$("#id_btnRegistrarProducto").attr("disabled",
+										false);
+								$('#id_mensajeImagen1Registrar').show();
+								evt.preventDefault();
+							}
+							if ($("#id_imagen2Registrar").val() === "") {
+								$("#id_btnRegistrarProducto").attr("disabled",
+										false);
+								$('#id_mensajeImagen2Registrar').show();
+								evt.preventDefault();
+							}
+							if ($("#id_imagen3Registrar").val() === "") {
+								$("#id_btnRegistrarProducto").attr("disabled",
+										false);
+								$('#id_mensajeImagen3Registrar').show();
+								evt.preventDefault();
+							}
+							if (CKEDITOR.instances['editor1'].getData() == "") {
+								$("#id_btnRegistrarProducto").attr("disabled",
+										false);
+								$('#id_mensajeDescripcionLargaRegistrar')
+										.show();
+								evt.preventDefault();
+							}
+						});
+
+		$("#id_formModificarProducto").on('submit', function(evt) {
+			if (CKEDITOR.instances['editor2'].getData() == "") {
+				$("#id_btnModificarProducto").attr("disabled", false);
+				$('#id_mensajeDescripcionLargaModificar').show();
+				evt.preventDefault();
+			}
+		});
+	</script>
+
+	<!-- Script de Modal's  -->
+	<script type="text/javascript">
+		$('#id_menuCrudProductos').addClass('active');
+
+		function verModalProductoRegistra() {
+			$('#boxFile1Registrar').text("Seleccionar Imagen");
+			$('#boxFile1Registrar').removeClass("attached");
+			$('#boxFile2Registrar').text("Seleccionar Imagen");
+			$('#boxFile2Registrar').removeClass("attached");
+			$('#boxFile3Registrar').text("Seleccionar Imagen");
+			$('#boxFile3Registrar').removeClass("attached");
+			$('#idModalRegistraProducto').modal("show");
+		}
+
+		function cerrarModalProductoRegistra() {
+			$("#idModalRegistraProducto input").val("");
+			CKEDITOR.instances['editor1'].setData('');
+			$("#idModalRegistraProducto small").css("display", "none");
+			$("#idModalRegistraProducto div.form-group").removeClass(
+					"is-filled has-success");
+			$("#id_btnRegistrarProducto").attr("disabled", false);
+			$('#idModalRegistraProducto').modal("hide");
+		}
+
+		function verModalProductoModifica(id, nombre, precio, stock, serie,
+				marca, proveedor, descripcion) {
+			$("#id_codigoModificar").val(id);
+			$("#id_nombreModificar").val(nombre);
+			$("#div_nombreModificar").addClass('is-filled');
+			$("#id_precioModificar").val(precio);
+			$("#div_precioModificar").addClass('is-filled');
+			$("#id_stockModificar").val(stock);
+			$("#div_stockModificar").addClass('is-filled');
+			$("#id_serieModificar").val(serie);
+			$("#div_serieModificar").addClass('is-filled');
+			$("#id_marcaModificar").val(marca);
+			$("#div_marcaModificar").addClass('is-filled');
+			$("#id_proveedorModificar").val(proveedor);
+			$("#div_proveedorModificar").addClass('is-filled');
+			$("#id_descripcionModificar").val(descripcion);
+			$("#div_descripcionModificar").addClass('is-filled');
+			$
+					.getJSON(
+							'obtenerHtmlProducto',
+							{
+								"idProducto" : id
+							},
+							function(data) {
+								CKEDITOR.instances['editor2']
+										.setData(data.descripcionLarga);
+								$("#imagen1")
+										.html(
+												"<img src='images/productos/" + data.imagen1 +"' alt='img'>");
+								$("#imagen2")
+										.html(
+												"<img src='images/productos/" + data.imagen2 +"' alt='img'>");
+								$("#imagen3")
+										.html(
+												"<img src='images/productos/" + data.imagen3 +"' alt='img'>");
+							});
+			$('#idModalModificaProducto').modal("show");
+		}
+
+		function cerrarModalProductoModifica() {
+			$('#idModalModificaProducto').modal("hide");
+			$("#idModalModificaProducto input").val("");
+			$("#idModalModificaProducto small").css("display", "none");
+			$("#idModalModificaProducto div.form-group").removeClass(
+					"is-filled has-success");
+			$("#id_btnModificarProducto").attr("disabled", false);
+			$('#boxFile1Modificar').text("Seleccionar Imagen");
+			$('#boxFile1Modificar').removeClass("attached");
+			$('#boxFile2Modificar').text("Seleccionar Imagen");
+			$('#boxFile2Modificar').removeClass("attached");
+			$('#boxFile3Modificar').text("Seleccionar Imagen");
+			$('#boxFile3Modificar').removeClass("attached");
+		}
+
+		function verModalProductoElimina(id) {
+			$("#id_codigoEliminar").val(id);
+			$('#idModalEliminaProducto').modal("show");
+		}
+
+		function cerrarModalProductoElimina() {
+			$('#idModalEliminaProducto').modal("hide");
+		}
+	</script>
+
 
 	<!-- Script de TextArea  -->
 	<script type="text/javascript">
 		$(document).ready(function() {
-			modificarTextArea('editor1');
-			modificarTextArea('editor2');
+			modificarTextArea('editor1', 'Registrar');
+			modificarTextArea('editor2', 'Modificar');
 		});
 
-		function modificarTextArea(identificador) {
+		function modificarTextArea(identificador, mensaje) {
 			CKEDITOR
 					.replace(
 							identificador,
@@ -513,7 +708,22 @@
 											groups : [ 'mode', 'document',
 													'doctools' ]
 										} ],
-								removeButtons : 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source'
+								removeButtons : 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source',
+								on : {
+									change : function() {
+										var des = CKEDITOR.instances[identificador]
+												.getData();
+										if (des === '') {
+											$(
+													'#id_mensajeDescripcionLarga'
+															+ mensaje).show();
+										} else {
+											$(
+													'#id_mensajeDescripcionLarga'
+															+ mensaje).hide();
+										}
+									}
+								}
 							});
 		}
 	</script>
@@ -600,15 +810,7 @@
 																message : 'La descripción es obligatoria'
 															},
 														}
-													},
-													imagen : {
-														selector : "#id_imagenRegistrar",
-														validators : {
-															notEmpty : {
-																message : 'La imagen es obligatoria'
-															},
-														}
-													},
+													}
 												}
 											});
 						});
@@ -698,117 +900,6 @@
 						});
 	</script>
 
-	<script type="text/javascript">
-		$("#id_formRegistrarProducto")
-				.on(
-						'submit',
-						function(evt) {
-							if ($("#id_nombreRegistrar").val() == "") {
-								$(
-										"#id_divNombreRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_precioRegistrar").val() == "") {
-								$(
-										"#id_divPrecioRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_stockRegistrar").val() == "") {
-								$(
-										"#id_divStockRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_serieRegistrar").val() == "") {
-								$(
-										"#id_divSerieRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_marcaRegistrar").val() == "") {
-								$(
-										"#id_divMarcaRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_proveedorRegistrar").val() == "") {
-								$(
-										"#id_divProveedorRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_descripcionRegistrar").val() == "") {
-								$(
-										"#id_divDescripcionRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_imagenRegistrar").val() == "") {
-								$(
-										"#id_divImagenRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if (CKEDITOR.instances['editor2'].getData() == "") {
-							}
-						});
-	</script>
-
-	<!-- Script de Modal's  -->
-	<script type="text/javascript">
-		$('#id_menuCrudProductos').addClass('active');
-
-		function verModalProductoRegistra() {
-			$('#idModalRegistraProducto').modal("show");
-		}
-
-		function cerrarModalProductoRegistra() {
-			$("#idModalRegistraProducto input").val("");
-			CKEDITOR.instances['editor1'].setData('');
-			$("#idModalRegistraProducto small").css("display", "none");
-			$("#idModalRegistraProducto div.form-group").removeClass(
-					"is-filled has-success");
-			$("#id_btnRegistrarProducto").attr("disabled", false);
-			$('#idModalRegistraProducto').modal("hide");
-		}
-
-		function verModalProductoModifica(id, nombre, precio, stock, serie,
-				marca, proveedor, descripcion) {
-			$("#id_codigoModificar").val(id);
-			$("#id_nombreModificar").val(nombre);
-			$("#div_nombreModificar").addClass('is-filled');
-			$("#id_precioModificar").val(precio);
-			$("#div_precioModificar").addClass('is-filled');
-			$("#id_stockModificar").val(stock);
-			$("#div_stockModificar").addClass('is-filled');
-			$("#id_serieModificar").val(serie);
-			$("#div_serieModificar").addClass('is-filled');
-			$("#id_marcaModificar").val(marca);
-			$("#div_marcaModificar").addClass('is-filled');
-			$("#id_proveedorModificar").val(proveedor);
-			$("#div_proveedorModificar").addClass('is-filled');
-			$("#id_descripcionModificar").val(descripcion);
-			$("#div_descripcionModificar").addClass('is-filled');
-			$.getJSON('obtenerHtmlProducto', {
-				"idProducto" : id
-			}, function(data) {
-				CKEDITOR.instances['editor2'].setData(data.descripcionLarga);
-			});
-			$('#idModalModificaProducto').modal("show");
-		}
-
-		function cerrarModalProductoModifica() {
-			$('#idModalModificaProducto').modal("hide");
-			$("#idModalModificaProducto input").val("");
-			$("#idModalModificaProducto small").css("display", "none");
-			$("#idModalModificaProducto div.form-group").removeClass(
-					"is-filled has-success");
-			$("#id_btnModificarProducto").attr("disabled", false);
-		}
-
-		function verModalProductoElimina(id) {
-			$("#id_codigoEliminar").val(id);
-			$('#idModalEliminaProducto').modal("show");
-		}
-
-		function cerrarModalProductoElimina() {
-			$('#idModalEliminaProducto').modal("hide");
-		}
-	</script>
 </body>
 
 </html>

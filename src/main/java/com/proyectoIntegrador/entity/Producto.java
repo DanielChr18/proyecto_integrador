@@ -52,7 +52,16 @@ public class Producto {
 	@Column(name = "descripcionlarga")
 	private String descripcionLarga;
 
-	@Column(name = "imagen")
-	private String imagen;
+	@Column(name = "estado")
+	private String estado;
+
+	@Column(name = "imagen1")
+	private String imagen1;
+
+	@Column(name = "imagen2")
+	private String imagen2;
+
+	@Column(name = "imagen3")
+	private String imagen3;
 
 }

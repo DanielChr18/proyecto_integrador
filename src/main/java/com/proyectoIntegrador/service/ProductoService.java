@@ -16,6 +16,4 @@ public interface ProductoService {
 
 	public abstract Producto modificarProducto(Producto obj);
 
-	public abstract void eliminarProducto(int idProducto);
-
 }

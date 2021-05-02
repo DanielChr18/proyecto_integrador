@@ -879,61 +879,18 @@ p.sbmincart-empty-text {
 }
 
 .contenido-popup {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: auto;
-  background-color: #ffffff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-  outline: 0;
-}
-
-
-
-
-
-/* -- //Select code -- */
-.caja {
-	margin-top: 10px;
-	border: 1px solid #d9d9d9;
-	overflow: hidden;
 	position: relative;
-	color: #AAAAAA;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	pointer-events: auto;
+	background-color: #ffffff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0.3rem;
+	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+	outline: 0;
 }
-
-.estilo-select {
-	background: transparent;
-	border: none;
-	font-size: 14px;
-	height: 30px;
-	padding-left: 5px;
-	width: 250px;
-	color: #AAAAAA;
-}
-
-.estilo-select:focus {
-	outline: none;
-}
-
-.caja::after {
-	content: "\025be";
-	display: table-cell;
-	padding-top: 5px;
-	text-align: center;
-	width: 30px;
-	height: 31px;
-	background-color: #d9d9d9;
-	position: absolute;
-	top: 0;
-	right: 0px;
-	pointer-events: none;
-}
-
-/* -- //Responsive code -- */
 
 /* -- //Código para el número-- */
 
@@ -1000,58 +957,46 @@ input[type=number]::-webkit-outer-spin-button {
 } */
 
 /* -- //Código para el número-- */
-
-
-
-
 .zInputWrapper {
-  background-color: #E4E8E8;
-  padding: 4px;
-  margin: 2px;
-  border-radius: 12px;
-  display: inline-block;
+	background-color: #E4E8E8;
+	padding: 4px;
+	margin: 2px;
+	border-radius: 12px;
+	display: inline-block;
 }
 
 .zInput {
-  display: inline-block;
-  width: 200px;
-  height: 50px;
-  background-color: white;
-  margin: 4px;
-  padding: 12px;
-  text-align: center;
-  cursor: default;
-  color: #2980b9;
-  border: #2980b9 1px solid;
-  border-radius: 10px;
-  font-size: 18px;
-  overflow: hidden;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+	display: inline-block;
+	width: 200px;
+	height: 50px;
+	background-color: white;
+	margin: 4px;
+	padding: 12px;
+	text-align: center;
+	cursor: default;
+	color: #2980b9;
+	border: #2980b9 1px solid;
+	border-radius: 10px;
+	font-size: 18px;
+	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .zCheckbox {
-  color: #e74c3c;
-  border: #e74c3c 1px solid;
+	color: #e74c3c;
+	border: #e74c3c 1px solid;
 }
 
 .zSelected {
-  color: white;
-  background-color: #2980b9;
+	color: white;
+	background-color: #2980b9;
 }
 
-.zSelected.zCheckbox { background-color: #e74c3c; }
-
-
-
-
-
-
-
-
-
-
+.zSelected.zCheckbox {
+	background-color: #e74c3c;
+}

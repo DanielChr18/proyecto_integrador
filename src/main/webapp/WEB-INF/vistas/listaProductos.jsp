@@ -60,15 +60,14 @@
 																value="${producto.idProducto}" id="id_nombreArticulo">
 														</div>
 														<div class="img">
-															<img src="images/productos/${producto.imagen}" alt="img"
-																width="50px" height="50px">
+															<img src="images/productos/${producto.imagen1}" alt="img">
 														</div>
 														<ul class="info">
 															<li style="font-size: 14px; height: 100px; width: 100%;">${producto.nombre}</li>
 															<li>S/ ${producto.precio}</li>
 														</ul>
 														<div class="snipcart-details ">
-															<button type="#" class="button w3l-cart" data-id="cart-8">Añadir</button>
+															<button type="button" class="button w3l-cart" data-id="cart-8">Añadir</button>
 														</div>
 													</div>
 												</form>
@@ -114,7 +113,7 @@
 																					"<form accept-charset='UTF-8'  action='listaProductos' method='post'>"
 																							+ "<div class='cart-grid' id='cart-8'>"
 																							+ "<div class='img'>"
-																							+ "<img src='images/productos/"+ item.imagen + "' alt='img'>"
+																							+ "<img src='images/productos/"+ item.imagen1 + "' alt='img'>"
 																							+ "</div>"
 																							+ "<ul class='info'>"
 																							+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
