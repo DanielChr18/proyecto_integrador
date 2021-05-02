@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -295,12 +296,11 @@
 		}
 
 		function cerrarModalMarcaRegistra() {
+			$("#idModalRegistraMarca").modal("hide");
 			$("#idModalRegistraMarca input").val("");
-			$("#idModalRegistraMarca small").css("display", "none");
 			$("#idModalRegistraMarca div.form-group").removeClass(
 					"is-filled has-success");
-			$("#idModalRegistraMarca").attr("disabled", false);
-			$("#idModalRegistraMarca").modal("hide");
+			$('#id_formRegistrarMarca').data('bootstrapValidator').resetForm();
 		}
 
 		function verModalMarcaModifica(id, nombre) {
@@ -313,10 +313,9 @@
 		function cerrarModalMarcaModifica() {
 			$('#idModalModificaMarca').modal("hide");
 			$("#idModalModificaMarca input").val("");
-			$("#idModalModificaMarca small").css("display", "none");
 			$("#idModalModificaMarca div.form-group").removeClass(
 					"is-filled has-success");
-			$("#idModalModificaMarca").attr("disabled", false);
+			$('#id_formModificarMarca').data('bootstrapValidator').resetForm();
 		}
 
 		function verModalMarcaElimina(id) {

@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
@@ -478,68 +479,27 @@
 
 
 	<script type="text/javascript">
-		$("#id_formRegistrarProducto")
-				.on(
-						'submit',
-						function(evt) {
-							if ($("#id_nombreRegistrar").val() == "")
-								$(
-										"#id_divNombreRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_precioRegistrar").val() == "")
-								$(
-										"#id_divPrecioRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_stockRegistrar").val() == "")
-								$(
-										"#id_divStockRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_serieRegistrar").val() == "")
-								$(
-										"#id_divSerieRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_marcaRegistrar").val() == "")
-								$(
-										"#id_divMarcaRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_proveedorRegistrar").val() == "")
-								$(
-										"#id_divProveedorRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_descripcionRegistrar").val() == "")
-								$(
-										"#id_divDescripcionRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							if ($("#id_imagen1Registrar").val() === "") {
-								$("#id_btnRegistrarProducto").attr("disabled",
-										false);
-								$('#id_mensajeImagen1Registrar').show();
-								evt.preventDefault();
-							}
-							if ($("#id_imagen2Registrar").val() === "") {
-								$("#id_btnRegistrarProducto").attr("disabled",
-										false);
-								$('#id_mensajeImagen2Registrar').show();
-								evt.preventDefault();
-							}
-							if ($("#id_imagen3Registrar").val() === "") {
-								$("#id_btnRegistrarProducto").attr("disabled",
-										false);
-								$('#id_mensajeImagen3Registrar').show();
-								evt.preventDefault();
-							}
-							if (CKEDITOR.instances['editor1'].getData() == "") {
-								$("#id_btnRegistrarProducto").attr("disabled",
-										false);
-								$('#id_mensajeDescripcionLargaRegistrar')
-										.show();
-								evt.preventDefault();
-							}
-						});
+		$("#id_formRegistrarProducto").on('submit', function(evt) {
+			if ($("#id_imagen1Registrar").val() === "") {
+				$('#id_mensajeImagen1Registrar').show();
+				evt.preventDefault();
+			}
+			if ($("#id_imagen2Registrar").val() === "") {
+				$('#id_mensajeImagen2Registrar').show();
+				evt.preventDefault();
+			}
+			if ($("#id_imagen3Registrar").val() === "") {
+				$('#id_mensajeImagen3Registrar').show();
+				evt.preventDefault();
+			}
+			if (CKEDITOR.instances['editor1'].getData() == "") {
+				$('#id_mensajeDescripcionLargaRegistrar').show();
+				evt.preventDefault();
+			}
+		});
 
 		$("#id_formModificarProducto").on('submit', function(evt) {
 			if (CKEDITOR.instances['editor2'].getData() == "") {
-				$("#id_btnModificarProducto").attr("disabled", false);
 				$('#id_mensajeDescripcionLargaModificar').show();
 				evt.preventDefault();
 			}
@@ -551,23 +511,27 @@
 		$('#id_menuCrudProductos').addClass('active');
 
 		function verModalProductoRegistra() {
+			$('#idModalRegistraProducto').modal("show");
+		}
+
+		function cerrarModalProductoRegistra() {
+			$('#idModalRegistraProducto').modal("hide");
 			$('#boxFile1Registrar').text("Seleccionar Imagen");
 			$('#boxFile1Registrar').removeClass("attached");
 			$('#boxFile2Registrar').text("Seleccionar Imagen");
 			$('#boxFile2Registrar').removeClass("attached");
 			$('#boxFile3Registrar').text("Seleccionar Imagen");
 			$('#boxFile3Registrar').removeClass("attached");
-			$('#idModalRegistraProducto').modal("show");
-		}
-
-		function cerrarModalProductoRegistra() {
+			$('#id_mensajeImagen1Registrar').hide();
+			$('#id_mensajeImagen2Registrar').hide();
+			$('#id_mensajeImagen3Registrar').hide();
+			$('#id_mensajeDescripcionLargaRegistrar').hide();
 			$("#idModalRegistraProducto input").val("");
 			CKEDITOR.instances['editor1'].setData('');
-			$("#idModalRegistraProducto small").css("display", "none");
 			$("#idModalRegistraProducto div.form-group").removeClass(
 					"is-filled has-success");
-			$("#id_btnRegistrarProducto").attr("disabled", false);
-			$('#idModalRegistraProducto').modal("hide");
+			$('#id_formRegistrarProducto').data('bootstrapValidator')
+					.resetForm();
 		}
 
 		function verModalProductoModifica(id, nombre, precio, stock, serie,
@@ -612,16 +576,17 @@
 		function cerrarModalProductoModifica() {
 			$('#idModalModificaProducto').modal("hide");
 			$("#idModalModificaProducto input").val("");
-			$("#idModalModificaProducto small").css("display", "none");
 			$("#idModalModificaProducto div.form-group").removeClass(
 					"is-filled has-success");
-			$("#id_btnModificarProducto").attr("disabled", false);
 			$('#boxFile1Modificar').text("Seleccionar Imagen");
 			$('#boxFile1Modificar').removeClass("attached");
 			$('#boxFile2Modificar').text("Seleccionar Imagen");
 			$('#boxFile2Modificar').removeClass("attached");
 			$('#boxFile3Modificar').text("Seleccionar Imagen");
 			$('#boxFile3Modificar').removeClass("attached");
+			$('#id_mensajeDescripcionLargaModificar').hide();
+			$('#id_formModificarProducto').data('bootstrapValidator')
+					.resetForm();
 		}
 
 		function verModalProductoElimina(id) {

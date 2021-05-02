@@ -110,32 +110,24 @@ public class productoController {
 			@RequestParam(value = "imagen3ProductoModificar", required = false) MultipartFile imagen3, Producto obj) {
 		try {
 			if (obj.getNombre() != null) {
+				Producto producto = service.listaProductosId(obj.getIdProducto());
 				if (!imagen1.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-1.jpeg");
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen1());
 					Files.write(rutaCompleta, imagen1.getBytes());
-					obj.setImagen1("PRODUCTO" + obj.getIdProducto() + "-1.jpeg");
-				} else {
-					Producto producto = service.listaProductosId(obj.getIdProducto());
-					obj.setImagen1(producto.getImagen1());
 				}
 				if (!imagen2.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-2.jpeg");
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen2());
 					Files.write(rutaCompleta, imagen2.getBytes());
-					obj.setImagen2("PRODUCTO" + obj.getIdProducto() + "-2.jpeg");
-				} else {
-					Producto producto = service.listaProductosId(obj.getIdProducto());
-					obj.setImagen2(producto.getImagen2());
 				}
 				if (!imagen3.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-3.jpeg");
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen3());
 					Files.write(rutaCompleta, imagen3.getBytes());
-					obj.setImagen3("PRODUCTO" + obj.getIdProducto() + "-3.jpeg");
-				} else {
-					Producto producto = service.listaProductosId(obj.getIdProducto());
-					obj.setImagen3(producto.getImagen3());
 				}
 				Thread.sleep(2000);
 				obj.setEstado("activado");
+				obj.setImagen1(producto.getImagen1());
+				obj.setImagen2(producto.getImagen2());
+				obj.setImagen3(producto.getImagen3());
 				service.modificarProducto(obj);
 				return "redirect:crudProductos";
 			} else {

@@ -125,7 +125,6 @@ public class servicioController {
 					String hora = horas[h] + ":00";
 					metodo_agregarFechas(hora, obj.getIdServicio(), obj.getDia());
 				}
-				System.out.println(horarios);
 				return "redirect:crudServicios";
 			} else {
 				return "redirect:error404";
@@ -143,17 +142,10 @@ public class servicioController {
 		try {
 			if (obj.getNombre() != null) {
 				System.out.println(obj.getDia());
+				Servicio servicio = service.listaServiciosId(obj.getIdServicio());
 				if (!imagen.isEmpty()) {
-					System.out.println("id con imagen ---------> " + obj.getIdServicio());
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "SERVICIO" + obj.getIdServicio() + ".jpeg");
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + servicio.getImagen());
 					Files.write(rutaCompleta, imagen.getBytes());
-					obj.setEstado("activado");
-					obj.setImagen("SERVICIO" + obj.getIdServicio() + ".jpeg");
-				} else {
-					System.out.println("id sin imagen ---------> " + obj.getIdServicio());
-					Servicio servicio = service.listaServiciosId(obj.getIdServicio());
-					obj.setEstado("activado");
-					obj.setImagen(servicio.getImagen());
 				}
 				List<String> horasAgregar = new ArrayList<String>();
 				List<String> horasEliminar = new ArrayList<String>();
@@ -238,6 +230,8 @@ public class servicioController {
 					}
 				}
 				Thread.sleep(2000);
+				obj.setEstado("activado");
+				obj.setImagen(servicio.getImagen());
 				service.modificarServicio(obj);
 				return "redirect:crudServicios";
 			} else {

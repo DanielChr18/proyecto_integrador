@@ -8,6 +8,10 @@ public interface MascotaService {
 
 	public abstract List<Mascota> listarMascotaCliente(int idCliente);
 
+	public abstract Mascota listarMascotaId(int idMascota);
+
+	public abstract List<Mascota> listarMascotas();
+
 	public abstract Mascota agregarMascota(Mascota obj);
 
 	public abstract Mascota modificarMascota(Mascota obj);

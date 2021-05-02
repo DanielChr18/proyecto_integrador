@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -452,44 +453,17 @@
 				'#id_mensajeImagenRegistrar');
 		imagen('#id_imagenModificar', '#boxFileModificar', null);
 
-		$("#id_formRegistrarServicio")
-				.on(
-						'submit',
-						function(evt) {
-							var confirmHora = $("#id_ayudaHoraRegistrar").val();
-							if ($("#id_nombreRegistrar").val() == "") {
-								$(
-										"#id_divNombreRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_precioRegistrar").val() == "") {
-								$(
-										"#id_divPrecioRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_descripcionRegistrar").val() == "") {
-								$(
-										"#id_divDescripcionRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if ($("#id_imagenRegistrar").val() == "") {
-								$(
-										"#id_divImagenRegistrar small[data-bv-validator='notEmpty']")
-										.css("display", "inline");
-							}
-							if (confirmHora == "") {
-								$('#id_mensajeHoraConfirmarRegistrar').show();
-								$("#id_btnRegistrarServicio").attr("disabled",
-										false);
-								evt.preventDefault();
-							}
-							if ($("#id_imagenRegistrar").val() === "") {
-								$("#id_btnRegistrarServicio").attr("disabled",
-										false);
-								$('#id_mensajeImagenRegistrar').show();
-								evt.preventDefault();
-							}
-						});
+		$("#id_formRegistrarServicio").on('submit', function(evt) {
+			var confirmHora = $("#id_ayudaHoraRegistrar").val();
+			if (confirmHora == "") {
+				$('#id_mensajeHoraConfirmarRegistrar').show();
+				evt.preventDefault();
+			}
+			if ($("#id_imagenRegistrar").val() === "") {
+				$('#id_mensajeImagenRegistrar').show();
+				evt.preventDefault();
+			}
+		});
 
 		$("#id_formModificarServicio").on('submit', function(evt) {
 			var confirmHora = $("#id_ayudaHoraModificar").val();
@@ -658,6 +632,128 @@
 			}
 		}
 	</script>
+	<!-- Script de Modal's  -->
+	<script type="text/javascript">
+		$("#id_menuCrudServicios").addClass("active");
+
+		function verModalServicioRegistra() {
+			$("#idModalRegistraServicio").modal("show");
+			$('#boxFileRegistrar').text("Seleccionar Imagen");
+			$('#boxFileRegistrar').removeClass("attached");
+		}
+
+		function cerrarModalServicioRegistra() {
+			contadorReg = 0;
+			horasReg = [];
+			confirmarReg = 0;
+			$("#idModalRegistraServicio").modal("hide");
+			$("#idModalRegistraServicio input[type='text']").val("");
+			$("#idModalRegistraServicio input[type='file']").val("");
+			$("#id_horariosServiciosRegistrar div").remove();
+			$("#idModalRegistraServicio div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formRegistrarServicio').data('bootstrapValidator')
+					.resetForm();
+			$('#id_mensajeHoraConfirmarRegistrar').hide();
+			$('#id_mensajeImagenRegistrar').hide();
+		}
+
+		function verModalServicioModifica(id, nombre, precio, descripcion, dia) {
+			contadorMod = 0;
+			horasMod = [];
+			confirmarMod = 0;
+			$("#id_codigoModificar").val(id);
+			$("#id_nombreModificar").val(nombre);
+			$("#div_nombreModificar").addClass("is-filled");
+			$("#id_precioModificar").val(precio);
+			$("#div_precioModificar").addClass("is-filled");
+			$("#id_descripcionModificar").val(descripcion);
+			$("#div_descripcionModificar").addClass("is-filled");
+			$("#id_diasServiciosModificar input[name=dia]").attr("disabled",
+					false);
+			$("#id_diasServiciosModificar input[name=dia][value='" + dia + "']")
+					.prop("checked", true);
+			$
+					.getJSON(
+							'listadoHorariosServicios',
+							{
+								"idServicio" : id
+							},
+							function(data) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													var h = item.horario;
+													horasMod.push(h);
+													contadorMod = contadorMod + 1;
+													if (item.estado == 'ocupado') {
+														$(
+																"#id_horariosServiciosModificar")
+																.append(
+																		"<div class='col-md-2' id='id_boton"
+													+ item.horario + "'><div class='form-group'>"
+																				+ "<h4>"
+																				+ item.horario
+																				+ ":00</h4></div></div>");
+														$(
+																"#id_diasServiciosModificar input[name=dia]:not(:checked)")
+																.attr(
+																		'disabled',
+																		true);
+													} else {
+														$(
+																"#id_horariosServiciosModificar")
+																.append(
+																		"<div class='col-md-2' id='id_boton"
+													 + item.horario + "'><div class='form-group'>"
+																				+ "<button type='button' class='close' onclick=\"eliminarHorarioModificar('"
+																				+ item.horario
+																				+ "');\">&times;</button><h4>"
+																				+ item.horario
+																				+ ":00</h4></div></div>");
+													}
+												});
+								var horariosMod = "";
+								for (var i = 0; i < horasMod.length; i++) {
+									if ((horasMod.length - 1) == i) {
+										horariosMod += horasMod[i];
+									} else {
+										horariosMod += horasMod[i] + ",";
+									}
+								}
+								$("#id_ayudaHoraModificar").val(horariosMod);
+							});
+			$("#idModalModificaServicio").modal("show");
+		}
+
+		function cerrarModalServicioModifica() {
+			$('#idModalModificaServicio').modal("hide");
+			$("#idModalModificaServicio input[type='text']").val("");
+			$("#idModalModificaServicio input[type='file']").val("");
+			$("#id_horariosServiciosModificar div").remove();
+			$("#idModalModificaServicio div.form-group").removeClass(
+					"is-filled has-success");
+			$("#id_diasServiciosModificar input[name=dia]").attr("checked",
+					false);
+			$('#boxFileModificar').text("Seleccionar Imagen");
+			$('#boxFileModificar').removeClass("attached");
+			$('#id_formModificarServicio').data('bootstrapValidator')
+					.resetForm();
+			$('#id_mensajeHoraConfirmarModificar').hide();
+		}
+
+		function verModalServicioElimina(id) {
+			$("#id_codigoEliminar").val(id);
+			$("#idModalEliminaServicio").modal("show");
+		}
+
+		function cerrarModalServicioElimina() {
+			$("#idModalEliminaServicio").modal("hide");
+		}
+	</script>
+
+
 
 	<!-- Validación de Registrar  -->
 	<script type="text/javascript">
@@ -769,120 +865,6 @@
 												}
 											});
 						});
-	</script>
-
-	<!-- Script de Modal's  -->
-	<script type="text/javascript">
-		$("#id_menuCrudServicios").addClass("active");
-
-		function verModalServicioRegistra() {
-			$("#idModalRegistraServicio").modal("show");
-		}
-
-		function cerrarModalServicioRegistra() {
-			contadorReg = 0;
-			horasReg = [];
-			confirmarReg = 0;
-			$("#idModalRegistraServicio input[type='text']").val("");
-			$("#idModalRegistraServicio input[type='file']").val("");
-			$("#id_horariosServiciosRegistrar div").remove();
-			$("#idModalRegistraServicio small").css("display", "none");
-			$("#idModalRegistraServicio div.form-group").removeClass(
-					"is-filled has-success");
-			$("#id_btnRegistrarServicio").attr("disabled", false);
-			$("#idModalRegistraServicio").modal("hide");
-		}
-
-		function verModalServicioModifica(id, nombre, precio, descripcion, dia) {
-			contadorMod = 0;
-			horasMod = [];
-			confirmarMod = 0;
-			$("#id_codigoModificar").val(id);
-			$("#id_nombreModificar").val(nombre);
-			$("#div_nombreModificar").addClass("is-filled");
-			$("#id_precioModificar").val(precio);
-			$("#div_precioModificar").addClass("is-filled");
-			$("#id_descripcionModificar").val(descripcion);
-			$("#div_descripcionModificar").addClass("is-filled");
-			$("#id_diasServiciosModificar input[name=dia]").attr("disabled",
-					false);
-			$("#id_diasServiciosModificar input[name=dia][value='" + dia + "']")
-					.prop("checked", true);
-			$
-					.getJSON(
-							'listadoHorariosServicios',
-							{
-								"idServicio" : id
-							},
-							function(data) {
-								$
-										.each(
-												data,
-												function(index, item) {
-													var h = item.horario;
-													horasMod.push(h);
-													contadorMod = contadorMod + 1;
-													if (item.estado == 'ocupado') {
-														$(
-																"#id_horariosServiciosModificar")
-																.append(
-																		"<div class='col-md-2' id='id_boton"
-													+ item.horario + "'><div class='form-group'>"
-																				+ "<h4>"
-																				+ item.horario
-																				+ ":00</h4></div></div>");
-														$(
-																"#id_diasServiciosModificar input[name=dia]:not(:checked)")
-																.attr(
-																		'disabled',
-																		true);
-													} else {
-														$(
-																"#id_horariosServiciosModificar")
-																.append(
-																		"<div class='col-md-2' id='id_boton"
-													 + item.horario + "'><div class='form-group'>"
-																				+ "<button type='button' class='close' onclick=\"eliminarHorarioModificar('"
-																				+ item.horario
-																				+ "');\">&times;</button><h4>"
-																				+ item.horario
-																				+ ":00</h4></div></div>");
-													}
-												});
-								var horariosMod = "";
-								for (var i = 0; i < horasMod.length; i++) {
-									if ((horasMod.length - 1) == i) {
-										horariosMod += horasMod[i];
-									} else {
-										horariosMod += horasMod[i] + ",";
-									}
-								}
-								$("#id_ayudaHoraModificar").val(horariosMod);
-							});
-			$("#idModalModificaServicio").modal("show");
-		}
-
-		function cerrarModalServicioModifica() {
-			$('#idModalModificaServicio').modal("hide");
-			$("#idModalModificaServicio input[type='text']").val("");
-			$("#idModalModificaServicio input[type='file']").val("");
-			$("#id_horariosServiciosModificar div").remove();
-			$("#idModalModificaServicio small").css("display", "none");
-			$("#idModalModificaServicio div.form-group").removeClass(
-					"is-filled has-success");
-			$("#id_btnModificarServicio").prop("disabled", false);
-			$("#id_diasServiciosModificar input[name=dia]").attr("checked",
-					false);
-		}
-
-		function verModalServicioElimina(id) {
-			$("#id_codigoEliminar").val(id);
-			$("#idModalEliminaServicio").modal("show");
-		}
-
-		function cerrarModalServicioElimina() {
-			$("#idModalEliminaServicio").modal("hide");
-		}
 	</script>
 
 </body>

@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
 </head>
@@ -134,17 +135,10 @@
 								<h3 class="card-title">Registrar Mascota</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="registrarMascota"
-									method="post">
-									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													name="idCliente.idCliente" value="${clientes.idCliente}">
-											</div>
-										</div>
-									</div>
-									<div class="row">
+								<form id="id_formRegistrarMascota" accept-charset="UTF-8"
+									action="registrarMascota" method="post"
+									enctype="multipart/form-data">
+									<div class="row" id="id_divNombreRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Nombre</label> <input
@@ -153,11 +147,11 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divTipoRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label">Tipo</label> <select
-													id="id_tipoMascotaRegistra" class="form-control"
+													id="id_tipoMascotaRegistrar" class="form-control"
 													name="tipo">
 													<option value="">[ Seleccionar ]</option>
 													<option value="Perro">Perro</option>
@@ -166,7 +160,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divRazaRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Raza</label> <input
@@ -175,7 +169,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" id="id_divFechaNacRegistrar">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label">Fecha de Nacimiento</label><br>
@@ -195,13 +189,24 @@
 									</div>
 									<div class="row">
 										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenMascotaRegistrar" name="imagenMascota">
+											<div class="form-group">
+												<label class="bmd-label">Imagen</label>
+											</div>
+											<div class="invoiceBox">
+												<label for="id_imagenRegistrar" id="boxFileRegistrar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagenRegistrar"
+													name="imagenMascotaRegistrar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
+											<small id="id_mensajeImagenRegistrar" style="color: #cc0000;">Seleccionar
+												Imagen</small>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalMascotaRegistra();"
 										class="btn btn-primary pull-right">Cancelar</button>
-									<button type="submit" class="btn btn-primary pull-right">Registrar</button>
+									<button id="id_btnRegistrarMascota" type="submit"
+										class="btn btn-primary pull-right">Registrar</button>
 								</form>
 							</div>
 						</div>
@@ -209,11 +214,7 @@
 				</div>
 			</div>
 
-			<!-- Modal Mascota Registrar -->
-
-
 			<!-- Modal Mascota Modificar -->
-
 			<div class="modal fade" id="idModalModificaMascota"
 				data-backdrop="static" tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 40%; margin: 60px auto 0;">
@@ -224,16 +225,9 @@
 								<h3 class="card-title">Modificar Mascota</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="modificarMascota"
-									method="post">
-									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													name="idCliente.idCliente" value="${clientes.idCliente}">
-											</div>
-										</div>
-									</div>
+								<form id="id_formModificarMascota" accept-charset="UTF-8"
+									action="modificarMascota" method="post"
+									enctype="multipart/form-data">
 									<div class="row" hidden="hidden">
 										<div class="col-md-12">
 											<div class="form-group">
@@ -293,13 +287,22 @@
 									</div>
 									<div class="row">
 										<div class="col-md-12">
-											<input class="form-control-imagen" type="file"
-												id="id_imagenMascotaModificar" name="imagenMascotaModificar">
+											<div class="form-group">
+												<label class="bmd-label">Imagen</label>
+											</div>
+											<div class="invoiceBox">
+												<label for="id_imagenModificar" id="boxFileModificar"
+													class="boxFile" data-text="Seleccionar Imagen">
+													Seleccionar Imagen </label> <input id="id_imagenModificar"
+													name="imagenMascotaModificar" size="6000" type="file"
+													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+											</div>
 										</div>
 									</div>
 									<button type="button" onclick="cerrarModalMascotaModifica();"
 										class="btn btn-primary pull-right">Cancelar</button>
-									<button type="submit" class="btn btn-primary pull-right">Modificar</button>
+									<button id="id_btnModificarMascota" type="submit"
+										class="btn btn-primary pull-right">Modificar</button>
 								</form>
 							</div>
 						</div>
@@ -307,10 +310,7 @@
 				</div>
 			</div>
 
-			<!-- Modal Mascota Modificar -->
-
 			<!-- Modal Mascota Eliminar -->
-
 			<div class="modal fade" id="idModalEliminaMascota"
 				data-backdrop="static" tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
@@ -349,13 +349,10 @@
 				</div>
 			</div>
 
-			<!-- Modal Mascota Eliminar -->
-
 		</div>
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-
 	<c:if test="${objCargo != 'Cliente'}">
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
@@ -364,13 +361,25 @@
 	<!-- Restricción de Acceso -->
 	<script type="text/javascript">
 		$("#id_menuClientes").addClass("active");
+		$('#id_mensajeImagenRegistrar').hide();
+		imagen('#id_imagenRegistrar', '#boxFileRegistrar',
+				'#id_mensajeImagenRegistrar');
+		imagen('#id_imagenModificar', '#boxFileModificar', null);
 
 		function verModalMascotaRegistra() {
+			$('#boxFileRegistrar').text("Seleccionar Imagen");
+			$('#boxFileRegistrar').removeClass("attached");
 			$('#idModalRegistraMascota').modal("show");
 		}
 
 		function cerrarModalMascotaRegistra() {
 			$('#idModalRegistraMascota').modal("hide");
+			$("#idModalRegistraMascota input[type='text']").val("");
+			$("#idModalRegistraMascota input[type='file']").val("");
+			$("#idModalRegistraMascota div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formRegistrarMascota').data('bootstrapValidator')
+					.resetForm();
 		}
 
 		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo) {
@@ -379,6 +388,8 @@
 			$("#div_nombreMascotaModificar").addClass("is-filled");
 			$("#id_tipoMascotaModificar").val(tipo);
 			$("#id_razaMascotaModificar").val(raza);
+			$("#idModalModificaMascota input[name=sexo][value='" + sexo + "']")
+					.prop("checked", true);
 			$("#div_razaMascotaModificar").addClass("is-filled");
 			$("#id_fechaNacMascotaModificar").val(fecha);
 			$("#div_fechaNacMascotaModificar").addClass("is-filled");
@@ -387,6 +398,16 @@
 
 		function cerrarModalMascotaModifica() {
 			$('#idModalModificaMascota').modal("hide");
+			$("#idModalModificaMascota input[type='text']").val("");
+			$("#idModalModificaMascota input[type='file']").val("");
+			$("#idModalModificaMascota div.form-group").removeClass(
+					"is-filled has-success");
+			$('#boxFileModificar').text("Seleccionar Imagen");
+			$('#boxFileModificar').removeClass("attached");
+			$("#idModalModificaMascota input[name=sexo]")
+					.attr("checked", false);
+			$('#id_formModificarMascota').data('bootstrapValidator')
+					.resetForm();
 		}
 
 		function verModalMascotaElimina(id) {
@@ -398,6 +419,173 @@
 			$('#idModalEliminaMascota').modal("hide");
 		}
 	</script>
+
+	<script type="text/javascript">
+		$("#id_formRegistrarMascota").on(
+				'submit',
+				function(evt) {
+					var c = "SI";
+					if ($("#id_imagenRegistrar").val() === "") {
+						$('#id_mensajeImagenRegistrar').show();
+						evt.preventDefault();
+						c = "NO"
+					}
+					if (c == "SI") {
+						evt.preventDefault();
+						var validator = $('#id_formRegistrarMascota').data(
+								'bootstrapValidator');
+						validator.validate();
+						if (validator.isValid()) {
+							swal("¡Éxito!",
+									"Mascota registrada correctamente.",
+									"success");
+							setTimeout(function() {
+								evt.target.submit();
+							}, 1000);
+						}
+					}
+				});
+
+		$("#id_formModificarMascota").on(
+				'submit',
+				function(evt) {
+					var validator = $('#id_formModificarMascota').data(
+							'bootstrapValidator');
+					validator.validate();
+					if (validator.isValid()) {
+						evt.preventDefault();
+						setTimeout(function() {
+							swal("¡Éxito!",
+									"Mascota actualizada correctamente.",
+									"success");
+							evt.target.submit();
+						}, 1000);
+					}
+				});
+	</script>
+
+
+	<!-- Validaciones de Registrar -->
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							$('#id_formRegistrarMascota')
+									.bootstrapValidator(
+											{
+												message : 'This value is not valid',
+												feedbackIcons : {
+													valid : 'glyphicon glyphicon-ok',
+													invalid : 'glyphicon glyphicon-remove',
+													validating : 'glyphicon glyphicon-refresh'
+												},
+												fields : {
+													nombre : {
+														selector : "#id_nombreMascotaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El nombre es obligatorio'
+															},
+															stringLength : {
+																max : 40,
+																message : 'El nombre es de 40 caracteres como máximo'
+															},
+														}
+													},
+													tipo : {
+														selector : "#id_tipoMascotaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El tipo de mascota es obligatorio'
+															},
+														}
+													},
+													raza : {
+														selector : "#id_razaMascotaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'La raza es obligatoria'
+															},
+														},
+														stringLength : {
+															max : 40,
+															message : 'El nombre es de 40 caracteres como máximo'
+														},
+													},
+													fecha : {
+														selector : "#id_fechaNacMascotaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'La fecha es obligatoria'
+															},
+														}
+													},
+												}
+											});
+						});
+	</script>
+
+
+	<!-- Validaciones de Registrar -->
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							$('#id_formModificarMascota')
+									.bootstrapValidator(
+											{
+												message : 'This value is not valid',
+												feedbackIcons : {
+													valid : 'glyphicon glyphicon-ok',
+													invalid : 'glyphicon glyphicon-remove',
+													validating : 'glyphicon glyphicon-refresh'
+												},
+												fields : {
+													nombre : {
+														selector : "#id_nombreMascotaModificar",
+														validators : {
+															notEmpty : {
+																message : 'El nombre es obligatorio'
+															},
+															stringLength : {
+																max : 40,
+																message : 'El nombre es de 40 caracteres como máximo'
+															},
+														}
+													},
+													tipo : {
+														selector : "#id_tipoMascotaModificar",
+														validators : {
+															notEmpty : {
+																message : 'El tipo de mascota es obligatorio'
+															},
+														}
+													},
+													raza : {
+														selector : "#id_razaMascotaModificar",
+														validators : {
+															notEmpty : {
+																message : 'La raza es obligatoria'
+															},
+														},
+														stringLength : {
+															max : 40,
+															message : 'El nombre es de 40 caracteres como máximo'
+														},
+													},
+													fecha : {
+														selector : "#id_fechaNacMascotaModificar",
+														validators : {
+															notEmpty : {
+																message : 'La fecha es obligatoria'
+															},
+														}
+													},
+												}
+											});
+						});
+	</script>
+
 </body>
 
 </html>

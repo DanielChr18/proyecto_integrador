@@ -9,7 +9,6 @@
 <link href="css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
 <!-- CSS Just for demo purpose, don't include it in your project -->
 <link href="demo/demo.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="vendor/main.css">
 
 
 <div class="sidebar" data-color="purple" data-background-color="white"
@@ -48,7 +47,8 @@
 					href="crudMarcas"><i class="material-icons">content_paste</i>
 						<p>Marcas</p></a></li>
 				<li class="nav-item" id="id_menuCrudProveedores"><a
-					class="nav-link" href="crudProveedores"><i class="material-icons">next_week</i>
+					class="nav-link" href="crudProveedores"><i
+						class="material-icons">next_week</i>
 						<p>Proveedores</p></a></li>
 			</c:if>
 			<c:if test="${objCargo == 'Cliente'}">

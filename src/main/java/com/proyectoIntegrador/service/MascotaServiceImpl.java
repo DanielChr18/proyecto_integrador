@@ -34,4 +34,14 @@ public class MascotaServiceImpl implements MascotaService {
 		repository.deleteById(idMascota);
 	}
 
+	@Override
+	public List<Mascota> listarMascotas() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Mascota listarMascotaId(int idMascota) {
+		return repository.findById(idMascota).get();
+	}
+
 }

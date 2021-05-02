@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
@@ -308,6 +309,59 @@
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
 
+	<!-- Script's Modal -->
+	<script type="text/javascript">
+		$("#id_menuCrudProveedores").addClass("active");
+
+		function verModalProveedorRegistra() {
+			$("#idModalRegistraProveedor").modal("show");
+		}
+
+		function cerrarModalProveedorRegistra() {
+			$("#idModalRegistraProveedor").modal("hide");
+			$("#idModalRegistraProveedor input").val("");
+			$("#idModalRegistraProveedor div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formRegistrarProveedor').data('bootstrapValidator').resetForm();
+		}
+
+		function verModalProveedorModifica(id, razonSocial, ruc, direccion, telefono, celular, contacto) {
+			$("#id_codigoModificar").val(id);
+			$("#id_razonSocialModificar").val(razonSocial);
+			$("#id_rucModificar").val(ruc);
+			$("#id_direccionModificar").val(direccion);
+			$("#id_telefonoModificar").val(telefono);
+			$("#id_celularModificar").val(celular);
+			$("#id_contactoModificar").val(contacto);
+			$("#id_codigoModificar").addClass("is-filled");
+			$("#id_razonSocialModificar").addClass("is-filled");
+			$("#id_rucModificar").addClass("is-filled");
+			$("#id_direccionModificar").addClass("is-filled");
+			$("#id_telefonoModificar").addClass("is-filled");
+			$("#id_celularModificar").addClass("is-filled");
+			$("#id_contactoModificar").addClass("is-filled");
+			$("#idModalModificaProveedor").modal("show");
+		}
+
+		function cerrarModalProveedorModifica() {
+			$('#idModalModificaProveedor').modal("hide");
+			$("#idModalModificaProveedor input").val("");
+			$("#idModalModificaProveedor div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formModificarProveedor').data('bootstrapValidator').resetForm();
+		}
+
+		function verModalProveedorElimina(id) {
+			$("#id_codigoEliminar").val(id);
+			$("#idModalEliminaProveedor").modal("show");
+		}
+
+		function cerrarModalProveedorElimina() {
+			$("#idModalEliminaProveedor").modal("hide");
+		}
+	</script>
+
+
 	<!-- Validación de Modal Registrar -->
 	<script type="text/javascript">
 		$(document)
@@ -403,7 +457,7 @@
 		$(document)
 				.ready(
 						function() {
-							$('#id_formModificarMarca')
+							$('#id_formModificarProveedor')
 									.bootstrapValidator(
 											{
 												message : 'This value is not valid',
@@ -429,63 +483,6 @@
 												}
 											});
 						});
-	</script>
-
-	<!-- Script's Modal -->
-	<script type="text/javascript">
-		$("#id_menuCrudProveedores").addClass("active");
-
-		function verModalProveedorRegistra() {
-			$("#idModalRegistraProveedor").modal("show");
-		}
-
-		function cerrarModalProveedorRegistra() {
-			$("#idModalRegistraProveedor input").val("");
-			$("#idModalRegistraProveedor small").css("display", "none");
-			$("#idModalRegistraProveedor div.form-group").removeClass(
-					"is-filled has-success");
-			$("#idModalRegistraProveedor").attr("disabled", false);
-			$("#idModalRegistraProveedor").modal("hide");
-		}
-
-		function verModalProveedorModifica(id, razonSocial, ruc, direccion, telefono, celular, contacto) {
-			$("#id_codigoModificar").val(id);
-			$("#id_razonSocialModificar").val(razonSocial);
-			$("#id_rucModificar").val(ruc);
-			$("#id_direccionModificar").val(direccion);
-			$("#id_telefonoModificar").val(telefono);
-			$("#id_celularModificar").val(celular);
-			$("#id_contactoModificar").val(contacto);
-
-			$("#id_codigoModificar").addClass("is-filled");
-			$("#id_razonSocialModificar").addClass("is-filled");
-			$("#id_rucModificar").addClass("is-filled");
-			$("#id_direccionModificar").addClass("is-filled");
-			$("#id_telefonoModificar").addClass("is-filled");
-			$("#id_celularModificar").addClass("is-filled");
-			$("#id_contactoModificar").addClass("is-filled");
-			
-			
-			$("#idModalModificaProveedor").modal("show");
-		}
-
-		function cerrarModalProveedorModifica() {
-			$('#idModalModificaProveedor').modal("hide");
-			$("#idModalModificaProveedor input").val("");
-			$("#idModalModificaProveedor small").css("display", "none");
-			$("#idModalModificaProveedor div.form-group").removeClass(
-					"is-filled has-success");
-			$("#idModalModificaProveedor").attr("disabled", false);
-		}
-
-		function verModalProveedorElimina(id) {
-			$("#id_codigoEliminar").val(id);
-			$("#idModalEliminaProveedor").modal("show");
-		}
-
-		function cerrarModalProveedorElimina() {
-			$("#idModalEliminaProveedor").modal("hide");
-		}
 	</script>
 </body>
 </html>
