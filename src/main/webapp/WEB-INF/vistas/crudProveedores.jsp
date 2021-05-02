@@ -161,7 +161,7 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Celular</label> <input
-													class="form-control" type="text" id="id_CelularRegistrar"
+													class="form-control" type="text" id="id_celularRegistrar"
 													name="Celular">
 											</div>
 										</div>
@@ -334,8 +334,66 @@
 																message : 'El campo debe ser más de 3 caracteres'
 															}
 														}
+													},
+													ruc : {
+														selector : "#id_rucRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El ruc es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{11}$/,
+																message : 'El ruc es de 11 dígitos'
+															}
+														}
+													},
+													direccion : {
+														selector : "#id_direccionRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El direccion es obligatorio'
+															},
+														}
+													},
+													telefono : {
+														selector : "#id_telefonoRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El telefono es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{7}$/,
+																message : 'El telefono es 7 dígitos'
+															}
+														}
+													},
+													celular : {
+														selector : "#id_celularRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El celular es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{9}$/,
+																message : 'El celular es 9 dígitos'
+															}
+														}
+													},
+													contacto : {
+														selector : "#id_contactoRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'El contacto es obligatorio'
+															},
+															stringLength : {
+																min : 3,
+																message : 'El contacto debe ser más de 3 caracteres'
+															}
+														}
 													}
 												}
+												
+												
 											});
 						});
 	</script>
@@ -367,6 +425,7 @@
 															}
 														}
 													}
+													
 												}
 											});
 						});
