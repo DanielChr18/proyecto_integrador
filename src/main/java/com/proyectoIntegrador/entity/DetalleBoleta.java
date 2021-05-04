@@ -18,10 +18,11 @@ import lombok.Data;
 @Table(name = "detalleboleta")
 @Data
 public class DetalleBoleta {
-	@Column(name = "idboletadetalle")
+	
+	@Column(name = "iddetalleboleta")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idBoletaDetalle;
+	private int idDetalleBoleta;
 
 	@Column(name = "cantidad")
 	private int cantidad;

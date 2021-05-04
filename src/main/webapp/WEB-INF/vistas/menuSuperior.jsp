@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <nav
-	class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+	class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top" id="id_compras1" >
 	<div class="container-fluid">
 		<div class="navbar-wrapper"></div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -15,7 +15,7 @@
 			<form class="navbar-form"></form>
 			<ul class="navbar-nav">
 				<c:if test="${objCargo == 'Cliente' || objCargo == null}">
-					<li class="nav-item dropdown" id="id_compras"><a
+					<li class="nav-item dropdown" id="id_compras2"><a
 						class="nav-link" href="http://example.com"
 						id="navbarDropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false"> <i
@@ -35,7 +35,7 @@
 							</c:if>
 							<c:if test="${objListaProductosTexto != null}">
 								<div
-									style="width: 270px; max-height: 270px; padding-right: 20px; overflow: auto;">
+									style="width: 240px; max-height: 240px; padding-right: 20px; overflow: auto;">
 									<c:forEach var="x" items="${objListaProductosEntidad}">
 										<div class="row">
 											<div class="col-md-4">

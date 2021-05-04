@@ -245,8 +245,10 @@ function agregarProductos(id) {
 		},
 		url: 'agregarProducto',
 		success: function(data) {
-			$("#id_compras")
-				.load(window.location.href + " #id_compras");
+			$("#id_compras1")
+				.load(window.location.href + " #id_compras1");
+			$("#id_compras2")
+				.load(window.location.href + " #id_compras2");
 			if (data.CONFIRMACION == 'SI') {
 				swal("&#161;&#201;xito!", "Producto agregado al carrito", "success");
 			}
