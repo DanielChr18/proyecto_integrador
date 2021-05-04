@@ -236,6 +236,27 @@ demo = {
 }
 
 
+
+function agregarProductos(id) {
+	$.ajax({
+		type: 'POST',
+		data: {
+			'id': id
+		},
+		url: 'agregarProducto',
+		success: function(data) {
+			$("#id_compras")
+				.load(window.location.href + " #id_compras");
+			if (data.CONFIRMACION == 'SI') {
+				swal("&#161;&#201;xito!", "Producto agregado al carrito", "success");
+			}
+		},
+		error: function() {
+		}
+	});
+}
+
+
 // Script Validar Números
 function validaNumericos(event) {
 	if (event.charCode >= 48 && event.charCode <= 57) {
@@ -243,9 +264,6 @@ function validaNumericos(event) {
 	}
 	return false;
 }
-
-
-
 
 // Script Imagen
 function imagen(idInput, idBox, idMensaje) {

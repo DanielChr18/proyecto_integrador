@@ -49,13 +49,8 @@
 									<div class="row">
 										<div class="col-md-12" id="id_listadoProductos">
 											<c:forEach var="producto" items="${productos}">
-												<form accept-charset="UTF-8" action="listaProductos"
-													method="post">
+												<form accept-charset="UTF-8">
 													<div class="cart-grid" id="cart-8">
-														<div hidden="hidden">
-															<input type="text" class="form-control"
-																value="${producto.idProducto}" id="id_nombreArticulo">
-														</div>
 														<div class="img">
 															<img src="images/productos/${producto.imagen1}" alt="img">
 														</div>
@@ -63,9 +58,10 @@
 															<li style="font-size: 14px; height: 100px; width: 100%;">${producto.nombre}</li>
 															<li>S/ ${producto.precio}</li>
 														</ul>
-														<div class="snipcart-details ">
-															<button type="button" class="button w3l-cart"
-																data-id="cart-8">Añadir</button>
+														<div class="snipcart-details">
+															<button type="button"
+																onclick="agregarProductos('${producto.idProducto}');"
+																class="button w3l-cart" data-id="cart-8">Añadir</button>
 														</div>
 													</div>
 												</form>
@@ -110,10 +106,12 @@
 												function(index, item) {
 													$("#id_listadoProductos")
 															.append(
-																	"<form accept-charset='UTF-8'  action='listaProductos' method='post'>"
+																	"<form accept-charset='UTF-8'>"
 																			+ "<div class='cart-grid' id='cart-8'>"
 																			+ "<div class='img'>"
-																			+ "<img src='images/productos/"+ item.imagen1 + "' alt='img'>"
+																			+ "<img src='images/productos/"
+																			+ item.imagen1
+																			+ "' alt='img'>"
 																			+ "</div>"
 																			+ "<ul class='info'>"
 																			+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
@@ -124,7 +122,9 @@
 																			+ "</li>"
 																			+ "</ul>"
 																			+ "<div class='snipcart-details'>"
-																			+ "<button type='submit' class='button w3l-cart' data-id='cart-8'>Añadir</button>"
+																			+ "<button type='button' onclick=\"agregarProductos('"
+																			+ item.idProducto
+																			+ "');\" class='button w3l-cart' data-id='cart-8'> Añadir </button>"
 																			+ "</div>"
 																			+ "</div>"
 																			+ "</form>");

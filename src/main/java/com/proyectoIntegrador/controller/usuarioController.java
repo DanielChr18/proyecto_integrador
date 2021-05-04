@@ -113,9 +113,10 @@ public class usuarioController {
 	@RequestMapping("/salir")
 	public String salir(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		session.setAttribute("objCargo", null);
-		session.setAttribute("objIdCliente", null);
-		session.setAttribute("objUsuario", null);
+		session.removeAttribute("objCargo");
+		session.removeAttribute("objIdCliente");
+		session.removeAttribute("objUsuario");
+		System.out.println(session.getAttributeNames().toString());
 		return "redirect:listaProductos";
 	}
 

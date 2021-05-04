@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT).permitAll().antMatchers(HttpMethod.DELETE).permitAll().anyRequest()
 				.authenticated().and().formLogin().loginPage("/login").usernameParameter("username")
 				.passwordParameter("password").defaultSuccessUrl("/redireccionar").permitAll().and().logout()
-				.logoutUrl("/salir").logoutSuccessUrl("/listaProductos").permitAll();
+				.permitAll();
 	}
 
 	@Bean

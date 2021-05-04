@@ -1,10 +1,15 @@
 package com.proyectoIntegrador.controller;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,19 +49,66 @@ public class productoController {
 		return "listaProductos";
 	}
 
-	@RequestMapping("/obtenerHtmlProducto")
-	@ResponseBody
-	public Producto obtenerHtmlProducto(String idProducto) {
-		int id = Integer.parseInt(idProducto);
-		return service.listaProductosId(id);
-	}
-
 	@RequestMapping("/listadoProductoNombre")
 	@ResponseBody
 	public List<Producto> listadoProductosNombre(String nombreArticulo) {
 		System.out.println("Listar Productos por Nombre : Filtro -----> " + nombreArticulo);
 		List<Producto> lista = service.ListaProductosNombre(nombreArticulo);
 		return lista;
+	}
+
+	@RequestMapping("/agregarProducto")
+	@ResponseBody
+	public Map<String, Object> agregarProducto(HttpServletRequest request, String id) {
+		HttpSession session = request.getSession(true);
+		Map<String, Object> salida = new HashMap<>();
+		int idProducto = Integer.parseInt(id);
+		Producto listaProducto = service.listaProductosId(idProducto);
+		ArrayList<Producto> listaPro = new ArrayList<Producto>();
+		session.setAttribute("objUltimoProducto", id);
+		if (session.getAttribute("objContadorProductos") == null) {
+			salida.put("NOMBRE", listaProducto.getNombre());
+			salida.put("PRECIO", listaProducto.getPrecio());
+			salida.put("ID", listaProducto.getIdProducto());
+			salida.put("CONFIRMACION", "SI");
+			session.setAttribute("objListaProductosTexto", id);
+			session.setAttribute("objContadorProductos", 1);
+			listaPro.add(service.listaProductosId(idProducto));
+			session.setAttribute("objListaProductosEntidad", listaPro);
+			return salida;
+		} else {
+			String confirma = "SI";
+			String[] listaAyuda = session.getAttribute("objListaProductosTexto").toString().split(",");
+			for (int i = 0; i < listaAyuda.length; i++) {
+				if (listaAyuda[i].equals(id)) {
+					confirma = "NO";
+					break;
+				}
+			}
+			if (confirma.equals("SI")) {
+				salida.put("NOMBRE", listaProducto.getNombre());
+				salida.put("PRECIO", listaProducto.getPrecio());
+				salida.put("ID", listaProducto.getIdProducto());
+				String l = "";
+				for (int i = 0; i < listaAyuda.length; i++) {
+					listaPro.add(service.listaProductosId(Integer.parseInt(listaAyuda[i])));
+					if ((listaAyuda.length - 1) == i) {
+						l += listaAyuda[i];
+					} else {
+						l += listaAyuda[i] + ",";
+					}
+				}
+				l += "," + id;
+				listaPro.add(service.listaProductosId(idProducto));
+				session.setAttribute("objListaProductosTexto", l);
+				session.setAttribute("objContadorProductos", listaAyuda.length + 1);
+				session.setAttribute("objListaProductosEntidad", listaPro);
+				salida.put("CONFIRMACION", "SI");
+			} else {
+				salida.put("CONFIRMACION", "NO");
+			}
+			return salida;
+		}
 	}
 
 	@RequestMapping("/crudProductos")
@@ -134,7 +186,7 @@ public class productoController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return "redirect:crudProductos";
 	}
 
@@ -159,7 +211,14 @@ public class productoController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return "redirect:crudProductos";
+	}
+
+	@RequestMapping("/obtenerHtmlProducto")
+	@ResponseBody
+	public Producto obtenerHtmlProducto(String idProducto) {
+		int id = Integer.parseInt(idProducto);
+		return service.listaProductosId(id);
 	}
 }
