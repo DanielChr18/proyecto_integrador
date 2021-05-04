@@ -86,18 +86,17 @@ public class productoController {
 				Files.write(rutaCompleta2, imagen2.getBytes());
 				Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-3.jpeg");
 				Files.write(rutaCompleta3, imagen3.getBytes());
-				Thread.sleep(2000);
 				obj.setEstado("activado");
 				obj.setImagen1("PRODUCTO" + idProducto + "-1.jpeg");
 				obj.setImagen2("PRODUCTO" + idProducto + "-2.jpeg");
 				obj.setImagen3("PRODUCTO" + idProducto + "-3.jpeg");
 				service.agregarProducto(obj);
+				Thread.sleep(2000);
+				return "redirect:crudProductos";
 			} else {
 				return "redirect:error404";
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "redirect:crudProductos";
@@ -123,21 +122,19 @@ public class productoController {
 					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen3());
 					Files.write(rutaCompleta, imagen3.getBytes());
 				}
-				Thread.sleep(2000);
 				obj.setEstado("activado");
 				obj.setImagen1(producto.getImagen1());
 				obj.setImagen2(producto.getImagen2());
 				obj.setImagen3(producto.getImagen3());
 				service.modificarProducto(obj);
+				Thread.sleep(2000);
 				return "redirect:crudProductos";
 			} else {
 				return "redirect:error404";
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} 
 		return "redirect:crudProductos";
 	}
 
@@ -149,22 +146,20 @@ public class productoController {
 				Producto p = service.listaProductosId(obj.getIdProducto());
 				p.setEstado("desactivado");
 				service.modificarProducto(p);
-				Thread.sleep(2000);
 				Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-1.jpeg");
 				Files.delete(rutaCompleta1);
 				Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-2.jpeg");
 				Files.delete(rutaCompleta2);
 				Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-3.jpeg");
 				Files.delete(rutaCompleta3);
+				Thread.sleep(2000);
 				return "redirect:crudProductos";
 			} else {
 				return "redirect:error404";
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} 
 		return "redirect:crudProductos";
 	}
 }

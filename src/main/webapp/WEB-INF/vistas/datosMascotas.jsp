@@ -348,7 +348,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</c:if>
 
@@ -380,6 +379,7 @@
 					"is-filled has-success");
 			$('#id_formRegistrarMascota').data('bootstrapValidator')
 					.resetForm();
+			$('#id_mensajeImagenRegistrar').hide();
 		}
 
 		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo) {
@@ -424,24 +424,17 @@
 		$("#id_formRegistrarMascota").on(
 				'submit',
 				function(evt) {
-					var c = "SI";
-					if ($("#id_imagenRegistrar").val() === "") {
+					$("#id_btnRegistrarMascota").attr("disabled", false);
+					if ($("#id_imagenRegistrar").val() == "") {
 						$('#id_mensajeImagenRegistrar').show();
 						evt.preventDefault();
-						c = "NO"
-					}
-					if (c == "SI") {
-						evt.preventDefault();
+					} else {
 						var validator = $('#id_formRegistrarMascota').data(
 								'bootstrapValidator');
-						validator.validate();
 						if (validator.isValid()) {
 							swal("¡Éxito!",
 									"Mascota registrada correctamente.",
 									"success");
-							setTimeout(function() {
-								evt.target.submit();
-							}, 1000);
 						}
 					}
 				});
@@ -451,15 +444,9 @@
 				function(evt) {
 					var validator = $('#id_formModificarMascota').data(
 							'bootstrapValidator');
-					validator.validate();
 					if (validator.isValid()) {
-						evt.preventDefault();
-						setTimeout(function() {
-							swal("¡Éxito!",
-									"Mascota actualizada correctamente.",
-									"success");
-							evt.target.submit();
-						}, 1000);
+						swal("¡Éxito!", "Mascota actualizada correctamente.",
+								"success");
 					}
 				});
 	</script>

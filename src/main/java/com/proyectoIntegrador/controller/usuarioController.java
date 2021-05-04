@@ -53,6 +53,11 @@ public class usuarioController {
 		return "principal";
 	}
 
+	@RequestMapping("/nosotros")
+	public String nosotros() {
+		return "nosotros";
+	}
+
 	@RequestMapping("/validacionLogin")
 	@ResponseBody
 	public Map<String, Object> validacionLogin(HttpServletRequest request, String nom_usuario, String con_usuario) {

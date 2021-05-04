@@ -56,18 +56,18 @@ public class mascotaController {
 		try {
 			if (obj.getNombre() != null) {
 				HttpSession session = request.getSession(true);
+				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 				System.out.println("|---------- En Registro de Mascota ----------|");
 				List<Mascota> lista = service.listarMascotas();
-				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "MASCOTA" + obj.getIdCliente().getIdCliente() + "-"
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "MASCOTA" + idCliente + "-"
 						+ (lista.get(lista.size() - 1).getIdMascota() + 1) + ".jpeg");
 				Files.write(rutaCompleta, imagen.getBytes());
-				Thread.sleep(2000);
-				obj.setImagen("MASCOTA" + obj.getIdCliente().getIdCliente() + "-"
-						+ (lista.get(lista.size() - 1).getIdMascota() + 1) + ".jpeg");
+				obj.setImagen("MASCOTA" + idCliente + "-" + (lista.get(lista.size() - 1).getIdMascota() + 1) + ".jpeg");
 				Cliente cliente = new Cliente();
-				cliente.setIdCliente(Integer.parseInt(session.getAttribute("objIdCliente").toString()));
+				cliente.setIdCliente(idCliente);
 				obj.setIdCliente(cliente);
 				service.agregarMascota(obj);
+				Thread.sleep(2000);
 				return "redirect:datosMascotas";
 			} else {
 				return "redirect:error404";
@@ -95,8 +95,8 @@ public class mascotaController {
 				cliente.setIdCliente(Integer.parseInt(session.getAttribute("objIdCliente").toString()));
 				obj.setIdCliente(cliente);
 				obj.setImagen(mascota.getImagen());
-				Thread.sleep(2000);
 				service.modificarMascota(obj);
+				Thread.sleep(2000);
 				return "redirect:datosMascotas";
 			} else {
 				return "redirect:error404";
@@ -109,13 +109,19 @@ public class mascotaController {
 
 	@RequestMapping("/eliminarMascota")
 	public String eliminarProducto(Mascota obj) {
-		if (obj.getIdMascota() > 0) {
-			System.out.println("|---------- En Eliminar Mascota ----------|");
-			service.eliminarMascota(obj.getIdMascota());
-			return "redirect:datosMascotas";
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getIdMascota() > 0) {
+				System.out.println("|---------- En Eliminar Mascota ----------|");
+				service.eliminarMascota(obj.getIdMascota());
+				Thread.sleep(2000);
+				return "redirect:datosMascotas";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:datosMascotas";
 	}
 
 }

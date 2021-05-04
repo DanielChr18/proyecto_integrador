@@ -26,7 +26,7 @@
 	<div class="sidebar-wrapper">
 		<ul class="nav">
 			<li class="nav-item" id="id_menuNosotros"><a class="nav-link"
-				href="crudProducto"><i class="material-icons">person</i>
+				href="nosotros"><i class="material-icons">home</i>
 					<p>Nosotros</p></a></li>
 			<c:if test="${objCargo != 'Personal de Ventas'}">
 				<li class="nav-item" id="id_menuServicios"><a class="nav-link"
@@ -58,7 +58,7 @@
 			</c:if>
 			<c:if test="${objCargo == null}">
 				<li class="nav-item" id="id_menuClientes"><a class="nav-link"
-					href="datosClientes"><i class="material-icons">person</i>
+					href="datosClientes"><i class="material-icons">contact_page</i>
 						<p>Contactanos</p></a></li>
 			</c:if>
 		</ul>
@@ -76,7 +76,7 @@
 <script src="js/plugins/jquery.validate.min.js"></script>
 <!-- Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
 <script src="js/plugins/bootstrap-tagsinput.js"></script>
-<!--  Notifications Plugin    -->
+<!--  Notifications Plugin -->
 <script src="js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>

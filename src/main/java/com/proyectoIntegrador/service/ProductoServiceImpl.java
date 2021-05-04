@@ -20,7 +20,7 @@ public class ProductoServiceImpl implements ProductoService {
 		List<Producto> lista = repository.findAll();
 		List<Producto> listaProductos = new ArrayList<Producto>();
 		for (Producto p : lista) {
-			if(p.getEstado().equals("activado"))
+			if (p.getEstado().equals("activado"))
 				listaProductos.add(p);
 		}
 		return listaProductos;
@@ -33,7 +33,7 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	public List<Producto> ListaProductosNombre(String nombre) {
-		return repository.listaProductosNombre(nombre + "%");
+		return repository.listaProductosNombre("%" + nombre + "%");
 	}
 
 	@Override

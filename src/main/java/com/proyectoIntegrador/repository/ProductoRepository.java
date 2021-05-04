@@ -10,7 +10,7 @@ import com.proyectoIntegrador.entity.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-	@Query("select e from Producto e where e.nombre like :param_nombre and e.estado like activado")
+	@Query("select e from Producto e where e.nombre like :param_nombre and e.estado = 'activado'")
 	public abstract List<Producto> listaProductosNombre(@Param("param_nombre") String nombre);
 
 }

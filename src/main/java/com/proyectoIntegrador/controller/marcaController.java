@@ -43,32 +43,50 @@ public class marcaController {
 
 	@RequestMapping("/registrarMarca")
 	public String registrarMarca(Marca obj) {
-		if (obj.getNombre() != null) {
-			service.agregarMarca(obj);
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getNombre() != null) {
+				service.agregarMarca(obj);
+				Thread.sleep(2000);
+				return "redirect:crudMarcas";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		return "redirect:crudMarcas";
 	}
 
 	@RequestMapping("/modificarMarca")
 	public String modificarMarca(Marca obj) {
-		if (obj.getNombre() != null) {
-			service.modificarMarca(obj);
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getNombre() != null) {
+				service.modificarMarca(obj);
+				Thread.sleep(2000);
+				return "redirect:crudMarcas";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		return "redirect:crudMarcas";
 	}
 
 	@RequestMapping("/eliminarMarca")
 	public String eliminarMarca(Marca obj) {
-		if (obj.getIdMarca() > 0) {
-			System.out.println(obj.getIdMarca());
-			service.eliminarMarca(obj.getIdMarca());
-			return "redirect:crudMarcas";
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getIdMarca() > 0) {
+				System.out.println(obj.getIdMarca());
+				service.eliminarMarca(obj.getIdMarca());
+				Thread.sleep(2000);
+				return "redirect:crudMarcas";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		return "redirect:crudMarcas";
 	}
 }

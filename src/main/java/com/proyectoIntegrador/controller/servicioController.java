@@ -1,6 +1,5 @@
 package com.proyectoIntegrador.controller;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -104,12 +103,11 @@ public class servicioController {
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
 		try {
 			if (obj.getNombre() != null) {
-				System.out.println(imagen.getOriginalFilename());
+				System.out.println(obj);
 				List<Servicio> lista = service.listaServicios();
 				Path rutaCompleta = Paths.get(
 						rutaAbsoluta + "//" + "SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
 				Files.write(rutaCompleta, imagen.getBytes());
-				Thread.sleep(2000);
 				obj.setImagen("SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
 				obj.setEstado("activado");
 				service.agregarServicio(obj);
@@ -125,6 +123,7 @@ public class servicioController {
 					String hora = horas[h] + ":00";
 					metodo_agregarFechas(hora, obj.getIdServicio(), obj.getDia());
 				}
+				Thread.sleep(2000);
 				return "redirect:crudServicios";
 			} else {
 				return "redirect:error404";
@@ -229,19 +228,17 @@ public class servicioController {
 						}
 					}
 				}
-				Thread.sleep(2000);
 				obj.setEstado("activado");
 				obj.setImagen(servicio.getImagen());
 				service.modificarServicio(obj);
+				Thread.sleep(2000);
 				return "redirect:crudServicios";
 			} else {
 				return "redirect:error404";
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} 
 		return "redirect:crudServicios";
 	}
 
@@ -284,7 +281,7 @@ public class servicioController {
 			} else {
 				return "redirect:error404";
 			}
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "redirect:crudServicios";
@@ -374,12 +371,14 @@ public class servicioController {
 			break;
 		case "Viernes":
 			numSemana = 6;
+			break;
 		}
 		for (int i = 0; i < 7; i++) {
-			c.set(f.getYear(), f.getMonth(), f.getDay() + i);
+			c.set(f.getYear(), f.getMonth() - 1, f.getDay() + i);
 			numD = c.get(Calendar.DAY_OF_WEEK);
-			if (numD == numSemana)
+			if (numD == numSemana) {
 				break;
+			}
 			cont++;
 		}
 		return cont;

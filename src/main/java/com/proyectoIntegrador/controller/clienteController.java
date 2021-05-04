@@ -54,19 +54,25 @@ public class clienteController {
 
 	@RequestMapping("/registrarCliente")
 	public String registrarCliente(HttpServletRequest request, Cliente obj) {
-		HttpSession session = request.getSession(true);
-		if (obj.getNombre() != null) {
-			System.out.println("|---------- En Registro de Cliente ----------|");
-			obj.getIdUsuario().setContrasenia(encoder.encode(obj.getIdUsuario().getContrasenia()));
-			serviceUsu.agregarUsuario(obj.getIdUsuario());
-			service.agregarCliente(obj);
-			Cliente cliente = service.buscarClienteUsuario(obj.getIdUsuario().getIdUsuario());
-			session.setAttribute("objIdCliente", cliente.getIdCliente());
-			session.setAttribute("objCargo", "Cliente");
-			return "redirect:datosMascotas";
-		} else {
-			return "redirect:error404";
+		try {
+			HttpSession session = request.getSession(true);
+			if (obj.getNombre() != null) {
+				System.out.println("|---------- En Registro de Cliente ----------|");
+				obj.getIdUsuario().setContrasenia(encoder.encode(obj.getIdUsuario().getContrasenia()));
+				serviceUsu.agregarUsuario(obj.getIdUsuario());
+				service.agregarCliente(obj);
+				Cliente cliente = service.buscarClienteUsuario(obj.getIdUsuario().getIdUsuario());
+				session.setAttribute("objIdCliente", cliente.getIdCliente());
+				session.setAttribute("objCargo", "Cliente");
+				Thread.sleep(2000);
+				return "redirect:datosMascotas";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:datosClientes";
 	}
 
 	@RequestMapping("/validacionUsuario")
@@ -106,31 +112,42 @@ public class clienteController {
 
 	@RequestMapping("/modificarCliente")
 	public String modificarCliente(HttpServletRequest request, Cliente obj) {
-		System.out.println("-- Modificar Cliente --");
-		System.out.println(obj.getApellido());
-		HttpSession session = request.getSession(true);
-		if (obj.getNombre() != null) {
-			System.out.println("id ---------> " + obj.getIdCliente());
-			Usuario usu = serviceUsu.findByNomUsuario(session.getAttribute("objUsuario").toString());
-			obj.setIdUsuario(usu);
-			service.modificarCliente(obj);
-			return "redirect:datosClientes";
-		} else {
-			return "redirect:error404";
+		try {
+			System.out.println("-- Modificar Cliente --");
+			HttpSession session = request.getSession(true);
+			if (obj.getNombre() != null) {
+				System.out.println("id ---------> " + obj.getIdCliente());
+				Usuario usu = serviceUsu.findByNomUsuario(session.getAttribute("objUsuario").toString());
+				obj.setIdUsuario(usu);
+				service.modificarCliente(obj);
+				Thread.sleep(2000);
+				return "redirect:datosClientes";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:datosClientes";
 	}
 
 	@RequestMapping("/eliminarCliente")
 	public String eliminarCliente(Cliente obj) {
-		if (obj.getIdCliente() > 0) {
-			System.out.println(obj.getIdCliente());
-			Cliente cliente = service.listaClientesId(obj.getIdCliente());
-			service.eliminarCliente(obj.getIdCliente());
-			serviceUsu.eliminarUsuario(cliente.getIdUsuario().getIdUsuario());
-			return "redirect:datosClientes";
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getIdCliente() > 0) {
+				System.out.println(obj.getIdCliente());
+				Cliente cliente = service.listaClientesId(obj.getIdCliente());
+				service.eliminarCliente(obj.getIdCliente());
+				serviceUsu.eliminarUsuario(cliente.getIdUsuario().getIdUsuario());
+				Thread.sleep(2000);
+				return "redirect:datosClientes";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:datosClientes";
 	}
 
 }

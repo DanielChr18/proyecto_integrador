@@ -453,25 +453,51 @@
 				'#id_mensajeImagenRegistrar');
 		imagen('#id_imagenModificar', '#boxFileModificar', null);
 
-		$("#id_formRegistrarServicio").on('submit', function(evt) {
-			var confirmHora = $("#id_ayudaHoraRegistrar").val();
-			if (confirmHora == "") {
-				$('#id_mensajeHoraConfirmarRegistrar').show();
-				evt.preventDefault();
-			}
-			if ($("#id_imagenRegistrar").val() === "") {
-				$('#id_mensajeImagenRegistrar').show();
-				evt.preventDefault();
-			}
-		});
+		$("#id_formRegistrarServicio").on(
+				'submit',
+				function(evt) {
+					var confirmHora = $("#id_ayudaHoraRegistrar").val();
+					var c = "SI";
+					$("#id_btnRegistrarMascota").attr("disabled", false);
+					if (confirmHora == "") {
+						$('#id_mensajeHoraConfirmarRegistrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if ($("#id_imagenRegistrar").val() === "") {
+						$('#id_mensajeImagenRegistrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if (c == "SI") {
+						var validator = $('#id_formRegistrarServicio').data(
+								'bootstrapValidator');
+						if (validator.isValid()) {
+							swal("¡Éxito!",
+									"Servicio registrado correctamente.",
+									"success");
+						}
+					}
+				});
 
-		$("#id_formModificarServicio").on('submit', function(evt) {
-			var confirmHora = $("#id_ayudaHoraModificar").val();
-			if (confirmHora == "") {
-				$('#id_mensajeHoraConfirmarModificar').show();
-				evt.preventDefault();
-			}
-		});
+		$("#id_formModificarServicio").on(
+				'submit',
+				function(evt) {
+					$("#id_btnModificarServicio").attr("disabled", false);
+					var confirmHora = $("#id_ayudaHoraModificar").val();
+					if (confirmHora == "") {
+						$('#id_mensajeHoraConfirmarModificar').show();
+						evt.preventDefault();
+					} else {
+						var validator = $('#id_formModificarServicio').data(
+								'bootstrapValidator');
+						if (validator.isValid()) {
+							swal("¡Éxito!",
+									"Servicio modificado correctamente.",
+									"success");
+						}
+					}
+				});
 	</script>
 
 	<!-- Horarios de Registrar -->

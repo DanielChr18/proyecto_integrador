@@ -43,32 +43,50 @@ public class proveedorController {
 
 	@RequestMapping("/registrarProveedor")
 	public String registrarProveedor(Proveedor obj) {
-		if (obj.getRazonSocial() != null) {
-			service.agregarProveedor(obj);
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getRazonSocial() != null) {
+				service.agregarProveedor(obj);
+				Thread.sleep(2000);
+				return "redirect:crudProveedores";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "redirect:crudProveedores";
 	}
 
 	@RequestMapping("/modificarProveedor")
 	public String modificarProveedor(Proveedor obj) {
-		if (obj.getRazonSocial() != null) {
-			service.modificarProveedor(obj);
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getRazonSocial() != null) {
+				service.modificarProveedor(obj);
+				Thread.sleep(2000);
+				return "redirect:crudProveedores";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "redirect:crudProveedores";
 	}
 
 	@RequestMapping("/eliminarProveedor")
 	public String eliminarProveedor(Proveedor obj) {
-		if (obj.getIdProveedor() > 0) {
-			System.out.println(obj.getIdProveedor());
-			service.eliminarProveedor(obj.getIdProveedor());
-			return "redirect:crudProveedores";
-		} else {
-			return "redirect:error404";
+		try {
+			if (obj.getIdProveedor() > 0) {
+				System.out.println(obj.getIdProveedor());
+				service.eliminarProveedor(obj.getIdProveedor());
+				Thread.sleep(2000);
+				return "redirect:crudProveedores";
+			} else {
+				return "redirect:error404";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "redirect:crudProveedores";
 	}
 }

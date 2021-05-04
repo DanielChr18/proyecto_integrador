@@ -125,7 +125,7 @@
 									</div>
 									<button type="button" onclick="cerrarModalMarcaRegistra();"
 										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnRegistrarServicio" type="submit"
+									<button id="id_btnRegistrarMarca" type="submit"
 										class="btn btn-primary pull-right">Registrar</button>
 								</form>
 							</div>
@@ -167,7 +167,7 @@
 									</div>
 									<button type="button" onclick="cerrarModalMarcaModifica();"
 										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnModificarServicio" type="submit"
+									<button id="id_btnModificarMarca" type="submit"
 										class="btn btn-primary pull-right">Actualizar</button>
 								</form>
 							</div>
@@ -222,6 +222,32 @@
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
+
+	<script type="text/javascript">
+		$("#id_formRegistrarMarca").on(
+				'submit',
+				function(evt) {
+					$("#id_btnRegistrarMarca").attr("disabled", false);
+					var validator = $('#id_formRegistrarMarca').data(
+							'bootstrapValidator');
+					if (validator.isValid()) {
+						swal("¡Éxito!", "Marca registrada correctamente.",
+								"success");
+					}
+				});
+
+		$("#id_formModificarMarca").on(
+				'submit',
+				function(evt) {
+					$("#id_btnModificarMarca").attr("disabled", false);
+					var validator = $('#id_formModificarMarca').data(
+							'bootstrapValidator');
+					if (validator.isValid()) {
+						swal("¡Éxito!", "Marca modificada correctamente.",
+								"success");
+					}
+				});
+	</script>
 
 	<!-- Validación de Modal Registrar -->
 	<script type="text/javascript">

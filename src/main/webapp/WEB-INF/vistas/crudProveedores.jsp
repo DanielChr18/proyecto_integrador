@@ -77,13 +77,7 @@
 																					<td>${proveedor.contacto}</td>
 																					<td>
 																						<button type="button"
-																							onclick="verModalProveedorModifica('${proveedor.idProveedor}',
-																															'${proveedor.razonSocial}',
-																															'${proveedor.ruc}',
-																															'${proveedor.direccion}',
-																															'${proveedor.telefono}',
-																															'${proveedor.celular}',
-																															'${proveedor.contacto}',);"
+																							onclick="verModalProveedorModifica('${proveedor.idProveedor}','${proveedor.razonSocial}','${proveedor.ruc}','${proveedor.direccion}','${proveedor.telefono}','${proveedor.celular}','${proveedor.contacto}');"
 																							class="btn btn-primary">
 																							<img src="images/edit.gif" width="auto"
 																								height="auto" />
@@ -322,10 +316,12 @@
 			$("#idModalRegistraProveedor input").val("");
 			$("#idModalRegistraProveedor div.form-group").removeClass(
 					"is-filled has-success");
-			$('#id_formRegistrarProveedor').data('bootstrapValidator').resetForm();
+			$('#id_formRegistrarProveedor').data('bootstrapValidator')
+					.resetForm();
 		}
 
-		function verModalProveedorModifica(id, razonSocial, ruc, direccion, telefono, celular, contacto) {
+		function verModalProveedorModifica(id, razonSocial, ruc, direccion,
+				telefono, celular, contacto) {
 			$("#id_codigoModificar").val(id);
 			$("#id_razonSocialModificar").val(razonSocial);
 			$("#id_rucModificar").val(ruc);
@@ -348,7 +344,8 @@
 			$("#idModalModificaProveedor input").val("");
 			$("#idModalModificaProveedor div.form-group").removeClass(
 					"is-filled has-success");
-			$('#id_formModificarProveedor').data('bootstrapValidator').resetForm();
+			$('#id_formModificarProveedor').data('bootstrapValidator')
+					.resetForm();
 		}
 
 		function verModalProveedorElimina(id) {
@@ -360,6 +357,34 @@
 			$("#idModalEliminaProveedor").modal("hide");
 		}
 	</script>
+
+
+	<script type="text/javascript">
+		$("#id_formRegistrarProveedor").on(
+				'submit',
+				function(evt) {
+					$("#id_btnRegistrarProveedor").attr("disabled", false);
+					var validator = $('#id_formRegistrarProveedor').data(
+							'bootstrapValidator');
+					if (validator.isValid()) {
+						swal("¡Éxito!", "Proveedor registrado correctamente.",
+								"success");
+					}
+				});
+
+		$("#id_formModificarProveedor").on(
+				'submit',
+				function(evt) {
+					$("#id_btnModificarProveedor").attr("disabled", false);
+					var validator = $('#id_formModificarProveedor').data(
+							'bootstrapValidator');
+					if (validator.isValid()) {
+						swal("¡Éxito!", "Proveedor modificado correctamente.",
+								"success");
+					}
+				});
+	</script>
+
 
 
 	<!-- Validación de Modal Registrar -->
@@ -446,8 +471,7 @@
 														}
 													}
 												}
-												
-												
+
 											});
 						});
 	</script>
@@ -479,7 +503,7 @@
 															}
 														}
 													}
-													
+
 												}
 											});
 						});

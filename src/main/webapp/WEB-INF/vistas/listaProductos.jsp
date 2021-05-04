@@ -33,22 +33,19 @@
 									</h3>
 								</div>
 								<div class="card-body">
-									<form accept-charset="UTF-8" id="id_formDatosCliente"
-										method="post">
-										<div class="row">
-											<div class="col-md-9">
-												<div class="form-group" style="padding-left: 10px;">
-													<label class="bmd-label-floating">Nombre del
-														Artículo</label> <input type="text" class="form-control"
-														id="id_nombreArticulo">
-												</div>
-											</div>
-											<div class="col-md-1 offset-1">
-												<button type="button" id="id_btnBuscar"
-													class="btn btn-primary pull-right">Buscar</button>
+									<div class="row">
+										<div class="col-md-9">
+											<div class="form-group" style="padding-left: 10px;">
+												<label class="bmd-label-floating">Nombre del
+													Artículo</label> <input type="text" class="form-control"
+													id="id_nombreArticulo">
 											</div>
 										</div>
-									</form>
+										<div class="col-md-1 offset-1">
+											<button onclick="buscarProductos();" type="button"
+												id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+										</div>
+									</div>
 									<div class="row">
 										<div class="col-md-12" id="id_listadoProductos">
 											<c:forEach var="producto" items="${productos}">
@@ -67,7 +64,8 @@
 															<li>S/ ${producto.precio}</li>
 														</ul>
 														<div class="snipcart-details ">
-															<button type="button" class="button w3l-cart" data-id="cart-8">Añadir</button>
+															<button type="button" class="button w3l-cart"
+																data-id="cart-8">Añadir</button>
 														</div>
 													</div>
 												</form>
@@ -89,48 +87,50 @@
 	<script type="text/javascript">
 		$('#id_menuProductos').addClass("active");
 
-		$("#id_btnBuscar")
-				.click(
-						function() {
-							var nom = $("#id_nombreArticulo").val();
-							$("#id_listadoProductos").html("");
+		$("#id_nombreArticulo").on("keypress", function(event) {
+			if (event.which == 13) {
+				buscarProductos();
+			}
+		});
 
-							$
-									.getJSON(
-											'listadoProductoNombre',
-											{
-												"nombreArticulo" : nom
-											},
-											function(data) {
-												$
-														.each(
-																data,
-																function(index,
-																		item) {
-																	$(
-																			"#id_listadoProductos")
-																			.append(
-																					"<form accept-charset='UTF-8'  action='listaProductos' method='post'>"
-																							+ "<div class='cart-grid' id='cart-8'>"
-																							+ "<div class='img'>"
-																							+ "<img src='images/productos/"+ item.imagen1 + "' alt='img'>"
-																							+ "</div>"
-																							+ "<ul class='info'>"
-																							+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
-																							+ item.nombre
-																							+ "</li>"
-																							+ "<li>S/"
-																							+ item.precio
-																							+ "</li>"
-																							+ "</ul>"
-																							+ "<div class='snipcart-details'>"
-																							+ "<button type='submit' class='button w3l-cart' data-id='cart-8'>Añadir</button>"
-																							+ "</div>"
-																							+ "</div>"
-																							+ "</form>");
-																});
-											});
-						});
+		function buscarProductos() {
+			var nom = $("#id_nombreArticulo").val();
+			$("#id_listadoProductos").html("");
+
+			$
+					.getJSON(
+							'listadoProductoNombre',
+							{
+								"nombreArticulo" : nom
+							},
+							function(data) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													$("#id_listadoProductos")
+															.append(
+																	"<form accept-charset='UTF-8'  action='listaProductos' method='post'>"
+																			+ "<div class='cart-grid' id='cart-8'>"
+																			+ "<div class='img'>"
+																			+ "<img src='images/productos/"+ item.imagen1 + "' alt='img'>"
+																			+ "</div>"
+																			+ "<ul class='info'>"
+																			+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
+																			+ item.nombre
+																			+ "</li>"
+																			+ "<li>S/"
+																			+ item.precio
+																			+ "</li>"
+																			+ "</ul>"
+																			+ "<div class='snipcart-details'>"
+																			+ "<button type='submit' class='button w3l-cart' data-id='cart-8'>Añadir</button>"
+																			+ "</div>"
+																			+ "</div>"
+																			+ "</form>");
+												});
+							});
+		}
 	</script>
 
 

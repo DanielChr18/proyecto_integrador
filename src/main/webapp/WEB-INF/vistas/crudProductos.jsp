@@ -479,31 +479,59 @@
 
 
 	<script type="text/javascript">
-		$("#id_formRegistrarProducto").on('submit', function(evt) {
-			if ($("#id_imagen1Registrar").val() === "") {
-				$('#id_mensajeImagen1Registrar').show();
-				evt.preventDefault();
-			}
-			if ($("#id_imagen2Registrar").val() === "") {
-				$('#id_mensajeImagen2Registrar').show();
-				evt.preventDefault();
-			}
-			if ($("#id_imagen3Registrar").val() === "") {
-				$('#id_mensajeImagen3Registrar').show();
-				evt.preventDefault();
-			}
-			if (CKEDITOR.instances['editor1'].getData() == "") {
-				$('#id_mensajeDescripcionLargaRegistrar').show();
-				evt.preventDefault();
-			}
-		});
+		$("#id_formRegistrarProducto").on(
+				'submit',
+				function(evt) {
+					$("#id_btnRegistrarProducto").attr("disabled", false);
+					var c = "SI";
+					if ($("#id_imagen1Registrar").val() === "") {
+						$('#id_mensajeImagen1Registrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if ($("#id_imagen2Registrar").val() === "") {
+						$('#id_mensajeImagen2Registrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if ($("#id_imagen3Registrar").val() === "") {
+						$('#id_mensajeImagen3Registrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if (CKEDITOR.instances['editor1'].getData() == "") {
+						$('#id_mensajeDescripcionLargaRegistrar').show();
+						evt.preventDefault();
+						var c = "NO";
+					}
+					if (c == "SI") {
+						var validator = $('#id_formRegistrarProducto').data(
+								'bootstrapValidator');
+						if (validator.isValid()) {
+							swal("¡Éxito!",
+									"Producto registrado correctamente.",
+									"success");
+						}
+					}
+				});
 
-		$("#id_formModificarProducto").on('submit', function(evt) {
-			if (CKEDITOR.instances['editor2'].getData() == "") {
-				$('#id_mensajeDescripcionLargaModificar').show();
-				evt.preventDefault();
-			}
-		});
+		$("#id_formModificarProducto").on(
+				'submit',
+				function(evt) {
+					$("#id_btnModificarProducto").attr("disabled", false);
+					if (CKEDITOR.instances['editor2'].getData() == "") {
+						$('#id_mensajeDescripcionLargaModificar').show();
+						evt.preventDefault();
+					} else {
+						var validator = $('#id_formModificarProducto').data(
+								'bootstrapValidator');
+						if (validator.isValid()) {
+							swal("¡Éxito!",
+									"Producto modificado correctamente.",
+									"success");
+						}
+					}
+				});
 	</script>
 
 	<!-- Script de Modal's  -->
