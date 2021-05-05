@@ -296,8 +296,15 @@ public class servicioController {
 		Date fechaActual = formatoFecha.parse(hoy.toString().split("T")[0]);
 		Date fechaInicioDate = new Date();
 		List<Servicio> listaServicios = service.listaServicios();
+		List<FechasServicios> listaFechasServicios = serviceFecSer.findAll();
 		salida.put("CONFIRMACION", "NO");
 		salida.put("MENSAJE", "Las fechas están actualizadas.");
+		for (FechasServicios lf : listaFechasServicios) {
+			fechaInicioDate = formatoFecha.parse(lf.getFecha());
+			if(fechaInicioDate.before(fechaActual) && lf.getEstado().equals("libre")) {
+				serviceFecSer.eliminarFechaServicio(lf.getIdFechasServicios());
+			}
+		}
 		for (Servicio s : listaServicios) {
 			if (s.getEstado().equals("activado")) {
 				System.out.println("ID SERVICIO --------------------------------> " + s.getIdServicio());

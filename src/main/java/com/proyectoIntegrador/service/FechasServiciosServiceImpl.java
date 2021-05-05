@@ -30,6 +30,11 @@ public class FechasServiciosServiceImpl implements FechasServiciosService {
 	}
 
 	@Override
+	public List<FechasServicios> findAll() {
+		return repository.findAll();
+	}
+
+	@Override
 	public FechasServicios agregarFechaServicio(FechasServicios obj) {
 		return repository.save(obj);
 	}

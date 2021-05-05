@@ -75,6 +75,7 @@ public class productoController {
 			session.setAttribute("objContadorProductos", 1);
 			listaPro.add(service.listaProductosId(idProducto));
 			session.setAttribute("objListaProductosEntidad", listaPro);
+			session.setAttribute("objListaProductosBoleta", listaPro);
 			return salida;
 		} else {
 			String confirma = "SI";
@@ -103,6 +104,7 @@ public class productoController {
 				session.setAttribute("objListaProductosTexto", l);
 				session.setAttribute("objContadorProductos", listaAyuda.length + 1);
 				session.setAttribute("objListaProductosEntidad", listaPro);
+				session.setAttribute("objListaProductosBoleta", listaPro);
 				salida.put("CONFIRMACION", "SI");
 			} else {
 				salida.put("CONFIRMACION", "NO");
@@ -131,7 +133,11 @@ public class productoController {
 		try {
 			if (obj.getNombre() != null) {
 				List<Producto> lista = service.listaProductos();
-				int idProducto = lista.get(lista.size() - 1).getIdProducto() + 1;
+				int idProducto = 0;
+				if (lista == null)
+					idProducto = 1;
+				else
+					idProducto = lista.get(lista.size() - 1).getIdProducto() + 1;
 				Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-1.jpeg");
 				Files.write(rutaCompleta1, imagen1.getBytes());
 				Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-2.jpeg");
@@ -198,12 +204,6 @@ public class productoController {
 				Producto p = service.listaProductosId(obj.getIdProducto());
 				p.setEstado("desactivado");
 				service.modificarProducto(p);
-				Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-1.jpeg");
-				Files.delete(rutaCompleta1);
-				Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-2.jpeg");
-				Files.delete(rutaCompleta2);
-				Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + obj.getIdProducto() + "-3.jpeg");
-				Files.delete(rutaCompleta3);
 				Thread.sleep(2000);
 				return "redirect:crudProductos";
 			} else {

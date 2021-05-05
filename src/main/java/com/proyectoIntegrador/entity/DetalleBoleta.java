@@ -27,6 +27,9 @@ public class DetalleBoleta {
 	@Column(name = "cantidad")
 	private int cantidad;
 
+	@Column(name = "costo")
+	private double costo;
+
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproducto")

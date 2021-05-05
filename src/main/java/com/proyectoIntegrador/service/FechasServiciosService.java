@@ -12,6 +12,8 @@ public interface FechasServiciosService {
 
 	public abstract List<FechasServicios> findByServicio(int idServicio);
 
+	public abstract List<FechasServicios> findAll();
+
 	public abstract FechasServicios agregarFechaServicio(FechasServicios obj);
 
 	public abstract void eliminarFechaServicio(int idFechaServicio);
