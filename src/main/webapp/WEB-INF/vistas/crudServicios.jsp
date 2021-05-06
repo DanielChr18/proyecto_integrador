@@ -127,7 +127,7 @@
 
 			<div class="modal fade" id="idModalRegistraServicio"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 45%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -249,7 +249,7 @@
 
 			<div class="modal fade" id="idModalModificaServicio"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 45%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -377,7 +377,7 @@
 
 			<div class="modal fade" id="idModalEliminaServicio"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
+				<div class="modal-dialog" style="width: 25%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -385,8 +385,8 @@
 								<h3 class="card-title">Eliminar Servicio</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="eliminarServicio"
-									method="post">
+								<form id="id_formEliminarServicio" accept-charset="UTF-8"
+									action="eliminarServicio" method="post">
 									<div class="row" hidden="hidden">
 										<div class="col-md-12">
 											<div class="form-group">
@@ -498,6 +498,10 @@
 						}
 					}
 				});
+
+		$("#id_formEliminarServicio").on('submit', function(evt) {
+			swal("¡Éxito!", "Servicio eliminado correctamente.", "success");
+		});
 	</script>
 
 	<!-- Horarios de Registrar -->

@@ -127,7 +127,7 @@
 
 			<div class="modal fade" id="idModalRegistraMascota"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 40%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 40%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -217,7 +217,7 @@
 			<!-- Modal Mascota Modificar -->
 			<div class="modal fade" id="idModalModificaMascota"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 40%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 40%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -313,7 +313,7 @@
 			<!-- Modal Mascota Eliminar -->
 			<div class="modal fade" id="idModalEliminaMascota"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
+				<div class="modal-dialog" style="width: 25%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -321,8 +321,8 @@
 								<h3 class="card-title">Eliminar Mascota</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="eliminarMascota"
-									method="post">
+								<form id="id_formEliminarMascota" accept-charset="UTF-8"
+									action="eliminarMascota" method="post">
 									<div class="row" hidden="hidden">
 										<div class="col-md-12">
 											<div class="form-group">
@@ -449,6 +449,10 @@
 								"success");
 					}
 				});
+
+		$("#id_formEliminarMascota").on('submit', function(evt) {
+			swal("¡Éxito!", "Mascota eliminada correctamente.", "success");
+		});
 	</script>
 
 

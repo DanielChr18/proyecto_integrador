@@ -115,7 +115,7 @@
 
 			<div class="modal fade" id="idModalRegistraProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 55%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 55%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -265,7 +265,7 @@
 			<!-- Modal de Modificar Producto -->
 			<div class="modal fade" id="idModalModificaProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 55%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 55%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -415,7 +415,7 @@
 			<!-- Modal de Eliminar Producto -->
 			<div class="modal fade" id="idModalEliminaProducto"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
+				<div class="modal-dialog" style="width: 25%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -423,8 +423,8 @@
 								<h3 class="card-title">Eliminar Producto</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="eliminarProducto"
-									method="post">
+								<form id="id_formEliminarProducto" accept-charset="UTF-8"
+									action="eliminarProducto" method="post">
 									<div class="row" hidden="hidden">
 										<div class="col-md-12">
 											<div class="form-group">
@@ -532,6 +532,10 @@
 						}
 					}
 				});
+
+		$("#id_formEliminarProducto").on('submit', function(evt) {
+			swal("¡Éxito!", "Producto eliminado correctamente.", "success");
+		});
 	</script>
 
 	<!-- Script de Modal's  -->

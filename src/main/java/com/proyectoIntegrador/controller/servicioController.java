@@ -51,12 +51,34 @@ public class servicioController {
 		List<Servicio> servicios = service.listaServicios();
 		List<Servicio> listaServicios = new ArrayList<>();
 		for (Servicio x : servicios) {
-			if (!x.getEstado().equals("desactivado")) {
+			if (x.getEstado().equals("activado")) {
 				listaServicios.add(x);
 			}
 		}
 		model.addAttribute("servicios", listaServicios);
 		return "listaServicios";
+	}
+
+	@RequestMapping("/crudServicios")
+	public String crudServicios(Model model) {
+		System.out.println("Listar Todos los Servicios CRUD");
+		List<Servicio> servicios = service.listaServicios();
+		List<Servicio> listaServicios = new ArrayList<>();
+		List<HorariosServicios> horarios = serviceHorSer.listarHorarios();
+		List<HorariosServicios> listaHorarios = new ArrayList<>();
+		for (HorariosServicios x : horarios) {
+			if (!x.getEstado().equals("desactivado")) {
+				listaHorarios.add(x);
+			}
+		}
+		for (Servicio x : servicios) {
+			if (x.getEstado().equals("activado")) {
+				listaServicios.add(x);
+			}
+		}
+		model.addAttribute("horarios", listaHorarios);
+		model.addAttribute("servicios", listaServicios);
+		return "crudServicios";
 	}
 
 	@RequestMapping("/listadoHorariosServicios")
@@ -73,28 +95,6 @@ public class servicioController {
 			}
 		}
 		return horarios;
-	}
-
-	@RequestMapping("/crudServicios")
-	public String crudServicios(Model model) {
-		System.out.println("Listar Todos los Servicios CRUD");
-		List<Servicio> servicios = service.listaServicios();
-		List<Servicio> listaServicios = new ArrayList<>();
-		List<HorariosServicios> horarios = serviceHorSer.listarHorarios();
-		List<HorariosServicios> listaHorarios = new ArrayList<>();
-		for (HorariosServicios x : horarios) {
-			if (!x.getEstado().equals("desactivado")) {
-				listaHorarios.add(x);
-			}
-		}
-		for (Servicio x : servicios) {
-			if (!x.getEstado().equals("desactivado")) {
-				listaServicios.add(x);
-			}
-		}
-		model.addAttribute("horarios", listaHorarios);
-		model.addAttribute("servicios", listaServicios);
-		return "crudServicios";
 	}
 
 	@RequestMapping("/registrarServicio")
@@ -161,7 +161,6 @@ public class servicioController {
 				}
 				Servicio ser = service.listaServiciosId(obj.getIdServicio());
 				if (!ser.getDia().equals(obj.getDia())) {
-					// serviceFecSer.eliminarFechaServicioXServicio(obj.getIdServicio());
 					List<FechasServicios> listaFechas = serviceFecSer.findByServicio(obj.getIdServicio());
 					for (FechasServicios f : listaFechas) {
 						serviceFecSer.eliminarFechaServicio(f.getIdFechasServicios());
@@ -169,7 +168,6 @@ public class servicioController {
 					int cont = obtener_numeroSermana(obj.getDia());
 					List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
 					for (HorariosServicios x : listaHoras) {
-						// Solo 3 horarios del servicio
 						if (x.getEstado().equals("activado")) {
 							LocalDateTime hoy = LocalDateTime.now();
 							LocalDateTime fechaSiguiente = hoy.plusDays(cont);
@@ -238,7 +236,7 @@ public class servicioController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return "redirect:crudServicios";
 	}
 
@@ -246,35 +244,25 @@ public class servicioController {
 	public String eliminarServicio(Servicio obj) {
 		try {
 			if (obj.getIdServicio() > 0) {
-				String confirmar = "SI";
+				Servicio ser = service.listaServiciosId(obj.getIdServicio());
+				ser.setEstado("desactivado");
+				service.modificarServicio(ser);
 				List<HorariosServicios> listaHorarios = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
-				for (HorariosServicios x : listaHorarios) {
-					List<FechasServicios> listaFechas = serviceFecSer.findByHoraServicio(x.getHorario(),
-							obj.getIdServicio());
-					if ((listaFechas.size() > 0) && (!x.getEstado().equals("activado"))) {
-						confirmar = "NO";
-						break;
+				for (HorariosServicios h : listaHorarios) {
+					if (!h.getEstado().equals("ocupado")) {
+						h.setEstado("desactivado");
+						serviceHorSer.agregarHorario(h);
 					}
-				}
-				if (confirmar.equals("SI")) {
-					for (HorariosServicios h : listaHorarios) {
-						List<FechasServicios> fec = serviceFecSer.findByHoraServicio(h.getHorario(),
+					if (!h.getEstado().equals("desactivado")) {
+						List<FechasServicios> listaFechasHorarios = serviceFecSer.findByHoraServicio(h.getHorario(),
 								obj.getIdServicio());
-						if (fec != null) {
-							for (FechasServicios f : fec) {
+						for (FechasServicios f : listaFechasHorarios) {
+							if (f.getEstado().equals("reservado")) {
 								f.setEstado("desactivado");
 								serviceFecSer.agregarFechaServicio(f);
 							}
 						}
-						h.setEstado("desactivado");
-						serviceHorSer.agregarHorario(h);
 					}
-					Servicio ser = service.listaServiciosId(obj.getIdServicio());
-					ser.setEstado("desactivado");
-					service.modificarServicio(ser);
-					System.out.println("El servicio se desactivó satisfactoriamente");
-				} else if (confirmar.equals("NO")) {
-					System.out.println("No se pudo desactivar el servicio porque tiene citas pendientes");
 				}
 				Thread.sleep(2000);
 				return "redirect:crudServicios";
@@ -301,44 +289,34 @@ public class servicioController {
 		salida.put("MENSAJE", "Las fechas están actualizadas.");
 		for (FechasServicios lf : listaFechasServicios) {
 			fechaInicioDate = formatoFecha.parse(lf.getFecha());
-			if(fechaInicioDate.before(fechaActual) && lf.getEstado().equals("libre")) {
+			if (fechaInicioDate.before(fechaActual) && lf.getEstado().equals("libre")) {
 				serviceFecSer.eliminarFechaServicio(lf.getIdFechasServicios());
 			}
 		}
 		for (Servicio s : listaServicios) {
 			if (s.getEstado().equals("activado")) {
-				System.out.println("ID SERVICIO --------------------------------> " + s.getIdServicio());
 				List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(s.getIdServicio());
-				String ultimaFecha = "";
 				for (HorariosServicios h : listaHoras) {
 					if (!h.getEstado().equals("desactivado")) {
-						System.out.println(
-								"ID HORA SERVICIO --------------------------------> " + h.getIdHorariosServicios());
-						System.out.println("HORA SERVICIO --------------------------------> " + h.getHorario());
 						List<FechasServicios> listaFechas = serviceFecSer.findByHoraServicio(h.getHorario(),
 								s.getIdServicio());
 						if (listaFechas.size() == 1) {
 							fechaInicioDate = formatoFecha.parse(listaFechas.get(0).getFecha().toString());
-							ultimaFecha = listaFechas.get(0).getFecha().toString();
 						} else {
 							for (int i = 1; i < listaFechas.size(); i++) {
 								Date fecha1 = formatoFecha.parse(listaFechas.get(i - 1).getFecha().toString());
 								Date fecha2 = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
 								if (fecha1.after(fecha2)) {
 									fechaInicioDate = formatoFecha.parse(listaFechas.get(i - 1).getFecha().toString());
-									ultimaFecha = listaFechas.get(i - 1).getFecha().toString();
 								} else {
 									fechaInicioDate = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
-									ultimaFecha = listaFechas.get(i).getFecha().toString();
 								}
 							}
 						}
 						long diffTime = fechaInicioDate.getTime() - fechaActual.getTime();
 						int diasssss = (int) TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
-						System.out.println("ID Hora : " + h.getIdHorariosServicios());
 						for (int i = diasssss; i < 35; i = i + 7) {
 							if (i < 35) {
-								System.out.println("Última fecha : " + ultimaFecha);
 								LocalDateTime fechaAgregar = hoy.plusDays(i + 7);
 								FechasServicios fechas = new FechasServicios();
 								fechas.setEstado("libre");

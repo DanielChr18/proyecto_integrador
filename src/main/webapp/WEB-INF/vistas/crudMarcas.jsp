@@ -103,7 +103,7 @@
 			<!-- Modal de Registro de Marca -->
 			<div class="modal fade" id="idModalRegistraMarca"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 45%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -137,7 +137,7 @@
 			<!-- Modal de Modificar Servicio -->
 			<div class="modal fade" id="idModalModificaMarca"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%; margin: 60px auto 0;">
+				<div class="modal-dialog" style="width: 45%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -179,7 +179,7 @@
 			<!-- Modal de Eliminar Servicio -->
 			<div class="modal fade" id="idModalEliminaMarca"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%; margin: 20% auto 0;">
+				<div class="modal-dialog" style="width: 25%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -187,8 +187,8 @@
 								<h3 class="card-title">Eliminar Marca</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" action="eliminarMarca"
-									method="post">
+								<form id="id_formEliminarMarca" accept-charset="UTF-8"
+									action="eliminarMarca" method="post">
 									<div class="row" hidden="hidden">
 										<div class="col-md-12">
 											<div class="form-group">
@@ -247,6 +247,10 @@
 								"success");
 					}
 				});
+
+		$("#id_formEliminarMarca").on('submit', function(evt) {
+			swal("¡Éxito!", "Marca eliminada correctamente.", "success");
+		});
 	</script>
 
 	<!-- Validación de Modal Registrar -->
