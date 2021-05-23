@@ -211,3 +211,32 @@ input[type="file"] {
 	right: 0px;
 	pointer-events: none;
 }
+
+
+
+
+
+img.slideProducto{
+    display: none;
+}
+
+img.slideProducto:nth-child(1){
+    display: block;
+}
+
+.fadeProducto {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1s;
+  animation-name: fade;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}

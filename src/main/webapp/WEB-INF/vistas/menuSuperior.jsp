@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <nav
-	class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top" id="id_compras1" >
+	class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top"
+	id="id_compras1">
 	<div class="container-fluid">
 		<div class="navbar-wrapper"></div>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -57,7 +58,8 @@
 									</c:forEach>
 								</div>
 								<div style="margin-top: 10px">
-									<a class="dropdown-item" href="#"> IR AL CARRITO </a>
+									<button type="button" class="dropdown-item"
+										onclick="verModalDetallePedido();">IR AL CARRITO</button>
 								</div>
 							</c:if>
 						</div></li>
@@ -89,3 +91,122 @@
 		</div>
 	</div>
 </nav>
+
+<div class="modal fade" id="idModalDetallePedido" data-backdrop="static"
+	tabindex="-1" role="dialog">
+	<div class="modal-dialog" style="width: 80%;">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h3 class="card-title">Detalle Pedido</h3>
+				</div>
+				<div class="card-body" style="padding: 20px 18px;">
+					<div class="row">
+						<div id="id_modalDetallePedido" class="col-md-9">
+							<c:forEach var="x" items="${objListaProductosEntidad}">
+								<div class="row">
+									<div class="col-md-2">
+										<img src="images/productos/${x.imagen1}" alt="img"
+											style="width: 115px; height: 150px">
+									</div>
+									<div class="col-md-8">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-3 pull-right">
+														<div class="caja">
+															<select id="id_cantidadProducto${x.idProducto}"
+																class="estilo-select"
+																onchange="agregarQuitarCantidad('${x.idProducto}');">
+																<option value="1">1</option>
+																<option value="2">2</option>
+																<option value="3">3</option>
+																<option value="4">4</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<ul class="info" style="margin: 0;">
+													<li style="font-size: 11px; height: auto; width: 100%;">${x.nombre}</li>
+													<li style="font-size: 11px; height: auto; width: 100%;">${x.descripcion}</li>
+													<li style="font-size: 11px; height: auto; width: 100%;">${x.descripcionLarga}</li>
+													<li style="font-size: 11px;">S/ ${x.precio}</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<c:if test="${objUltimoProducto != x.idProducto}">
+									<div class="dropdown-divider"></div>
+								</c:if>
+							</c:forEach>
+						</div>
+						<div class="col-md-3">
+							<div class="cart-grid" id="cart-8"
+								style="width: 100%; margin: 0;">
+								<h4>RESUMEN DE PEDIDO</h4>
+								<div class="dropdown-divider"></div>
+								<h5 id="totalPrecio"></h5>
+								<div class="dropdown-divider"></div>
+								<h5 id="fechaDetallePedido"></h5>
+								<div class="snipcart-details">
+									<button type="button" class="button w3l-cart" data-id="cart-8">Realizar
+										Compra</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" onclick="cerrarModalDetallePedido();"
+								class="btn btn-primary pull-left">Cancelar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function verModalDetallePedido() {
+		$.ajax({
+			type : 'POST',
+			data : {},
+			url : 'detalleBoleta',
+			success : function(data) {
+				$("#totalPrecio").text("TOTAL : " + data.TOTAL);
+				$("#fechaDetallePedido").text("FECHA : " + data.FECHA);
+			},
+			error : function() {
+			}
+		});
+		$("#id_modalDetallePedido").load(
+				window.location.href + " #id_modalDetallePedido");
+		$("#idModalDetallePedido").modal("show");
+	}
+
+	function cerrarModalDetallePedido() {
+		$("#idModalDetallePedido").modal("hide");
+	}
+
+	function agregarQuitarCantidad(idProducto) {
+		var cant = $("#id_cantidadProducto" + idProducto).val();
+		$.ajax({
+			type : 'POST',
+			data : {
+				'idProducto' : idProducto,
+				'cantidad' : cant
+			},
+			url : 'agregarQuitarCantidad',
+			success : function(data) {
+				$("#totalPrecio").text("TOTAL : " + data.TOTAL);
+			},
+			error : function() {
+			}
+		});
+	}
+</script>

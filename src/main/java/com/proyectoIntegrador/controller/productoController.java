@@ -75,7 +75,7 @@ public class productoController {
 			session.setAttribute("objContadorProductos", 1);
 			listaPro.add(service.listaProductosId(idProducto));
 			session.setAttribute("objListaProductosEntidad", listaPro);
-			session.setAttribute("objListaProductosBoleta", listaPro);
+			session.setAttribute("objListaProductosBoletaTexto", id);
 			return salida;
 		} else {
 			String confirma = "SI";
@@ -104,7 +104,7 @@ public class productoController {
 				session.setAttribute("objListaProductosTexto", l);
 				session.setAttribute("objContadorProductos", listaAyuda.length + 1);
 				session.setAttribute("objListaProductosEntidad", listaPro);
-				session.setAttribute("objListaProductosBoleta", listaPro);
+				session.setAttribute("objListaProductosBoletaTexto", l);
 				salida.put("CONFIRMACION", "SI");
 			} else {
 				salida.put("CONFIRMACION", "NO");

@@ -51,8 +51,17 @@
 											<c:forEach var="producto" items="${productos}">
 												<form accept-charset="UTF-8">
 													<div class="cart-grid" id="cart-8">
-														<div class="img">
-															<img src="images/productos/${producto.imagen1}" alt="img">
+														<div class="img"
+															onmouseover="cambiarImagen('${producto.idProducto}');">
+															<img
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																src="images/productos/${producto.imagen1}" alt="">
+															<img
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																src="images/productos/${producto.imagen2}" alt="">
+															<img
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																src="images/productos/${producto.imagen3}" alt="">
 														</div>
 														<ul class="info">
 															<li style="font-size: 14px; height: 100px; width: 100%;">${producto.nombre}</li>
@@ -77,7 +86,24 @@
 		</div>
 	</div>
 
+	<script type="text/javascript" charset="utf-8">
+		function cambiarImagen(idProducto) {
+			var slides = document.getElementsByClassName('imagenesProducto'
+					+ idProducto);
+			var slide = 0;
 
+			setTimeout(function() {
+				for (var i = 0; i < slides.length; i++) {
+					slides[i].style.display = "none";
+				}
+				slide++;
+				if (slide > slides.length - 1) {
+					slide = 0;
+				}
+				slides[slide].style.display = "block";
+			}, 1000);
+		}
+	</script>
 
 
 	<script type="text/javascript">
