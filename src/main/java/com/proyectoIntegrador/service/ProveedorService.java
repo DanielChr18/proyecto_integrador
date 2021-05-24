@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.proyectoIntegrador.entity.Proveedor;
 
-public interface ProveedorServicio {
+public interface ProveedorService {
 
 	public abstract Proveedor agregarProveedor(Proveedor obj);
 	

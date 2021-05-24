@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.proyectoIntegrador.entity.Ubigeo;
 
-public interface UbigeoRepositorio extends JpaRepository<Ubigeo, Integer> {
+public interface UbigeoRepository extends JpaRepository<Ubigeo, Integer> {
 
 	@Query("select u from Ubigeo u group by u.departamento")
 	public abstract List<Ubigeo> listaDepartamentos();

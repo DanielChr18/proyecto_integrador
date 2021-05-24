@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyectoIntegrador.entity.Proveedor;
-import com.proyectoIntegrador.repository.ProveedorRepositorio;
+import com.proyectoIntegrador.repository.ProveedorRepository;
 
 @Service
-public class ProveedorServicioImpl implements ProveedorServicio {
+public class ProveedorServiceImpl implements ProveedorService {
 
 	@Autowired
-	ProveedorRepositorio repositorio;
+	ProveedorRepository repositorio;
 
 	
 	@Override

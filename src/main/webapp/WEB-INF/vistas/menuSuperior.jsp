@@ -81,10 +81,10 @@
 							</c:if>
 							<a class="dropdown-item" href="#">Configuración</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="salir">Log out</a>
+							<a class="dropdown-item" href="salir">Salir</a>
 						</c:if>
 						<c:if test="${objCargo == null}">
-							<a class="dropdown-item" href="login">Login</a>
+							<a class="dropdown-item" href="login">Ingresar</a>
 						</c:if>
 					</div></li>
 			</ul>
@@ -145,18 +145,40 @@
 							</c:forEach>
 						</div>
 						<div class="col-md-3">
-							<div class="cart-grid" id="cart-8"
-								style="width: 100%; margin: 0;">
-								<h4>RESUMEN DE PEDIDO</h4>
-								<div class="dropdown-divider"></div>
-								<h5 id="totalPrecio"></h5>
-								<div class="dropdown-divider"></div>
-								<h5 id="fechaDetallePedido"></h5>
-								<div class="snipcart-details">
-									<button type="button" class="button w3l-cart" data-id="cart-8">Realizar
-										Compra</button>
+							<form accept-charset="UTF-8">
+								<div class="row">
+									<input id="id_numeroBoleta" hidden="hidden"
+										class="form-control" type="text" name="numero">
 								</div>
-							</div>
+								<div class="row">
+									<input id="id_nombreBoleta" hidden="hidden"
+										class="form-control" type="text" name="nombre">
+								</div>
+								<div class="row">
+									<input id="id_dniBoleta" hidden="hidden" class="form-control"
+										type="text" name="dni">
+								</div>
+								<div class="row">
+									<input id="id_montoBoleta" hidden="hidden" class="form-control"
+										type="text" name="monto">
+								</div>
+								<div class="row">
+									<input id="id_idClienteBoleta" hidden="hidden"
+										class="form-control" type="text" name="idCliente.idCliente">
+								</div>
+								<div class="cart-grid" id="cart-8"
+									style="width: 100%; margin: 0;">
+									<h4>RESUMEN DE PEDIDO</h4>
+									<div class="dropdown-divider"></div>
+									<h5 id="totalPrecio"></h5>
+									<div class="dropdown-divider"></div>
+									<h5 id="fechaDetallePedido"></h5>
+									<div class="snipcart-details">
+										<button type="button" class="button w3l-cart" data-id="cart-8">Realizar
+											Compra</button>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 					<div class="row">
@@ -180,6 +202,11 @@
 			success : function(data) {
 				$("#totalPrecio").text("TOTAL : " + data.TOTAL);
 				$("#fechaDetallePedido").text("FECHA : " + data.FECHA);
+				$("#id_numeroBoleta").val(data.NUMERO);
+				$("#id_nombreBoleta").val(data.NOMBRE);
+				$("#id_dniBoleta").val(data.DNI);
+				$("#id_montoBoleta").val(data.TOTAL);
+				$("#id_idClienteBoleta").val(data.IDCLIENTE);
 			},
 			error : function() {
 			}

@@ -24,7 +24,7 @@ import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Proveedor;
 import com.proyectoIntegrador.service.MarcaService;
 import com.proyectoIntegrador.service.ProductoService;
-import com.proyectoIntegrador.service.ProveedorServicio;
+import com.proyectoIntegrador.service.ProveedorService;
 
 @Controller
 public class productoController {
@@ -39,7 +39,7 @@ public class productoController {
 	private MarcaService serviceMar;
 
 	@Autowired
-	private ProveedorServicio serviceProv;
+	private ProveedorService serviceProv;
 
 	@RequestMapping("/listaProductos")
 	public String listaProductos(Model model) {

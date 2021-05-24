@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyectoIntegrador.entity.Ubigeo;
-import com.proyectoIntegrador.repository.UbigeoRepositorio;
+import com.proyectoIntegrador.repository.UbigeoRepository;
 
 @Service
-public class UbigeoServicioImpl implements UbigeoServicio {
+public class UbigeoServiceImpl implements UbigeoService {
 
 	@Autowired
-	UbigeoRepositorio repositorio;
+	UbigeoRepository repositorio;
 
 	@Override
 	public List<Ubigeo> listaDepartamentos() {

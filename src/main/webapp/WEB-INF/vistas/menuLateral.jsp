@@ -55,6 +55,9 @@
 				<li class="nav-item" id="id_menuClientes"><a class="nav-link"
 					href="datosMascotas"><i class="material-icons">pets</i>
 						<p>Mascotas</p></a></li>
+				<li class="nav-item" id="id_menuTrackingClientes"><a class="nav-link"
+					href="trackingCliente"><i class="material-icons">leaderboard</i>
+						<p>Transacciones</p></a></li>
 			</c:if>
 			<c:if test="${objCargo == null}">
 				<li class="nav-item" id="id_menuClientes"><a class="nav-link"

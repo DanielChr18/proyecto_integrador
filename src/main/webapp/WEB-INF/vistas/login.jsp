@@ -99,8 +99,8 @@
 					url : 'validacionLogin',
 					success : function(data) {
 						if (data.CONFIRMACION == 'SI') {
-							if (data.CLIENTE != null) {
-								swal("¡Bienvenido!", data.CLIENTE, "success");
+							if (data.USUARIO != null) {
+								swal("¡Bienvenido!", data.USUARIO, "success");
 							} else {
 								swal("¡Bienvenido!", "", "success");
 							}

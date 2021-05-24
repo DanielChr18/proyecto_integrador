@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.Proveedor;
-import com.proyectoIntegrador.service.ProveedorServicio;
+import com.proyectoIntegrador.service.ProveedorService;
 
 @Controller
 public class proveedorController {
 
 	@Autowired
-	private ProveedorServicio service;
+	private ProveedorService service;
 
 	@RequestMapping("/listaProveedores")
 	public String listaProveedores(Model model) {

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.Cliente;
+import com.proyectoIntegrador.entity.Trabajador;
 import com.proyectoIntegrador.entity.Usuario;
 import com.proyectoIntegrador.service.ClienteService;
+import com.proyectoIntegrador.service.TrabajadorService;
 import com.proyectoIntegrador.service.UsuarioService;
 
 @Controller
@@ -26,6 +28,9 @@ public class usuarioController {
 
 	@Autowired
 	private ClienteService serviceCli;
+
+	@Autowired
+	private TrabajadorService serviceTra;
 
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request) {
@@ -41,21 +46,6 @@ public class usuarioController {
 				return "redirect:listaProductos";
 			}
 		}
-	}
-
-	@RequestMapping("/error404")
-	public String error404() {
-		return "error404";
-	}
-
-	@RequestMapping("/principal")
-	public String principal() {
-		return "principal";
-	}
-
-	@RequestMapping("/nosotros")
-	public String nosotros() {
-		return "nosotros";
 	}
 
 	@RequestMapping("/validacionLogin")
@@ -75,7 +65,14 @@ public class usuarioController {
 			session.setAttribute("objUsuario", usu.getNomUsuario());
 			if (usu.getCargo().equals("Cliente")) {
 				Cliente cli = serviceCli.buscarClienteUsuario(usu.getIdUsuario());
-				salida.put("CLIENTE", cli.getApellido() + ", " + cli.getNombre());
+				if (cli != null) {
+					salida.put("USUARIO", cli.getApellido() + ", " + cli.getNombre());
+				}
+			} else if (!usu.getCargo().equals("Cliente")) {
+				Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
+				if (tra != null) {
+					salida.put("USUARIO", tra.getApellido() + ", " + tra.getNombre());
+				}
 			}
 			salida.put("CONFIRMACION", "SI");
 			return salida;

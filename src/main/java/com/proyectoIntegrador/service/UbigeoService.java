@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.proyectoIntegrador.entity.Ubigeo;
 
-public interface UbigeoServicio {
+public interface UbigeoService {
 
 	public abstract List<Ubigeo> listaDepartamentos();
 

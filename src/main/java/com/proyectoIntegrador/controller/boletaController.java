@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.Boleta;
+import com.proyectoIntegrador.entity.Cliente;
+import com.proyectoIntegrador.entity.DetalleBoleta;
 import com.proyectoIntegrador.service.BoletaService;
+import com.proyectoIntegrador.service.ClienteService;
+import com.proyectoIntegrador.service.DetalleBoletaService;
 import com.proyectoIntegrador.service.ProductoService;
 
 @Controller
@@ -24,6 +28,12 @@ public class boletaController {
 
 	@Autowired
 	private ProductoService servicePro;
+
+	@Autowired
+	private ClienteService serviceCli;
+
+	@Autowired
+	private DetalleBoletaService serviceDetBol;
 
 	@RequestMapping("/detalleBoleta")
 	@ResponseBody
@@ -36,8 +46,14 @@ public class boletaController {
 			for (int i = 0; i < listaAyuda.length; i++) {
 				totalPagar += servicePro.listaProductosId(Integer.parseInt(listaAyuda[i])).getPrecio();
 			}
+			int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
+			Cliente c = serviceCli.listaClientesId(idCliente);
 			salida.put("TOTAL", totalPagar);
 			salida.put("FECHA", LocalDateTime.now().toString().split("T")[0]);
+			salida.put("NUMERO", "111111111");
+			salida.put("NOMBRE", c.getNombre() + " " + c.getApellido());
+			salida.put("DNI", c.getDni());
+			salida.put("IDCLIENTE", c.getIdCliente());
 			return salida;
 		} else {
 			return salida;
@@ -120,18 +136,18 @@ public class boletaController {
 				for (int i = 0; i < listaProductos.length; i++) {
 					int contador = 0;
 					double costo = 0;
-					// for (Producto pr : listaProductos) {
-					// if (p.getIdProducto() == pr.getIdProducto()) {
-					// contador++;
-					// costo += pr.getPrecio();
-					// }
-					// }
-					// DetalleBoleta detalleBoleta = new DetalleBoleta();
-					// detalleBoleta.setCantidad(contador);
-					// detalleBoleta.setCosto(costo);
-					// detalleBoleta.setIdProducto(p);
-					// detalleBoleta.setIdBoleta(obj);
-					// serviceDetBol.agregarDetalleBoleta(detalleBoleta);
+					for (int j = 0; j < listaProductosCarrito.length; j++) {
+						if (listaProductos[i] == listaProductosCarrito[j]) {
+							contador++;
+							costo += servicePro.listaProductosId(Integer.parseInt(listaProductos[i])).getPrecio();
+						}
+					}
+					DetalleBoleta detalleBoleta = new DetalleBoleta();
+					detalleBoleta.setCantidad(contador);
+					detalleBoleta.setCosto(costo);
+					detalleBoleta.setIdProducto(servicePro.listaProductosId(Integer.parseInt(listaProductos[i])));
+					detalleBoleta.setIdBoleta(obj);
+					serviceDetBol.agregarDetalleBoleta(detalleBoleta);
 				}
 				return "redirect:listaProductos";
 			} else {
