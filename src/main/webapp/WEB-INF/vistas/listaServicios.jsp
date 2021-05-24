@@ -48,7 +48,6 @@
 														<button type="submit"
 															style="background: none; border-width: 0; border-color: transparent;">${servicio.nombre}</button>
 													</h3>
-													<p>${servicio.descripcion}</p>
 												</form>
 											</div>
 										</div>

@@ -17,6 +17,9 @@
 	src="datepicker/jquery.ui.datepicker-es.js"></script>
 
 <link rel="stylesheet" href="datepicker/jquery-ui.css" />
+<link rel="stylesheet" href="css/estilo1.1.css" />
+<link rel="stylesheet" type="text/css" href="vendor/main.css" />
+<link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
 <body class="">

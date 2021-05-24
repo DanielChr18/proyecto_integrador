@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
+<link rel="stylesheet" href="css/estilo1.1.css" />
 <link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
