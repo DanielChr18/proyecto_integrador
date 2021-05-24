@@ -103,14 +103,14 @@
 				</div>
 				<div class="card-body" style="padding: 20px 18px;">
 					<div class="row">
-						<div id="id_modalDetallePedido" class="col-md-9">
+						<div class="col-md-9" id="id_modalDetallePedido">
 							<c:forEach var="x" items="${objListaProductosEntidad}">
 								<div class="row">
 									<div class="col-md-2">
 										<img src="images/productos/${x.imagen1}" alt="img"
 											style="width: 115px; height: 150px">
 									</div>
-									<div class="col-md-8">
+									<div class="col-md-10">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
@@ -136,6 +136,11 @@
 													<li style="font-size: 11px;">S/ ${x.precio}</li>
 												</ul>
 											</div>
+											<div class="col-md-12">
+												<button type="button"
+													onclick="eliminarProducto('${x.idProducto}');"
+													class="btn btn-primary pull-right">Eliminar</button>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -145,26 +150,11 @@
 							</c:forEach>
 						</div>
 						<div class="col-md-3">
-							<form accept-charset="UTF-8">
-								<div class="row">
-									<input id="id_numeroBoleta" hidden="hidden"
-										class="form-control" type="text" name="numero">
-								</div>
-								<div class="row">
-									<input id="id_nombreBoleta" hidden="hidden"
-										class="form-control" type="text" name="nombre">
-								</div>
-								<div class="row">
-									<input id="id_dniBoleta" hidden="hidden" class="form-control"
-										type="text" name="dni">
-								</div>
+							<form action="agregarBoleta" id="form_boletaCompra"
+								accept-charset="UTF-8">
 								<div class="row">
 									<input id="id_montoBoleta" hidden="hidden" class="form-control"
 										type="text" name="monto">
-								</div>
-								<div class="row">
-									<input id="id_idClienteBoleta" hidden="hidden"
-										class="form-control" type="text" name="idCliente.idCliente">
 								</div>
 								<div class="cart-grid" id="cart-8"
 									style="width: 100%; margin: 0;">
@@ -174,7 +164,8 @@
 									<div class="dropdown-divider"></div>
 									<h5 id="fechaDetallePedido"></h5>
 									<div class="snipcart-details">
-										<button type="button" class="button w3l-cart" data-id="cart-8">Realizar
+										<button id="id_btnRealizarCompra" type="submit"
+											class="button w3l-cart" data-id="cart-8">Realizar
 											Compra</button>
 									</div>
 								</div>
@@ -193,6 +184,7 @@
 	</div>
 </div>
 
+
 <script type="text/javascript">
 	function verModalDetallePedido() {
 		$.ajax({
@@ -202,17 +194,12 @@
 			success : function(data) {
 				$("#totalPrecio").text("TOTAL : " + data.TOTAL);
 				$("#fechaDetallePedido").text("FECHA : " + data.FECHA);
-				$("#id_numeroBoleta").val(data.NUMERO);
-				$("#id_nombreBoleta").val(data.NOMBRE);
-				$("#id_dniBoleta").val(data.DNI);
 				$("#id_montoBoleta").val(data.TOTAL);
-				$("#id_idClienteBoleta").val(data.IDCLIENTE);
+				$("#id_modalDetallePedido").load(" #id_modalDetallePedido");
 			},
 			error : function() {
 			}
 		});
-		$("#id_modalDetallePedido").load(
-				window.location.href + " #id_modalDetallePedido");
 		$("#idModalDetallePedido").modal("show");
 	}
 
@@ -231,9 +218,37 @@
 			url : 'agregarQuitarCantidad',
 			success : function(data) {
 				$("#totalPrecio").text("TOTAL : " + data.TOTAL);
+				$("#id_montoBoleta").val(data.TOTAL);
 			},
 			error : function() {
 			}
 		});
+	}
+
+	function eliminarProducto(idProducto) {
+		$
+				.ajax({
+					type : 'POST',
+					data : {
+						'idProducto' : idProducto,
+					},
+					url : 'eliminarProductoBoleta',
+					success : function(data) {
+						$("#id_compras1").load(
+								window.location.href + " #id_compras1");
+						$("#id_compras2").load(
+								window.location.href + " #id_compras2");
+						if (data.CANTIDAD == 0) {
+							$("#idModalDetallePedido").modal("hide");
+						} else {
+							$("#totalPrecio").text("TOTAL : " + data.TOTAL);
+							$("#id_montoBoleta").val(data.TOTAL);
+							$("#id_modalDetallePedido").load(
+									" #id_modalDetallePedido");
+						}
+					},
+					error : function() {
+					}
+				});
 	}
 </script>

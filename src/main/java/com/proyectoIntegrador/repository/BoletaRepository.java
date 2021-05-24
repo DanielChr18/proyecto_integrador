@@ -10,6 +10,6 @@ import com.proyectoIntegrador.entity.Boleta;
 
 public interface BoletaRepository extends JpaRepository<Boleta, Integer> {
 
-	@Query("select b from Boleta b where b.idCliente.idCliente = :param_cliente")
-	public abstract List<Boleta> listarBoletasCliente(@Param("param_cliente")String idCliente);
+	@Query("select b from Boleta b where b.idCliente.idCliente like :param_cliente")
+	public abstract List<Boleta> listarBoletasCliente(@Param("param_cliente") int idCliente);
 }

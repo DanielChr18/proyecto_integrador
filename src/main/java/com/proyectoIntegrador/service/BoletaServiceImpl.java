@@ -20,7 +20,7 @@ public class BoletaServiceImpl implements BoletaService {
 	}
 
 	@Override
-	public List<Boleta> listarBoletasCliente(String idCliente) {
+	public List<Boleta> listarBoletasCliente(int idCliente) {
 		return repository.listarBoletasCliente(idCliente);
 	}
 

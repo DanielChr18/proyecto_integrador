@@ -6,7 +6,7 @@ import com.proyectoIntegrador.entity.Reserva;
 
 public interface ReservaService {
 
-	public abstract List<Reserva> listarReservasCliente(String idCliente);
+	public abstract List<Reserva> listarReservasCliente(int idCliente);
 
 	public abstract Reserva registrarReserva(Reserva obj);
 

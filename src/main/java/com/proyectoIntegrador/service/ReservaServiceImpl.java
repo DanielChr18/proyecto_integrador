@@ -15,7 +15,7 @@ public class ReservaServiceImpl implements ReservaService {
 	private ReservaRepository repository;
 
 	@Override
-	public List<Reserva> listarReservasCliente(String idCliente) {
+	public List<Reserva> listarReservasCliente(int idCliente) {
 		return repository.listarReservasCliente(idCliente);
 	}
 

@@ -52,7 +52,8 @@
 												<form accept-charset="UTF-8">
 													<div class="cart-grid" id="cart-8">
 														<div class="img"
-															onmouseover="cambiarImagen('${producto.idProducto}');">
+															onmouseover="cambiarImagen('${producto.idProducto}');"
+															onmouseout="cancelarImagen('${producto.idProducto}');">
 															<img
 																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
 																src="images/productos/${producto.imagen1}" alt="">
@@ -87,21 +88,37 @@
 	</div>
 
 	<script type="text/javascript" charset="utf-8">
+		var ayudaImagen = 0;
+		var setI = 0;
 		function cambiarImagen(idProducto) {
 			var slides = document.getElementsByClassName('imagenesProducto'
 					+ idProducto);
 			var slide = 0;
 
-			setTimeout(function() {
-				for (var i = 0; i < slides.length; i++) {
-					slides[i].style.display = "none";
-				}
-				slide++;
-				if (slide > slides.length - 1) {
-					slide = 0;
-				}
-				slides[slide].style.display = "block";
-			}, 1000);
+			if (ayudaImagen == 0) {
+				setI = setInterval(function() {
+					for (var i = 0; i < slides.length; i++) {
+						slides[i].style.display = "none";
+					}
+					slide++;
+					if (slide > slides.length - 1) {
+						slide = 0;
+					}
+					slides[slide].style.display = "block";
+					ayudaImagen = 1;
+				}, 1500);
+			}
+		}
+
+		function cancelarImagen(idProducto) {
+			var slides = document.getElementsByClassName('imagenesProducto'
+					+ idProducto);
+			for (var i = 0; i < slides.length; i++) {
+				slides[i].style.display = "none";
+			}
+			slides[0].style.display = "block";
+			ayudaImagen = 0;
+			clearInterval(setI);
 		}
 	</script>
 
@@ -134,10 +151,17 @@
 															.append(
 																	"<form accept-charset='UTF-8'>"
 																			+ "<div class='cart-grid' id='cart-8'>"
-																			+ "<div class='img'>"
-																			+ "<img src='images/productos/"
-																			+ item.imagen1
-																			+ "' alt='img'>"
+																			+ "<div class='img' onmouseover=\"cambiarImagen('"
+																			+ item.idProducto
+																			+ "');\" onmouseout=\"cancelarImagen('"
+																			+ item.idProducto
+																			+ "');\>"
+																			+ "<img class='slideProducto fadeProducto imagenesProducto"
+																			+ item.idProducto + "' src='images/productos/" + item.imagen1 + "'>"
+																			+ "<img class='slideProducto fadeProducto imagenesProducto"
+																			+ item.idProducto + "' src='images/productos/" + item.imagen2 + "'>"
+																			+ "<img class='slideProducto fadeProducto imagenesProducto"
+																			+ item.idProducto+"' src='images/productos/" + item.imagen3+ "'>"
 																			+ "</div>"
 																			+ "<ul class='info'>"
 																			+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"

@@ -66,7 +66,8 @@ public class productoController {
 		Producto listaProducto = service.listaProductosId(idProducto);
 		ArrayList<Producto> listaPro = new ArrayList<Producto>();
 		session.setAttribute("objUltimoProducto", id);
-		if (session.getAttribute("objContadorProductos") == null) {
+		if (session.getAttribute("objContadorProductos") == null
+				|| session.getAttribute("objContadorProductos").toString().equals("0")) {
 			salida.put("NOMBRE", listaProducto.getNombre());
 			salida.put("PRECIO", listaProducto.getPrecio());
 			salida.put("ID", listaProducto.getIdProducto());

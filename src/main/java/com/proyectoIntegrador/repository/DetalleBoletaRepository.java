@@ -11,5 +11,5 @@ import com.proyectoIntegrador.entity.DetalleBoleta;
 public interface DetalleBoletaRepository extends JpaRepository<DetalleBoleta, Integer> {
 
 	@Query("select d from DetalleBoleta d where d.idBoleta.idBoleta = :param_boleta")
-	public abstract List<DetalleBoleta> listarDetallesPorBoleta(@Param("param_boleta") String idBoleta);
+	public abstract List<DetalleBoleta> listarDetallesPorBoleta(@Param("param_boleta") int idBoleta);
 }

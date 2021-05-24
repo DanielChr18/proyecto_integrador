@@ -91,15 +91,17 @@ public class usuarioController {
 			String nomUsu = session.getAttribute("objUsuario").toString();
 			Usuario usu = service.findByNomUsuario(nomUsu);
 			session.setAttribute("objCargo", usu.getCargo());
-			switch (usu.getCargo()) {
-			case "Cliente":
+			if (usu.getCargo().equals("Cliente")) {
 				Cliente cli = serviceCli.buscarClienteUsuario(usu.getIdUsuario());
 				session.setAttribute("objIdCliente", cli.getIdCliente());
 				return "redirect:datosMascotas";
-			case "Personal de Ventas":
-				return "redirect:crudProductos";
-			case "Veterinario":
-				return "redirect:listaProductos";
+			} else if (!usu.getCargo().equals("Cliente")) {
+				Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
+				session.setAttribute("objIdTrabajador", tra.getIdTrabajador());
+				if (usu.getCargo().equals("Personal de Ventas"))
+					return "redirect:crudProductos";
+				else if (usu.getCargo().equals("Veterinario"))
+					return "redirect:listaProductos";
 			}
 		} else {
 			return "redirect:error404";
@@ -113,6 +115,7 @@ public class usuarioController {
 		session.removeAttribute("objCargo");
 		session.removeAttribute("objIdCliente");
 		session.removeAttribute("objUsuario");
+		session.removeAttribute("objIdTrabajador");
 		System.out.println(session.getAttributeNames().toString());
 		return "redirect:listaProductos";
 	}

@@ -15,7 +15,7 @@ public class DetalleBoletaServiceImpl implements DetalleBoletaService {
 	private DetalleBoletaRepository repository;
 
 	@Override
-	public List<DetalleBoleta> listarDetallesPorBoleta(String idBoleta) {
+	public List<DetalleBoleta> listarDetallesPorBoleta(int idBoleta) {
 		return repository.listarDetallesPorBoleta(idBoleta);
 	}
 
