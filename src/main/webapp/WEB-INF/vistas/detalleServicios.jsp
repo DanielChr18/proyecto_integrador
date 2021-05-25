@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="css/estilo1.1.css" />
 <link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
+       
+				      <link rel="stylesheet" href="path/to/css/smart-forms.css">
+        			  <link rel="stylesheet" href="path/to/css/font-awesome.min.css">  
 </head>
 
 <body class="">
@@ -65,6 +68,28 @@
 																width="300px" height="300px" />
 														</div>
 													</div>
+													
+													<div class="form-header header-primary">
+													
+      			<h3>	<i class="fa fa-calendar">	</i> Reserva del Servicio para tu Mascota</h3>
+    </div>
+													<div class="row">
+										<div class="col-md-6" id="id_divMascota">
+											<label class="bmd-label">Mascota</label>
+											<div class="caja">
+												<select id="id_mascotaRegistrar" class="estilo-select"
+													name="idMascota.idMascota">
+													<option value="">[ SELECCIONAR MASCOTA ]</option>
+													<c:forEach var="mascota" items="${mascotas}">
+														<option value="${mascota.idMascota}">${mascota.nombre}</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+										
+									</div>
+													
+													
 													<div class="row">
 														<div class="col-md-12">
 															<div class="row" style="padding-left: 15px;">
@@ -83,12 +108,14 @@
 															</div>
 														</div>
 													</div>
-													<div class="row">
-														<div class="col-md-12">
+													
 															<button type="button" onclick="history.go(-1)"
 																class="btn btn-primary pull-left">Regresar</button>
-														</div>
-													</div>
+													
+														
+															<button type="button" onclick=""
+																class="btn btn-primary pull-left">Agregar Reserva</button>
+													
 												</div>
 											</div>
 										</div>
