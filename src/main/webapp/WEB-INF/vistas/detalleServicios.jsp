@@ -34,7 +34,9 @@
 									<h3 class="card-title">Detalles de Servicio</h3>
 								</div>
 								<div class="card-body">
-									<form accept-charset="UTF-8">
+									<form   accept-charset="UTF-8" id="id_formRegistrarReserva"
+								action="registrarReserva" method="post"
+								enctype="multipart/form-data">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row" hidden="hidden">
@@ -69,6 +71,7 @@
 															tu Mascota
 														</h3>
 													</div>
+													
 													<div class="row">
 														<div class="col-md-6" id="id_divMascota">
 															<label class="bmd-label">Mascota</label>
@@ -83,6 +86,7 @@
 															</div>
 														</div>
 													</div>
+													
 													<div class="row" style="margin-bottom: 10px;">
 														<div class="col-md-12">
 															<div class="row" style="padding-left: 15px;">
@@ -103,8 +107,9 @@
 													</div>
 													<button type="button" onclick="history.go(-1)"
 														class="btn btn-primary pull-left">Regresar</button>
-													<button type="button" onclick=""
+													<button type="submit" id="id_btnRegistrarReserva"
 														class="btn btn-primary pull-left">Agregar Reserva</button>
+														
 												</div>
 											</div>
 										</div>
@@ -119,6 +124,18 @@
 	</div>
 	
 	<script type="text/javascript">
+	$("#id_formRegistrarReserva").on(
+			'submit',
+			function(evt) {
+				$("#id_btnRegistrarReserva").attr("disabled", false);
+				var validator = $('#id_formRegistrarReserva').data(
+						'bootstrapValidator');
+				if (validator.isValid()) {
+					swal("¡Éxito!", "Reserva registrada correctamente.",
+							"success");
+				}
+			});
+	
 		$('#id_menuServicios').addClass('active');
 		$(function() {
 			var ayuda = $("#id_diaServicio").val();
@@ -194,5 +211,27 @@
 							});
 		});
 	</script>
+	
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							$('#id_formRegistrarReserva')
+									.bootstrapValidator(
+											{
+												message : 'This value is not valid',
+												feedbackIcons : {
+													valid : 'glyphicon glyphicon-ok',
+													invalid : 'glyphicon glyphicon-remove',
+													validating : 'glyphicon glyphicon-refresh'
+												},
+												fields : {
+												
+												}
+											});
+						});
+	</script>
+	
+	
 </body>
 </html>
