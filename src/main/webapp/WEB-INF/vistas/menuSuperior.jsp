@@ -159,7 +159,7 @@
 						</div>
 						<div class="col-md-3">
 							<form action="agregarBoleta" id="form_boletaCompra"
-								accept-charset="UTF-8">
+								accept-charset="UTF-8" onsubmit="funcionSubmitRegistrar(event);">
 								<div class="row">
 									<input id="id_montoBoleta" hidden="hidden" class="form-control"
 										type="text" name="monto">
@@ -173,14 +173,10 @@
 									<h5 id="fechaDetallePedido"></h5>
 									<c:if test="${objIdCliente == null}">
 										<div class="snipcart-details">
-											<button type="submit" class="button w3l-cart"
-												data-id="cart-8">Realizar Compra</button>
-										</div>
-									</c:if>
-									<c:if test="${objIdCliente != null}">
-										<div class="snipcart-details">
-											<button type="button" class="button w3l-cart"
-												data-id="cart-8">Realizar Compra</button>
+											<a href="login">
+												<button type="button" class="button w3l-cart"
+													data-id="cart-8">Realizar Compra</button>
+											</a>
 										</div>
 									</c:if>
 								</div>
@@ -189,21 +185,34 @@
 										style="width: 100%; margin: 0; margin-top: 15px;">
 										<h4>METODO DE PAGO</h4>
 										<div class="dropdown-divider"></div>
-										<div class="col2">
-											<label>Número de Tarjeta</label> <input
-												class="form-control number" type="text" ng-model="ncard"
-												maxlength="19"
-												onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
-											<label style="margin-top: 12px">Fecha de Vencimiento</label>
-											<input class="form-control expire" type="text"
-												placeholder="MM / YYYY" /> <label style="margin-top: 12px">Número
-												de Seguridad</label> <input class="form-control ccv" type="text"
-												placeholder="CVC" maxlength="3"
-												onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+										<div class="row">
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Número de Tarjeta</label> <input
+														class="form-control number" type="text" ng-model="ncard"
+														maxlength="19" id="id_numTarjeta"
+														onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+												</div>
+											</div>
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Fecha de Vencimiento</label> <input
+														class="form-control expire" id="id_fechaVencimiento"
+														type="text" placeholder="MM / YYYY" maxlength="9" />
+												</div>
+											</div>
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Número de Seguridad</label> <input
+														class="form-control ccv" type="text" placeholder="CVC"
+														maxlength="3" id="id_numSeguridad"
+														onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+												</div>
+											</div>
 										</div>
 										<div class="snipcart-details" style="margin-top: 12px">
-											<button type="submit" class="button w3l-cart"
-												data-id="cart-8">ACEPTAR</button>
+											<button id="btn_aceptar" type="submit"
+												class="button w3l-cart" data-id="cart-8">ACEPTAR</button>
 										</div>
 									</div>
 								</c:if>
@@ -215,6 +224,34 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	function funcionSubmitRegistrar(event) {
+		event.preventDefault();
+		var validator = $('#form_boletaCompra').data('bootstrapValidator');
+		if (validator.isValid()) {
+			$.ajax({
+				type : 'POST',
+				data : {},
+				url : 'validacionProductos',
+				success : function(data) {
+					if (data.CONFIRMACION == 'SI') {
+						swal("¡Pago exitoso!", data.MENSAJE, "success");
+						setTimeout(function() {
+							event.target.submit();
+						}, 1500);
+					} else {
+						swal("¡Aviso!", data.MENSAJE, "warning");
+					}
+				},
+				error : function() {
+					swal("¡Error!", "", "error");
+				}
+			});
+		}
+	}
+</script>
+
 
 
 <script type="text/javascript">
@@ -237,6 +274,10 @@
 
 	function cerrarModalDetallePedido() {
 		$("#idModalDetallePedido").modal("hide");
+		$("#id_numTarjeta").val('');
+		$("#id_fechaVencimiento").val('');
+		$("#id_numSeguridad").val('');
+		$('#form_boletaCompra').data('bootstrapValidator').resetForm();
 	}
 
 	function agregarQuitarCantidad(idProducto) {
@@ -381,9 +422,54 @@
 	});
 </script>
 
-
-
-
-
-
-
+<!-- Validación de Modal Detalle Pedido -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#form_boletaCompra').bootstrapValidator({
+			message : 'This value is not valid',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				numTarjeta : {
+					selector : "#id_numTarjeta",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese el número de tarjeta'
+						},
+						stringLength : {
+							min : 19,
+							message : 'Ingrese el número de tarjeta completo'
+						}
+					}
+				},
+				fechaVencimiento : {
+					selector : "#id_fechaVencimiento",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese la Fec. Vencimiento'
+						},
+						stringLength : {
+							min : 9,
+							message : 'Ingrese la Fec. Vencimiento completa'
+						}
+					}
+				},
+				numSeguridad : {
+					selector : "#id_numSeguridad",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese el número de seguridad'
+						},
+						stringLength : {
+							min : 3,
+							message : 'Ingrese el número de seguridad completo'
+						}
+					}
+				}
+			}
+		});
+	});
+</script>

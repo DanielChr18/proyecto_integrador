@@ -21,84 +21,82 @@
 
 </head>
 <body class="">
-	<c:if test="${objCargo == 'Personal de Ventas'}">
-		<div class="wrapper ">
-			<jsp:include page="menuLateral.jsp" />
-			<div class="main-panel">
-				<jsp:include page="menuSuperior.jsp" />
-				<div class="content">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="card">
-									<div class="card-header card-header-primary">
-										<h3 class="card-title">
-											<i class="material-icons">inventory_2</i> Datos de Producto
-										</h3>
-										<p class="card-category">Mantenimiento</p>
-									</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-12">
-														<form accept-charset="UTF-8">
-															<div class="card-body" style="padding: 20px 10px;">
-																<div class="row">
-																	<button type="button"
-																		onclick="verModalProductoRegistra();"
-																		class="btn btn-primary pull-left">Registrar
-																		Producto</button>
-																</div>
-																<br />
-																<div class="row" style="overflow: auto;">
-																	<table id="tablaProductos" class="table table-hover">
-																		<thead class="text-primary">
-																			<tr>
-																				<th>ID</th>
-																				<th>Nombre</th>
-																				<th>Precio</th>
-																				<th>Stock</th>
-																				<th>Serie</th>
-																				<th>Marca</th>
-																				<th>Proveedor</th>
-																				<th>Descripción</th>
-																				<th>Imagen</th>
-																				<th>Acción</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<c:forEach items="${productos}" var="producto">
-																				<tr>
-																					<td>${producto.idProducto}</td>
-																					<td>${producto.nombre}</td>
-																					<td>${producto.precio}</td>
-																					<td>${producto.stock}</td>
-																					<td>${producto.serie}</td>
-																					<td>${producto.idMarca.nombre}</td>
-																					<td>${producto.idProveedor.razonSocial}</td>
-																					<td>${producto.descripcion}</td>
-																					<td><img
-																						src="images/productos/${producto.imagen1}"
-																						alt="img" width="50px" height="50px"></td>
-																					<td>
-																						<button type="button"
-																							onclick="verModalProductoModifica('${producto.idProducto}','${producto.nombre}','${producto.precio}','${producto.stock}','${producto.serie}','${producto.idMarca.idMarca}','${producto.idProveedor.idProveedor}','${producto.descripcion}');">
-																							<span class="material-icons"> edit </span>
-																						</button>
-																						<button type="button"
-																							onclick="verModalProductoElimina('${producto.idProducto}');">
-																							<span class="material-icons"> delete </span>
-																						</button>
-																					</td>
-																				</tr>
-																			</c:forEach>
-																		</tbody>
-																	</table>
-																</div>
+	<div class="wrapper ">
+		<jsp:include page="menuLateral.jsp" />
+		<div class="main-panel">
+			<jsp:include page="menuSuperior.jsp" />
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h3 class="card-title">
+										<i class="material-icons">inventory_2</i> Datos de Producto
+									</h3>
+									<p class="card-category">Mantenimiento</p>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-md-12">
+													<form accept-charset="UTF-8">
+														<div class="card-body" style="padding: 20px 10px;">
+															<div class="row">
+																<button type="button"
+																	onclick="verModalProductoRegistra();"
+																	class="btn btn-primary pull-left">Registrar
+																	Producto</button>
 															</div>
-														</form>
-													</div>
+															<br />
+															<div class="row" style="overflow: auto;">
+																<table id="tablaProductos" class="table table-hover">
+																	<thead class="text-primary">
+																		<tr>
+																			<th>ID</th>
+																			<th>Nombre</th>
+																			<th>Precio</th>
+																			<th>Stock</th>
+																			<th>Serie</th>
+																			<th>Marca</th>
+																			<th>Proveedor</th>
+																			<th>Descripción</th>
+																			<th>Imagen</th>
+																			<th>Acción</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${productos}" var="producto">
+																			<tr>
+																				<td>${producto.idProducto}</td>
+																				<td>${producto.nombre}</td>
+																				<td>${producto.precio}</td>
+																				<td>${producto.stock}</td>
+																				<td>${producto.serie}</td>
+																				<td>${producto.idMarca.nombre}</td>
+																				<td>${producto.idProveedor.razonSocial}</td>
+																				<td>${producto.descripcion}</td>
+																				<td><img
+																					src="images/productos/${producto.imagen1}"
+																					alt="img" width="50px" height="50px"></td>
+																				<td>
+																					<button type="button"
+																						onclick="verModalProductoModifica('${producto.idProducto}','${producto.nombre}','${producto.precio}','${producto.stock}','${producto.serie}','${producto.idMarca.idMarca}','${producto.idProveedor.idProveedor}','${producto.descripcion}');">
+																						<span class="material-icons"> edit </span>
+																					</button>
+																					<button type="button"
+																						onclick="verModalProductoElimina('${producto.idProducto}');">
+																						<span class="material-icons"> delete </span>
+																					</button>
+																				</td>
+																			</tr>
+																		</c:forEach>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</form>
 												</div>
 											</div>
 										</div>
@@ -109,356 +107,349 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
 
-			<!-- Modal de Registro de Producto -->
+		<!-- Modal de Registro de Producto -->
 
-			<div class="modal fade" id="idModalRegistraProducto"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 55%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Registrar Producto</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formRegistrarProducto"
-									action="registrarProducto" method="post"
-									enctype="multipart/form-data">
-									<div class="row" id="id_divNombreRegistrar">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre de Artículo</label>
-												<input class="form-control" type="text"
-													id="id_nombreRegistrar" name="nombre">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-4" id="id_divPrecioRegistrar">
-											<div class="form-group">
-												<label class="bmd-label-floating">Precio</label> <input
-													class="form-control" type="text" id="id_precioRegistrar"
-													name="precio">
-											</div>
-										</div>
-										<div class="col-md-4" id="id_divStockRegistrar">
-											<div class="form-group">
-												<label class="bmd-label-floating">Stock</label> <input
-													class="form-control" type="text" id="id_stockRegistrar"
-													name="stock">
-											</div>
-										</div>
-										<div class="col-md-4" id="id_divSerieRegistrar">
-											<div class="form-group">
-												<label class="bmd-label-floating">Serie</label> <input
-													class="form-control" type="text" id="id_serieRegistrar"
-													name="serie">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6" id="id_divMarcaRegistrar">
-											<label class="bmd-label">Marca</label>
-											<div class="caja">
-												<select id="id_marcaRegistrar" class="estilo-select"
-													name="idMarca.idMarca">
-													<option value="">[ SELECCIONAR MARCA ]</option>
-													<c:forEach var="marca" items="${marcas}">
-														<option value="${marca.idMarca}">${marca.nombre}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</div>
-										<div class="col-md-6" id="id_divProveedorRegistrar">
-											<label class="bmd-label">Proveedor</label>
-											<div class="caja">
-												<select id="id_proveedorRegistrar" class="estilo-select"
-													name="idProveedor.idProveedor">
-													<option value="">[ SELECCIONAR PROVEEDOR ]</option>
-													<c:forEach var="proveedor" items="${proveedores}">
-														<option value="${proveedor.idProveedor}">${proveedor.razonSocial}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="row" id="id_divDescripcionRegistrar"
-										style="margin-top: 15px;">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Descripción Corta</label>
-												<input class="form-control" type="text"
-													id="id_descripcionRegistrar" name="descripcion">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<label class="bmd-label-floating">Descripción Larga</label>
-											<textarea id="editor1" name="descripcionLarga"></textarea>
-											<small id="id_mensajeDescripcionLargaRegistrar"
-												style="color: #cc0000;">La descripción larga no
-												puede estar vacía</small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 1</label>
-											</div>
-											<div class="invoiceBox">
-												<label for="id_imagen1Registrar" id="boxFile1Registrar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen1Registrar"
-													name="imagen1ProductoRegistrar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
-											<small id="id_mensajeImagen1Registrar"
-												style="color: #cc0000;">Seleccionar Imagen</small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 2</label>
-											</div>
-											<div class="invoiceBox">
-												<label for="id_imagen2Registrar" id="boxFile2Registrar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen2Registrar"
-													name="imagen2ProductoRegistrar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
-											<small id="id_mensajeImagen2Registrar"
-												style="color: #cc0000;">Seleccionar Imagen</small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 3</label>
-											</div>
-											<div class="invoiceBox">
-												<label for="id_imagen3Registrar" id="boxFile3Registrar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen3Registrar"
-													name="imagen3ProductoRegistrar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
-											<small id="id_mensajeImagen3Registrar"
-												style="color: #cc0000;">Seleccionar Imagen</small>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalProductoRegistra();"
-										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnRegistrarProducto" type="submit"
-										class="btn btn-primary pull-right">Registrar</button>
-								</form>
-							</div>
+		<div class="modal fade" id="idModalRegistraProducto"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 55%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Registrar Producto</h3>
 						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Modificar Producto -->
-			<div class="modal fade" id="idModalModificaProducto"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 55%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Modificar Producto</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formModificarProducto"
-									action="modificarProducto" method="post"
-									enctype="multipart/form-data">
-									<div class="row" hidden="hidden">
-										<input class="form-control" type="text"
-											id="id_codigoModificar" name="idProducto">
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group" id="div_nombreModificar">
-												<label class="bmd-label-floating">Nombre de Artículo</label>
-												<input class="form-control" type="text"
-													id="id_nombreModificar" name="nombre">
-											</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formRegistrarProducto"
+								action="registrarProducto" method="post"
+								enctype="multipart/form-data">
+								<div class="row" id="id_divNombreRegistrar">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Nombre de Artículo</label>
+											<input class="form-control" type="text"
+												id="id_nombreRegistrar" name="nombre">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-4">
-											<div class="form-group" id="div_precioModificar">
-												<label class="bmd-label-floating">Precio</label> <input
-													class="form-control" type="text" id="id_precioModificar"
-													name="precio">
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group" id="div_stockModificar">
-												<label class="bmd-label-floating">Stock</label> <input
-													class="form-control" type="text" id="id_stockModificar"
-													name="stock">
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group" id="div_serieModificar">
-												<label class="bmd-label-floating">Serie</label> <input
-													class="form-control" type="text" id="id_serieModificar"
-													name="serie">
-											</div>
+								</div>
+								<div class="row">
+									<div class="col-md-4" id="id_divPrecioRegistrar">
+										<div class="form-group">
+											<label class="bmd-label-floating">Precio</label> <input
+												class="form-control" type="text" id="id_precioRegistrar"
+												name="precio">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<label class="bmd-label">Marca</label>
-											<div class="caja">
-												<select id="id_marcaModificar" class="estilo-select"
-													name="idMarca.idMarca">
-													<option value="">[ SELECCIONAR MARCA ]</option>
-													<c:forEach var="marca" items="${marcas}">
-														<option value="${marca.idMarca}">${marca.nombre}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<label class="bmd-label">Proveedor</label>
-											<div class="caja">
-												<select id="id_proveedorModificar" class="estilo-select"
-													name="idProveedor.idProveedor">
-													<option value="">[ SELECCIONAR PROVEEDOR ]</option>
-													<c:forEach var="proveedor" items="${proveedores}">
-														<option value="${proveedor.idProveedor}">${proveedor.razonSocial}</option>
-													</c:forEach>
-												</select>
-											</div>
+									<div class="col-md-4" id="id_divStockRegistrar">
+										<div class="form-group">
+											<label class="bmd-label-floating">Stock</label> <input
+												class="form-control" type="text" id="id_stockRegistrar"
+												name="stock">
 										</div>
 									</div>
-									<div class="row" style="margin-top: 15px;">
-										<div class="col-md-12">
-											<div class="form-group" id="div_descripcionModificar">
-												<label class="bmd-label-floating">Descripción</label> <input
-													class="form-control" type="text"
-													id="id_descripcionModificar" name="descripcion">
-											</div>
+									<div class="col-md-4" id="id_divSerieRegistrar">
+										<div class="form-group">
+											<label class="bmd-label-floating">Serie</label> <input
+												class="form-control" type="text" id="id_serieRegistrar"
+												name="serie">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<label class="bmd-label-floating">Descripción Larga</label>
-											<textarea id="editor2" name="descripcionLarga"></textarea>
-											<small id="id_mensajeDescripcionLargaModificar"
-												style="color: #cc0000;">La descripción larga no
-												puede estar vacía</small>
+								</div>
+								<div class="row">
+									<div class="col-md-6" id="id_divMarcaRegistrar">
+										<label class="bmd-label">Marca</label>
+										<div class="caja">
+											<select id="id_marcaRegistrar" class="estilo-select"
+												name="idMarca.idMarca">
+												<option value="">[ SELECCIONAR MARCA ]</option>
+												<c:forEach var="marca" items="${marcas}">
+													<option value="${marca.idMarca}">${marca.nombre}</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 1</label>
-											</div>
-											<div class="img" id="imagen1"></div>
-											<div class="invoiceBox">
-												<label for="id_imagen1Modificar" id="boxFile1Modificar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen1Modificar"
-													name="imagen1ProductoModificar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
+									<div class="col-md-6" id="id_divProveedorRegistrar">
+										<label class="bmd-label">Proveedor</label>
+										<div class="caja">
+											<select id="id_proveedorRegistrar" class="estilo-select"
+												name="idProveedor.idProveedor">
+												<option value="">[ SELECCIONAR PROVEEDOR ]</option>
+												<c:forEach var="proveedor" items="${proveedores}">
+													<option value="${proveedor.idProveedor}">${proveedor.razonSocial}</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 2</label>
-											</div>
-											<div class="img" id="imagen2"></div>
-											<div class="invoiceBox">
-												<label for="id_imagen2Modificar" id="boxFile2Modificar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen2Modificar"
-													name="imagen2ProductoModificar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
+								</div>
+								<div class="row" id="id_divDescripcionRegistrar"
+									style="margin-top: 15px;">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Descripción Corta</label> <input
+												class="form-control" type="text"
+												id="id_descripcionRegistrar" name="descripcion">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Imagen 3</label>
-											</div>
-											<div class="img" id="imagen3"></div>
-											<div class="invoiceBox">
-												<label for="id_imagen3Modificar" id="boxFile3Modificar"
-													class="boxFile" data-text="Seleccionar Imagen">
-													Seleccionar Imagen </label> <input id="id_imagen3Modificar"
-													name="imagen3ProductoModificar" size="6000" type="file"
-													accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-											</div>
-										</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<label class="bmd-label-floating">Descripción Larga</label>
+										<textarea id="editor1" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaRegistrar"
+											style="color: #cc0000;">La descripción larga no puede
+											estar vacía</small>
 									</div>
-									<button type="button" onclick="cerrarModalProductoModifica();"
-										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnModificarProducto" type="submit"
-										class="btn btn-primary pull-right">Actualizar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Eliminar Producto -->
-			<div class="modal fade" id="idModalEliminaProducto"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Eliminar Producto</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form id="id_formEliminarProducto" accept-charset="UTF-8"
-									action="eliminarProducto" method="post">
-									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													id="id_codigoEliminar" name="idProducto">
-											</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 1</label>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<span class="pull-center">¿Desea eliminar el producto
-													seleccionado?</span>
-											</div>
+										<div class="invoiceBox">
+											<label for="id_imagen1Registrar" id="boxFile1Registrar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen1Registrar"
+												name="imagen1ProductoRegistrar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
 										</div>
+										<small id="id_mensajeImagen1Registrar" style="color: #cc0000;">Seleccionar
+											Imagen</small>
 									</div>
-									<button type="button" onclick="cerrarModalProductoElimina();"
-										class="btn btn-primary pull-right">NO</button>
-									<button type="submit" class="btn btn-primary pull-left">SI</button>
-								</form>
-							</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 2</label>
+										</div>
+										<div class="invoiceBox">
+											<label for="id_imagen2Registrar" id="boxFile2Registrar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen2Registrar"
+												name="imagen2ProductoRegistrar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+										</div>
+										<small id="id_mensajeImagen2Registrar" style="color: #cc0000;">Seleccionar
+											Imagen</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 3</label>
+										</div>
+										<div class="invoiceBox">
+											<label for="id_imagen3Registrar" id="boxFile3Registrar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen3Registrar"
+												name="imagen3ProductoRegistrar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+										</div>
+										<small id="id_mensajeImagen3Registrar" style="color: #cc0000;">Seleccionar
+											Imagen</small>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalProductoRegistra();"
+									class="btn btn-primary pull-right">Cancelar</button>
+								<button id="id_btnRegistrarProducto" type="submit"
+									class="btn btn-primary pull-right">Registrar</button>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</c:if>
 
-	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo != 'Personal de Ventas'}">
-		<div class="container-login100"
-			style="background-image: url('images/error403.jpg');"></div>
-	</c:if>
+		<!-- Modal de Modificar Producto -->
+		<div class="modal fade" id="idModalModificaProducto"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 55%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Modificar Producto</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formModificarProducto"
+								action="modificarProducto" method="post"
+								enctype="multipart/form-data">
+								<div class="row" hidden="hidden">
+									<input class="form-control" type="text" id="id_codigoModificar"
+										name="idProducto">
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group" id="div_nombreModificar">
+											<label class="bmd-label-floating">Nombre de Artículo</label>
+											<input class="form-control" type="text"
+												id="id_nombreModificar" name="nombre">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group" id="div_precioModificar">
+											<label class="bmd-label-floating">Precio</label> <input
+												class="form-control" type="text" id="id_precioModificar"
+												name="precio">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group" id="div_stockModificar">
+											<label class="bmd-label-floating">Stock</label> <input
+												class="form-control" type="text" id="id_stockModificar"
+												name="stock">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group" id="div_serieModificar">
+											<label class="bmd-label-floating">Serie</label> <input
+												class="form-control" type="text" id="id_serieModificar"
+												name="serie">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<label class="bmd-label">Marca</label>
+										<div class="caja">
+											<select id="id_marcaModificar" class="estilo-select"
+												name="idMarca.idMarca">
+												<option value="">[ SELECCIONAR MARCA ]</option>
+												<c:forEach var="marca" items="${marcas}">
+													<option value="${marca.idMarca}">${marca.nombre}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label class="bmd-label">Proveedor</label>
+										<div class="caja">
+											<select id="id_proveedorModificar" class="estilo-select"
+												name="idProveedor.idProveedor">
+												<option value="">[ SELECCIONAR PROVEEDOR ]</option>
+												<c:forEach var="proveedor" items="${proveedores}">
+													<option value="${proveedor.idProveedor}">${proveedor.razonSocial}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-top: 15px;">
+									<div class="col-md-12">
+										<div class="form-group" id="div_descripcionModificar">
+											<label class="bmd-label-floating">Descripción</label> <input
+												class="form-control" type="text"
+												id="id_descripcionModificar" name="descripcion">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<label class="bmd-label-floating">Descripción Larga</label>
+										<textarea id="editor2" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaModificar"
+											style="color: #cc0000;">La descripción larga no puede
+											estar vacía</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 1</label>
+										</div>
+										<div class="img" id="imagen1"></div>
+										<div class="invoiceBox">
+											<label for="id_imagen1Modificar" id="boxFile1Modificar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen1Modificar"
+												name="imagen1ProductoModificar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 2</label>
+										</div>
+										<div class="img" id="imagen2"></div>
+										<div class="invoiceBox">
+											<label for="id_imagen2Modificar" id="boxFile2Modificar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen2Modificar"
+												name="imagen2ProductoModificar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Imagen 3</label>
+										</div>
+										<div class="img" id="imagen3"></div>
+										<div class="invoiceBox">
+											<label for="id_imagen3Modificar" id="boxFile3Modificar"
+												class="boxFile" data-text="Seleccionar Imagen">
+												Seleccionar Imagen </label> <input id="id_imagen3Modificar"
+												name="imagen3ProductoModificar" size="6000" type="file"
+												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalProductoModifica();"
+									class="btn btn-primary pull-right">Cancelar</button>
+								<button id="id_btnModificarProducto" type="submit"
+									class="btn btn-primary pull-right">Actualizar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<!-- Modal de Eliminar Producto -->
+		<div class="modal fade" id="idModalEliminaProducto"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 25%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Eliminar Producto</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form id="id_formEliminarProducto" accept-charset="UTF-8"
+								action="eliminarProducto" method="post">
+								<div class="row" hidden="hidden">
+									<div class="col-md-12">
+										<div class="form-group">
+											<input class="form-control" type="text"
+												id="id_codigoEliminar" name="idProducto">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<span class="pull-center">¿Desea eliminar el producto
+												seleccionado?</span>
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalProductoElimina();"
+									class="btn btn-primary pull-right">NO</button>
+								<button type="submit" class="btn btn-primary pull-left">SI</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script type="text/javascript">
 		imagen('#id_imagen1Registrar', '#boxFile1Registrar',

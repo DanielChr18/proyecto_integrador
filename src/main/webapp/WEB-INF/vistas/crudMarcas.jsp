@@ -13,82 +13,78 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 </head>
 
 <body class="">
-	<c:if test="${objCargo == 'Personal de Ventas'}">
-		<div class="wrapper ">
-			<jsp:include page="menuLateral.jsp" />
-			<div class="main-panel">
-				<jsp:include page="menuSuperior.jsp" />
-				<div class="content">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="card">
-									<div class="card-header card-header-primary">
-										<h3 class="card-title">
-											<i class="material-icons">content_paste</i> Datos de Marca
-										</h3>
-										<p class="card-category">Mantenimiento</p>
-									</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-12">
-														<form accept-charset="UTF-8">
-															<div class="card-body" style="padding: 20px 10px;">
-																<div class="row">
-																	<button type="button"
-																		onclick="verModalMarcaRegistra();"
-																		class="btn btn-primary pull-left">Registrar
-																		Marca</button>
-																</div>
-																<br />
-																<div class="row" style="overflow: auto;">
-																	<div class="col-md-12">
-																		<table id="tablaMarcas" class="table table-hover">
-																			<thead class="text-primary">
+	<div class="wrapper ">
+		<jsp:include page="menuLateral.jsp" />
+		<div class="main-panel">
+			<jsp:include page="menuSuperior.jsp" />
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h3 class="card-title">
+										<i class="material-icons">content_paste</i> Datos de Marca
+									</h3>
+									<p class="card-category">Mantenimiento</p>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-md-12">
+													<form accept-charset="UTF-8">
+														<div class="card-body" style="padding: 20px 10px;">
+															<div class="row">
+																<button type="button" onclick="verModalMarcaRegistra();"
+																	class="btn btn-primary pull-left">Registrar
+																	Marca</button>
+															</div>
+															<br />
+															<div class="row" style="overflow: auto;">
+																<div class="col-md-12">
+																	<table id="tablaMarcas" class="table table-hover">
+																		<thead class="text-primary">
+																			<tr>
+																				<th style="width: 40px;">ID</th>
+																				<th>Nombre</th>
+																				<th style="width: 102.4px;">Editar</th>
+																				<th style="width: 102.4px;">Eliminar</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<c:forEach items="${marcas}" var="marca">
 																				<tr>
-																					<th style="width: 40px;">ID</th>
-																					<th>Nombre</th>
-																					<th style="width: 102.4px;">Editar</th>
-																					<th style="width: 102.4px;">Eliminar</th>
+																					<td>${marca.idMarca}</td>
+																					<td>${marca.nombre}</td>
+																					<td>
+																						<button type="button"
+																							onclick="verModalMarcaModifica('${marca.idMarca}','${marca.nombre}');"
+																							class="btn btn-primary">
+																							<img src="images/edit.gif" width="auto"
+																								height="auto" />
+																						</button>
+																					</td>
+																					<td>
+																						<button type="button"
+																							onclick="verModalMarcaElimina('${marca.idMarca}');"
+																							class="btn btn-primary">
+																							<img src="images/delete.gif" width="auto"
+																								height="auto" />
+																						</button>
+																					</td>
 																				</tr>
-																			</thead>
-																			<tbody>
-																				<c:forEach items="${marcas}" var="marca">
-																					<tr>
-																						<td>${marca.idMarca}</td>
-																						<td>${marca.nombre}</td>
-																						<td>
-																							<button type="button"
-																								onclick="verModalMarcaModifica('${marca.idMarca}','${marca.nombre}');"
-																								class="btn btn-primary">
-																								<img src="images/edit.gif" width="auto"
-																									height="auto" />
-																							</button>
-																						</td>
-																						<td>
-																							<button type="button"
-																								onclick="verModalMarcaElimina('${marca.idMarca}');"
-																								class="btn btn-primary">
-																								<img src="images/delete.gif" width="auto"
-																									height="auto" />
-																							</button>
-																						</td>
-																					</tr>
-																				</c:forEach>
-																			</tbody>
-																		</table>
-																	</div>
+																			</c:forEach>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
-														</form>
-													</div>
+														</div>
+													</form>
 												</div>
 											</div>
 										</div>
@@ -99,129 +95,123 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
-			<!-- Modal de Registro de Marca -->
-			<div class="modal fade" id="idModalRegistraMarca"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Registrar Marca</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formRegistrarMarca"
-									action="registrarMarca" method="post"
-									enctype="multipart/form-data">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre de Marca</label> <input
-													class="form-control" type="text" id="id_nombreRegistrar"
-													name="nombre">
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalMarcaRegistra();"
-										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnRegistrarMarca" type="submit"
-										class="btn btn-primary pull-right">Registrar</button>
-								</form>
-							</div>
+		<!-- Modal de Registro de Marca -->
+		<div class="modal fade" id="idModalRegistraMarca"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 45%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Registrar Marca</h3>
 						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Modificar Servicio -->
-			<div class="modal fade" id="idModalModificaMarca"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 45%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Modificar Marca</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formModificarMarca"
-									action="modificarMarca" method="post"
-									enctype="multipart/form-data">
-									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													id="id_codigoModificar" name="idMarca">
-											</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formRegistrarMarca"
+								action="registrarMarca" method="post"
+								enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Nombre de Marca</label> <input
+												class="form-control" type="text" id="id_nombreRegistrar"
+												name="nombre">
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group" id="div_nombreModificar">
-												<label class="bmd-label-floating">Nombre de Marca</label> <input
-													class="form-control" type="text" id="id_nombreModificar"
-													name="nombre">
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalMarcaModifica();"
-										class="btn btn-primary pull-right">Cancelar</button>
-									<button id="id_btnModificarMarca" type="submit"
-										class="btn btn-primary pull-right">Actualizar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Eliminar Servicio -->
-			<div class="modal fade" id="idModalEliminaMarca"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 25%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Eliminar Marca</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form id="id_formEliminarMarca" accept-charset="UTF-8"
-									action="eliminarMarca" method="post">
-									<div class="row" hidden="hidden">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input class="form-control" type="text"
-													id="id_codigoEliminar" name="idMarca">
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<span class="pull-center">¿Desea eliminar la Marca
-													seleccionada?</span>
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalMarcaElimina();"
-										class="btn btn-primary pull-right">NO</button>
-									<button type="submit" class="btn btn-primary pull-left">SI</button>
-								</form>
-							</div>
+								</div>
+								<button type="button" onclick="cerrarModalMarcaRegistra();"
+									class="btn btn-primary pull-right">Cancelar</button>
+								<button id="id_btnRegistrarMarca" type="submit"
+									class="btn btn-primary pull-right">Registrar</button>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</c:if>
 
-	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo != 'Personal de Ventas'}">
-		<div class="container-login100"
-			style="background-image: url('images/error403.jpg');"></div>
-	</c:if>
+		<!-- Modal de Modificar Servicio -->
+		<div class="modal fade" id="idModalModificaMarca"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 45%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Modificar Marca</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formModificarMarca"
+								action="modificarMarca" method="post"
+								enctype="multipart/form-data">
+								<div class="row" hidden="hidden">
+									<div class="col-md-12">
+										<div class="form-group">
+											<input class="form-control" type="text"
+												id="id_codigoModificar" name="idMarca">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group" id="div_nombreModificar">
+											<label class="bmd-label-floating">Nombre de Marca</label> <input
+												class="form-control" type="text" id="id_nombreModificar"
+												name="nombre">
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalMarcaModifica();"
+									class="btn btn-primary pull-right">Cancelar</button>
+								<button id="id_btnModificarMarca" type="submit"
+									class="btn btn-primary pull-right">Actualizar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal de Eliminar Servicio -->
+		<div class="modal fade" id="idModalEliminaMarca"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 25%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Eliminar Marca</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form id="id_formEliminarMarca" accept-charset="UTF-8"
+								action="eliminarMarca" method="post">
+								<div class="row" hidden="hidden">
+									<div class="col-md-12">
+										<div class="form-group">
+											<input class="form-control" type="text"
+												id="id_codigoEliminar" name="idMarca">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<span class="pull-center">¿Desea eliminar la Marca
+												seleccionada?</span>
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalMarcaElimina();"
+									class="btn btn-primary pull-right">NO</button>
+								<button type="submit" class="btn btn-primary pull-left">SI</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script type="text/javascript">
 		$("#id_formRegistrarMarca").on(
@@ -350,7 +340,26 @@
 
 		function verModalMarcaElimina(id) {
 			$("#id_codigoEliminar").val(id);
-			$("#idModalEliminaMarca").modal("show");
+			$
+					.ajax({
+						type : 'POST',
+						data : {
+							'idMarca' : id
+						},
+						url : 'verificarMarca',
+						success : function(data) {
+							if (data.CONFIRMACION == 'SI') {
+								$("#idModalEliminaMarca").modal("show");
+							} else {
+								swal(
+										"¡Error!",
+										"La Marca no se puede eliminar porque está asociado a un producto.",
+										"error");
+							}
+						},
+						error : function() {
+						}
+					});
 		}
 
 		function cerrarModalMarcaElimina() {

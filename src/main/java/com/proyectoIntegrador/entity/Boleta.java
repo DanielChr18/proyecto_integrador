@@ -35,6 +35,12 @@ public class Boleta {
 	@Column(name = "monto")
 	private double monto;
 
+	@Column(name = "fecha")
+	private String fecha;
+
+	@Column(name = "estado")
+	private String estado;
+
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idcliente")

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +49,13 @@ public class servicioController {
 	private FechasServiciosService serviceFecSer;
 
 	@RequestMapping("/listaServicios")
-	public String listaServicios(Model model) {
+	public String listaServicios(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
+				return "redirect:error403";
+			}
+		}
 		System.out.println("Listar Todos los Servicios");
 		List<Servicio> servicios = service.listaServicios();
 		List<Servicio> listaServicios = new ArrayList<>();
@@ -60,25 +69,32 @@ public class servicioController {
 	}
 
 	@RequestMapping("/crudServicios")
-	public String crudServicios(Model model) {
-		System.out.println("Listar Todos los Servicios CRUD");
-		List<Servicio> servicios = service.listaServicios();
-		List<Servicio> listaServicios = new ArrayList<>();
-		List<HorariosServicios> horarios = serviceHorSer.listarHorarios();
-		List<HorariosServicios> listaHorarios = new ArrayList<>();
-		for (HorariosServicios x : horarios) {
-			if (!x.getEstado().equals("desactivado")) {
-				listaHorarios.add(x);
+	public String crudServicios(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") == null) {
+			return "redirect:error403";
+		} else if (!session.getAttribute("objCargo").toString().equals("Personal de Ventas")) {
+			return "redirect:error403";
+		} else {
+			System.out.println("Listar Todos los Servicios CRUD");
+			List<Servicio> servicios = service.listaServicios();
+			List<Servicio> listaServicios = new ArrayList<>();
+			List<HorariosServicios> horarios = serviceHorSer.listarHorarios();
+			List<HorariosServicios> listaHorarios = new ArrayList<>();
+			for (HorariosServicios x : horarios) {
+				if (!x.getEstado().equals("desactivado")) {
+					listaHorarios.add(x);
+				}
 			}
-		}
-		for (Servicio x : servicios) {
-			if (x.getEstado().equals("activado")) {
-				listaServicios.add(x);
+			for (Servicio x : servicios) {
+				if (x.getEstado().equals("activado")) {
+					listaServicios.add(x);
+				}
 			}
+			model.addAttribute("horarios", listaHorarios);
+			model.addAttribute("servicios", listaServicios);
+			return "crudServicios";
 		}
-		model.addAttribute("horarios", listaHorarios);
-		model.addAttribute("servicios", listaServicios);
-		return "crudServicios";
 	}
 
 	@RequestMapping("/listadoHorariosServicios")
@@ -273,6 +289,23 @@ public class servicioController {
 			e.printStackTrace();
 		}
 		return "redirect:crudServicios";
+	}
+
+	@RequestMapping("/verificarServicio")
+	@ResponseBody
+	public Map<String, Object> verificarServicio(String idServicio) {
+		Map<String, Object> salida = new HashMap<>();
+		List<HorariosServicios> listaHorariosServicios = serviceHorSer
+				.listarHorariosServicios(Integer.parseInt(idServicio));
+		String confirmacion = "SI";
+		for (HorariosServicios h : listaHorariosServicios) {
+			if (h.getEstado().equals("ocupado")) {
+				confirmacion = "NO";
+				break;
+			}
+		}
+		salida.put("CONFIRMACION", confirmacion);
+		return salida;
 	}
 
 	@RequestMapping("/validarFechas")
