@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.proyectoIntegrador.entity.Cliente;
+import com.proyectoIntegrador.entity.Marca;
 import com.proyectoIntegrador.entity.Mascota;
 import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Servicio;
@@ -37,7 +38,11 @@ public class mascotaController {
 	@RequestMapping("/datosMascotas")
 	public String listaServicios(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objIdCliente") != null) {
+		if (session.getAttribute("objCargo") == null) {
+			return "redirect:error403";
+		} else if (!session.getAttribute("objCargo").toString().equals("Cliente")) {
+			return "redirect:error403";
+		} else {
 			System.out.println("Listar Todas las Macotas del Cliente");
 			int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 			// Datos del Cliente
@@ -46,8 +51,8 @@ public class mascotaController {
 			// Datos de la Mascota
 			List<Mascota> lista = service.listarMascotaCliente(idCliente);
 			model.addAttribute("mascotas", lista);
+			return "datosMascotas";
 		}
-		return "datosMascotas";
 	}
 
 	@RequestMapping("/registrarMascota")

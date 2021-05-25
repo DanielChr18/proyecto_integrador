@@ -41,14 +41,21 @@ public class clienteController {
 	@RequestMapping("/datosClientes")
 	public String datosClientes(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objIdCliente") != null) {
-			int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
-			Cliente cliente = service.listaClientesId(idCliente);
-			model.addAttribute("clientes", cliente);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
+				return "redirect:error403";
+			} else {
+				if (session.getAttribute("objIdCliente") != null) {
+					int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
+					Cliente cliente = service.listaClientesId(idCliente);
+					model.addAttribute("clientes", cliente);
+				}
+				List<Distrito> distritos = new ArrayList<Distrito>();
+				distritos = serviceDis.listarDistritos();
+				model.addAttribute("distritos", distritos);
+				return "datosClientes";
+			}
 		}
-		List<Distrito> distritos = new ArrayList<Distrito>();
-		distritos = serviceDis.listarDistritos();
-		model.addAttribute("distritos", distritos);
 		return "datosClientes";
 	}
 

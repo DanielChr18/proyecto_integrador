@@ -69,6 +69,8 @@
 																				<th>Nombre</th>
 																				<th>DNI</th>
 																				<th>Monto</th>
+																				<th>Fecha</th>
+																				<th>Estado</th>
 																				<th style="width: 102.4px;">Detalle</th>
 																			</tr>
 																		</thead>
@@ -80,6 +82,8 @@
 																					<td>${p.nombre}</td>
 																					<td>${p.dni}</td>
 																					<td>${p.monto}</td>
+																					<td>${p.fecha}</td>
+																					<td>${p.estado}</td>
 																					<td>
 																						<button type="button"
 																							onclick="verModalDetalleBoleta('${p.idBoleta}');"

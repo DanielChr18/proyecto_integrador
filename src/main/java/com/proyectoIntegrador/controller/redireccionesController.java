@@ -1,5 +1,6 @@
 package com.proyectoIntegrador.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoIntegrador.entity.Boleta;
+import com.proyectoIntegrador.entity.Cliente;
+import com.proyectoIntegrador.entity.Distrito;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.BoletaService;
 import com.proyectoIntegrador.service.ReservaService;
@@ -23,6 +26,11 @@ public class redireccionesController {
 
 	@Autowired
 	private ReservaService serviceReserva;
+
+	@RequestMapping("/error403")
+	public String error403() {
+		return "error403";
+	}
 
 	@RequestMapping("/error404")
 	public String error404() {
@@ -42,19 +50,24 @@ public class redireccionesController {
 	@RequestMapping("/trackingCliente")
 	public String trackingCliente(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objIdCliente") != null) {
-			int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
-			List<Boleta> listaPedidos = serviceBoleta.listarBoletasCliente(idCliente);
-			if (listaPedidos.isEmpty())
-				model.addAttribute("pedidos", null);
-			else if (!listaPedidos.isEmpty())
-				model.addAttribute("pedidos", listaPedidos);
-			List<Reserva> listaServicios = serviceReserva.listarReservasCliente(idCliente);
-			if (listaServicios.isEmpty())
-				model.addAttribute("servicios", null);
-			else if (!listaServicios.isEmpty())
-				model.addAttribute("servicios", listaServicios);
+		if (session.getAttribute("objCargo") != null) {
+			if (!session.getAttribute("objCargo").equals("Cliente")) {
+				return "redirect:error403";
+			} else {
+				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
+				List<Boleta> listaPedidos = serviceBoleta.listarBoletasCliente(idCliente);
+				if (listaPedidos.isEmpty())
+					model.addAttribute("pedidos", null);
+				else if (!listaPedidos.isEmpty())
+					model.addAttribute("pedidos", listaPedidos);
+				List<Reserva> listaServicios = serviceReserva.listarReservasCliente(idCliente);
+				if (listaServicios.isEmpty())
+					model.addAttribute("servicios", null);
+				else if (!listaServicios.isEmpty())
+					model.addAttribute("servicios", listaServicios);
+				return "trackingCliente";
+			}
 		}
-		return "trackingCliente";
+		return "redirect:error403";
 	}
 }

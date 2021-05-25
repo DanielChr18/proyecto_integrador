@@ -13,8 +13,6 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
 
-<link rel="stylesheet" href="css/estilo1.1.css" />
-<link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
 </head>
@@ -389,13 +387,6 @@
 		</div>
 	</c:if>
 
-	<!-- Restricción de Acceso -->
-
-	<c:if test="${objCargo == 'Personal de Ventas'}">
-		<div class="container-login100"
-			style="background-image: url('images/error403.jpg');"></div>
-	</c:if>
-
 	<script type="text/javascript">
 		function verModalConfirmarContrasenia() {
 			var validator = $('#form_modificarCliente').data(
@@ -496,17 +487,17 @@
 					url : 'validacionUsuario',
 					success : function(data) {
 						if (data.CONFIRMACION == 'SI') {
-							swal("Registrado con éxito!", data.MENSAJE,
+							swal("¡Registrado con éxito!", data.MENSAJE,
 									"success");
 							setTimeout(function() {
 								event.target.submit();
 							}, 1000);
 						} else {
-							swal("Error!", data.MENSAJE, "error");
+							swal("¡Error!", data.MENSAJE, "error");
 						}
 					},
 					error : function() {
-						swal("Error!", "", "error");
+						swal("¡Error!", "", "error");
 					}
 				});
 			}

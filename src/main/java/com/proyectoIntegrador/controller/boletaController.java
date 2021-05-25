@@ -19,6 +19,7 @@ import com.proyectoIntegrador.entity.Cliente;
 import com.proyectoIntegrador.entity.DetalleBoleta;
 import com.proyectoIntegrador.entity.HorariosServicios;
 import com.proyectoIntegrador.entity.Producto;
+import com.proyectoIntegrador.entity.Usuario;
 import com.proyectoIntegrador.service.BoletaService;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.DetalleBoletaService;
@@ -152,6 +153,8 @@ public class boletaController {
 				obj.setNumero("111111111");
 				obj.setNombre(c.getNombre() + " " + c.getApellido());
 				obj.setDni(c.getDni());
+				obj.setFecha(LocalDateTime.now().toString().split("T")[0]);
+				obj.setEstado("En Proceso");
 				obj.setIdCliente(c);
 				service.agregarBoleta(obj);
 				String[] listaProductosCarrito = session.getAttribute("objListaProductosTexto").toString().split(",");
@@ -166,6 +169,9 @@ public class boletaController {
 									.getPrecio();
 						}
 					}
+					Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
+					producto.setStock(producto.getStock() - contador);
+					servicePro.modificarProducto(producto);
 					DetalleBoleta detalleBoleta = new DetalleBoleta();
 					detalleBoleta.setCantidad(contador);
 					detalleBoleta.setCosto(costo);
@@ -188,4 +194,34 @@ public class boletaController {
 			return "redirect:login";
 		}
 	}
+
+	@RequestMapping("/validacionProductos")
+	@ResponseBody
+	public Map<String, Object> validacionProductos(HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		Map<String, Object> salida = new HashMap<>();
+		String confirmacion = "SI";
+		String mensaje = "La boleta se registró con éxito.";
+		String[] listaProductosCarrito = session.getAttribute("objListaProductosTexto").toString().split(",");
+		String[] listaProductos = session.getAttribute("objListaProductosBoletaTexto").toString().split(",");
+		for (int i = 0; i < listaProductosCarrito.length; i++) {
+			int contador = 0;
+			for (int j = 0; j < listaProductos.length; j++) {
+				if (listaProductosCarrito[i].equals(listaProductos[j])) {
+					contador++;
+				}
+			}
+			Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
+			if (producto.getStock() < contador) {
+				confirmacion = "NO";
+				mensaje = "El producto " + producto.getNombre()
+						+ " no tiene el stock suficiente.\nEl stock actual es de " + producto.getStock() + ".";
+				break;
+			}
+		}
+		salida.put("CONFIRMACION", confirmacion);
+		salida.put("MENSAJE", mensaje);
+		return salida;
+	}
+
 }

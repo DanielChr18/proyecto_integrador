@@ -42,7 +42,13 @@ public class productoController {
 	private ProveedorService serviceProv;
 
 	@RequestMapping("/listaProductos")
-	public String listaProductos(Model model) {
+	public String listaProductos(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
+				return "redirect:error403";
+			}
+		}
 		System.out.println("Listar Todos los Productos");
 		List<Producto> lista = service.listaProductos();
 		model.addAttribute("productos", lista);
@@ -115,15 +121,22 @@ public class productoController {
 	}
 
 	@RequestMapping("/crudProductos")
-	public String verProducto(Model model) {
-		System.out.println("Listar Todos los Productos CRUD");
-		List<Producto> listaProductos = service.listaProductos();
-		List<Marca> listaMarcas = serviceMar.listaMarcas();
-		List<Proveedor> listaProveedores = serviceProv.listaProveedores();
-		model.addAttribute("productos", listaProductos);
-		model.addAttribute("marcas", listaMarcas);
-		model.addAttribute("proveedores", listaProveedores);
-		return "crudProductos";
+	public String crudProductos(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") == null) {
+			return "redirect:error403";
+		} else if (!session.getAttribute("objCargo").toString().equals("Personal de Ventas")) {
+			return "redirect:error403";
+		} else {
+			System.out.println("Listar Todos los Productos CRUD");
+			List<Producto> listaProductos = service.listaProductos();
+			List<Marca> listaMarcas = serviceMar.listaMarcas();
+			List<Proveedor> listaProveedores = serviceProv.listaProveedores();
+			model.addAttribute("productos", listaProductos);
+			model.addAttribute("marcas", listaMarcas);
+			model.addAttribute("proveedores", listaProveedores);
+			return "crudProductos";
+		}
 	}
 
 	@RequestMapping("/registrarProducto")
