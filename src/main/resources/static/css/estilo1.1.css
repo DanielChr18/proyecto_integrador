@@ -111,7 +111,7 @@ nav.horizontal ul li {
 }
 
 /* horizontal menu */
-img {
+.imagenProductos {
 	max-width: 100%;
 	width: 100px;
 	height: 150px;

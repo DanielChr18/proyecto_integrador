@@ -55,13 +55,13 @@
 															onmouseover="cambiarImagen('${producto.idProducto}');"
 															onmouseout="cancelarImagen('${producto.idProducto}');">
 															<img
-																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
 																src="images/productos/${producto.imagen1}" alt="">
 															<img
-																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
 																src="images/productos/${producto.imagen2}" alt="">
 															<img
-																class="slideProducto fadeProducto imagenesProducto${producto.idProducto}"
+																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
 																src="images/productos/${producto.imagen3}" alt="">
 														</div>
 														<ul class="info">
@@ -155,13 +155,13 @@
 																			+ item.idProducto
 																			+ "');\" onmouseout=\"cancelarImagen('"
 																			+ item.idProducto
-																			+ "');\>"
+																			+ "');\">"
 																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto + "' src='images/productos/" + item.imagen1 + "'>"
+																			+ item.idProducto + " imagenProductos' src='images/productos/" + item.imagen1 + "'>"
 																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto + "' src='images/productos/" + item.imagen2 + "'>"
+																			+ item.idProducto + " imagenProductos' src='images/productos/" + item.imagen2 + "'>"
 																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto+"' src='images/productos/" + item.imagen3+ "'>"
+																			+ item.idProducto + " imagenProductos' src='images/productos/" + item.imagen3+ "'>"
 																			+ "</div>"
 																			+ "<ul class='info'>"
 																			+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
