@@ -36,7 +36,6 @@
 								<div class="card-body">
 									<form accept-charset="UTF-8" id="id_formRegistrarReserva"
 										action="registrarReserva" method="post"
-										onsubmit="funcionSubmitRegistrarReserva(event);"
 										enctype="multipart/form-data">
 										<div class="row">
 											<div class="col-md-12">
@@ -239,55 +238,60 @@
 			$("#id_btnRegistrarReserva").attr('disabled', false);
 		}
 
-		function funcionSubmitRegistrarReserva(event) {
-			event.preventDefault();
-			var idServicio = $("#id_idServicio").val();
-			var horario = $("#id_horarioReserva").val();
-			var fecha = $("#id_fechaReserva").val();
-			var idMascota = $("#id_mascotaReserva option:selected").val();
+		$("#id_formRegistrarReserva").on(
+				'submit',
+				function(evt) {
+					evt.preventDefault();
+					var idServicio = $("#id_idServicio").val();
+					var horario = $("#id_horarioReserva").val();
+					var fecha = $("#id_fechaReserva").val();
+					var idMascota = $("#id_mascotaReserva option:selected")
+							.val();
 
-			var validator = $('#id_formRegistrarReserva').data(
-					'bootstrapValidator');
-			if (validator.isValid()) {
-				var confirmar = 'SI';
-				if (horario == '') {
-					$('#id_mensajeHorarioReserva').show();
-					$("#id_btnRegistrarReserva").attr('disabled', false);
-					confirmar = "NO";
-				}
-				if (fecha == '') {
-					$('#id_mensajeFechaReserva').show();
-					$("#id_btnRegistrarReserva").attr('disabled', false);
-					confirmar = "NO";
-				}
-				if (confirmar == 'SI') {
-					$.ajax({
-						type : 'POST',
-						data : {
-							'idMascota' : idMascota,
-							'idServicio' : idServicio,
-							'fecha' : fecha,
-							'horario' : horario
-						},
-						url : 'validacionReservaServicio',
-						success : function(data) {
-							if (data.CONFIRMACION === 'SI') {
-								swal("¡Registrado con éxito!", data.MENSAJE,
-										"success");
-								setTimeout(function() {
-									event.target.submit();
-								}, 500);
-							} else {
-								swal("¡Error!", data.MENSAJE, "error");
-							}
-						},
-						error : function() {
-							swal("¡Error!", "", "error");
+					var validator = $('#id_formRegistrarReserva').data(
+							'bootstrapValidator');
+					if (validator.isValid()) {
+						var confirmar = 'SI';
+						if (horario == '') {
+							$('#id_mensajeHorarioReserva').show();
+							$("#id_btnRegistrarReserva")
+									.attr('disabled', false);
+							confirmar = "NO";
 						}
-					});
-				}
-			}
-		}
+						if (fecha == '') {
+							$('#id_mensajeFechaReserva').show();
+							$("#id_btnRegistrarReserva")
+									.attr('disabled', false);
+							confirmar = "NO";
+						}
+						if (confirmar == 'SI') {
+							$.ajax({
+								type : 'POST',
+								data : {
+									'idMascota' : idMascota,
+									'idServicio' : idServicio,
+									'fecha' : fecha,
+									'horario' : horario
+								},
+								url : 'validacionReservaServicio',
+								success : function(data) {
+									if (data.CONFIRMACION === 'SI') {
+										swal("¡Registrado con éxito!",
+												data.MENSAJE, "success");
+										setTimeout(function() {
+											evt.target.submit();
+										}, 500);
+									} else {
+										swal("¡Error!", data.MENSAJE, "error");
+									}
+								},
+								error : function() {
+									swal("¡Error!", "", "error");
+								}
+							});
+						}
+					}
+				});
 	</script>
 
 	<script type="text/javascript">

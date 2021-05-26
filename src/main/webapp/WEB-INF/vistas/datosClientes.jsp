@@ -34,8 +34,7 @@
 									</div>
 									<div class="card-body">
 										<form id="form_crearCliente" accept-charset="UTF-8"
-											action="registrarCliente" method="post"
-											onsubmit="funcionSubmitRegistrar(event);">
+											action="registrarCliente" method="post">
 											<div class="row">
 												<div class="col-md-12">
 													<div class="card-header"
@@ -317,7 +316,7 @@
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" action="modificarCliente"
-								method="post" onsubmit="funcionSubmitModificar(event)">
+								method="post" id="form_modificarCliente">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<input class="form-control" type="text" name="idCliente"
@@ -420,8 +419,8 @@
 			$("#idModalConfirmarContrasenia").modal("hide");
 		}
 
-		function funcionSubmitModificar(event) {
-			event.preventDefault();
+		$("#form_modificarCliente").on('submit', function(evt) {
+			evt.preventDefault();
 			$("#id_modificarCliente").attr("disabled", false);
 			var contra = $('#id_contraseniaModificar').val();
 			$.ajax({
@@ -434,7 +433,7 @@
 					if (data.CONFIRMACION == 'SI') {
 						swal("Éxito!", data.MENSAJE, "success");
 						setTimeout(function() {
-							event.target.submit();
+							evt.target.submit();
 						}, 1000);
 					} else {
 						swal("Error!", data.MENSAJE, "error");
@@ -443,7 +442,7 @@
 				error : function() {
 				}
 			});
-		}
+		});
 	</script>
 
 	<!-- Validar Contraseña de Registrar Usuario -->
@@ -470,38 +469,40 @@
 		$("#id_contrasenia").on('keyup', comfirmarPassRegistrar);
 		$("#id_contraseniaConfirmar").on('keyup', comfirmarPassRegistrar);
 
-		function funcionSubmitRegistrar(event) {
-			var contra = $('#id_contrasenia').val();
-			var contra2 = $('#id_contraseniaConfirmar').val();
-			var usuario = $('#id_usuario').val();
+		$("#form_crearCliente").on(
+				'submit',
+				function(evt) {
+					var contra = $('#id_contrasenia').val();
+					var contra2 = $('#id_contraseniaConfirmar').val();
+					var usuario = $('#id_usuario').val();
 
-			event.preventDefault();
+					evt.preventDefault();
 
-			if ((contra == contra2) && (usuario != '') && (contra != '')
-					&& (contra2 != '')) {
-				$.ajax({
-					type : 'POST',
-					data : {
-						'nom_usuario' : usuario
-					},
-					url : 'validacionUsuario',
-					success : function(data) {
-						if (data.CONFIRMACION == 'SI') {
-							swal("¡Registrado con éxito!", data.MENSAJE,
-									"success");
-							setTimeout(function() {
-								event.target.submit();
-							}, 1000);
-						} else {
-							swal("¡Error!", data.MENSAJE, "error");
-						}
-					},
-					error : function() {
-						swal("¡Error!", "", "error");
+					if ((contra == contra2) && (usuario != '')
+							&& (contra != '') && (contra2 != '')) {
+						$.ajax({
+							type : 'POST',
+							data : {
+								'nom_usuario' : usuario
+							},
+							url : 'validacionUsuario',
+							success : function(data) {
+								if (data.CONFIRMACION == 'SI') {
+									swal("¡Registrado con éxito!",
+											data.MENSAJE, "success");
+									setTimeout(function() {
+										evt.target.submit();
+									}, 1000);
+								} else {
+									swal("¡Error!", data.MENSAJE, "error");
+								}
+							},
+							error : function() {
+								swal("¡Error!", "", "error");
+							}
+						});
 					}
 				});
-			}
-		}
 	</script>
 
 	<!-- Validaciones de Registrar -->

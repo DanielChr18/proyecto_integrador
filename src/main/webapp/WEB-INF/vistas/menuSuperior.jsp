@@ -159,8 +159,7 @@
 						</div>
 						<div class="col-md-3">
 							<form action="agregarBoleta" id="form_boletaCompra"
-								accept-charset="UTF-8"
-								onsubmit="funcionSubmitRegistrarBoleta(event);">
+								accept-charset="UTF-8">
 								<div class="row">
 									<input id="id_montoBoleta" hidden="hidden" class="form-control"
 										type="text" name="monto">
@@ -227,8 +226,8 @@
 </div>
 
 <script type="text/javascript">
-	function funcionSubmitRegistrarBoleta(event) {
-		event.preventDefault();
+	$("#form_boletaCompra").on('submit', function(evt) {
+		evt.preventDefault();
 		var validator = $('#form_boletaCompra').data('bootstrapValidator');
 		if (validator.isValid()) {
 			$.ajax({
@@ -239,7 +238,7 @@
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Pago exitoso!", data.MENSAJE, "success");
 						setTimeout(function() {
-							event.target.submit();
+							evt.target.submit();
 						}, 1500);
 					} else {
 						swal("¡Aviso!", data.MENSAJE, "warning");
@@ -250,7 +249,7 @@
 				}
 			});
 		}
-	}
+	});
 </script>
 
 
