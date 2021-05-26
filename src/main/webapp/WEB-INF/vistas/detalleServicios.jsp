@@ -266,7 +266,7 @@
 						}
 						if (confirmar == 'SI') {
 							$.ajax({
-								type : 'POST',
+								type : 'GET',
 								data : {
 									'idMascota' : idMascota,
 									'idServicio' : idServicio,

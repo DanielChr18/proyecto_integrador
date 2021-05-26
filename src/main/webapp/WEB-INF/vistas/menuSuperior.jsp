@@ -231,7 +231,7 @@
 		var validator = $('#form_boletaCompra').data('bootstrapValidator');
 		if (validator.isValid()) {
 			$.ajax({
-				type : 'POST',
+				type : 'GET',
 				data : {},
 				url : 'validacionProductos',
 				success : function(data) {
