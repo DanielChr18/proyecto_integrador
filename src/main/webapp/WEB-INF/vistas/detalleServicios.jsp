@@ -27,9 +27,11 @@
 			<jsp:include page="menuSuperior.jsp" />
 			<div class="content">
 				<div class="container-fluid">
+				
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card">
+							
 								<div class="card-header card-header-primary">
 									<h3 class="card-title">Detalles de Servicio</h3>
 								</div>
@@ -83,7 +85,9 @@
 																		<option value="${mascota.idMascota}">${mascota.nombre}</option>
 																	</c:forEach>
 																</select>
+																
 															</div>
+															<button type="button" onclick="verModalMascotaRegistra()" class="btn btn-primary pull-right">Registrar Nueva Mascota</button>
 														</div>
 													</div>
 													
@@ -121,6 +125,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="RegistraMascota.jsp" />
 	</div>
 	
 	<script type="text/javascript">
