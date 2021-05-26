@@ -159,7 +159,8 @@
 						</div>
 						<div class="col-md-3">
 							<form action="agregarBoleta" id="form_boletaCompra"
-								accept-charset="UTF-8" onsubmit="funcionSubmitRegistrar(event);">
+								accept-charset="UTF-8"
+								onsubmit="funcionSubmitRegistrarBoleta(event);">
 								<div class="row">
 									<input id="id_montoBoleta" hidden="hidden" class="form-control"
 										type="text" name="monto">
@@ -226,7 +227,7 @@
 </div>
 
 <script type="text/javascript">
-	function funcionSubmitRegistrar(event) {
+	function funcionSubmitRegistrarBoleta(event) {
 		event.preventDefault();
 		var validator = $('#form_boletaCompra').data('bootstrapValidator');
 		if (validator.isValid()) {

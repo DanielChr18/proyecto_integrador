@@ -107,16 +107,18 @@
 																		<thead class="text-primary">
 																			<tr>
 																				<th style="width: 40px;">ID</th>
+																				<th>Mascota</th>
 																				<th>Fecha</th>
 																				<th>Horario</th>
 																				<th>Estado</th>
-																				<th style="width: 102.4px;">Detalle</th>
+																				<th style="width: 102.4px;">Pagar</th>
 																			</tr>
 																		</thead>
 																		<tbody>
 																			<c:forEach items="${servicios}" var="s">
 																				<tr>
 																					<td>${s.idReserva}</td>
+																					<td>${s.idMascota.nombre}</td>
 																					<td>${s.fecha}</td>
 																					<td>${s.horario}</td>
 																					<td>${s.estado}</td>
@@ -159,6 +161,37 @@
 						<div class="card">
 							<div class="card-header card-header-primary">
 								<h3 class="card-title">Detalle Pedido</h3>
+							</div>
+							<div class="card-body" style="padding: 20px 18px;">
+								<table id="tablaDetallePedido" class="table table-hover">
+									<thead class="text-primary">
+										<tr>
+											<th style="width: 40px;">ID</th>
+											<th>Producto</th>
+											<th>Cantidad</th>
+											<th>Costo</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<button type="button" onclick="cerrarModalDetalleBoleta();"
+									class="btn btn-primary pull-right">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal de Detalle de Pedido -->
+			<div class="modal fade" id="idModalDetalleReserva"
+				data-backdrop="static" tabindex="-1" role="dialog">
+				<div class="modal-dialog" style="width: 50%;">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="card">
+							<div class="card-header card-header-primary">
+								<h3 class="card-title">Pago de Reserva</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
 								<table id="tablaDetallePedido" class="table table-hover">

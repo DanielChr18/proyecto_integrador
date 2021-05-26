@@ -8,8 +8,10 @@ public interface ReservaService {
 
 	public abstract List<Reserva> listarReservasCliente(int idCliente);
 
+	public abstract List<Reserva> listarReservasMascota(int idMascota);
+
 	public abstract Reserva registrarReserva(Reserva obj);
 
 	public abstract Reserva actualizaReserva(Reserva obj);
-	
+
 }

@@ -20,6 +20,11 @@ public class ReservaServiceImpl implements ReservaService {
 	}
 
 	@Override
+	public List<Reserva> listarReservasMascota(int idMascota) {
+		return repository.listarReservasMascota(idMascota);
+	}
+
+	@Override
 	public Reserva registrarReserva(Reserva obj) {
 		return repository.save(obj);
 	}
