@@ -238,8 +238,8 @@
 			$("#id_btnRegistrarReserva").attr('disabled', false);
 		}
 
-		$("#id_formRegistrarReserva").on(
-				'submit',
+		$("#id_btnRegistrarReserva").on(
+				'click',
 				function(evt) {
 					evt.preventDefault();
 					var idServicio = $("#id_idServicio").val();
@@ -247,26 +247,23 @@
 					var fecha = $("#id_fechaReserva").val();
 					var idMascota = $("#id_mascotaReserva option:selected")
 							.val();
-
 					var validator = $('#id_formRegistrarReserva').data(
 							'bootstrapValidator');
-					if (validator.isValid()) {
-						var confirmar = 'SI';
-						if (horario == '') {
-							$('#id_mensajeHorarioReserva').show();
-							$("#id_btnRegistrarReserva")
-									.attr('disabled', false);
-							confirmar = "NO";
-						}
-						if (fecha == '') {
-							$('#id_mensajeFechaReserva').show();
-							$("#id_btnRegistrarReserva")
-									.attr('disabled', false);
-							confirmar = "NO";
-						}
-						if (confirmar == 'SI') {
+					var confirmar = 'SI';
+					if (horario == '') {
+						$('#id_mensajeHorarioReserva').show();
+						$("#id_btnRegistrarReserva").attr('disabled', false);
+						confirmar = "NO";
+					}
+					if (fecha == '') {
+						$('#id_mensajeFechaReserva').show();
+						$("#id_btnRegistrarReserva").attr('disabled', false);
+						confirmar = "NO";
+					}
+					if (confirmar == 'SI') {
+						if (validator.isValid()) {
 							$.ajax({
-								type : 'GET',
+								type : 'POST',
 								data : {
 									'idMascota' : idMascota,
 									'idServicio' : idServicio,
@@ -279,8 +276,9 @@
 										swal("¡Registrado con éxito!",
 												data.MENSAJE, "success");
 										setTimeout(function() {
-											evt.target.submit();
-										}, 500);
+											$("#id_formRegistrarReserva")
+													.submit();
+										}, 1000);
 									} else {
 										swal("¡Error!", data.MENSAJE, "error");
 									}

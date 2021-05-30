@@ -226,20 +226,20 @@
 </div>
 
 <script type="text/javascript">
-	$("#form_boletaCompra").on('submit', function(evt) {
+	$("#btn_aceptar").on('click', function(evt) {
 		evt.preventDefault();
 		var validator = $('#form_boletaCompra').data('bootstrapValidator');
 		if (validator.isValid()) {
 			$.ajax({
-				type : 'GET',
+				type : 'POST',
 				data : {},
 				url : 'validacionProductos',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Pago exitoso!", data.MENSAJE, "success");
 						setTimeout(function() {
-							evt.target.submit();
-						}, 1500);
+							$("#form_boletaCompra").submit();
+						}, 1000);
 					} else {
 						swal("¡Aviso!", data.MENSAJE, "warning");
 					}
