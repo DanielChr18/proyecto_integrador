@@ -111,7 +111,7 @@
 																				<th>Fecha</th>
 																				<th>Horario</th>
 																				<th>Estado</th>
-																				<th style="width: 102.4px;">Pagar</th>
+																				<th style="width: 102.4px;">pagar</th>
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -124,9 +124,10 @@
 																					<td>${s.estado}</td>
 																					<td>
 																						<button type="button"
-																							onclick="verModalDetalleReserva('${s.idReserva}');"
+																							onclick="verModalMetodoPago('${s.idReserva}');"
 																							class="btn btn-primary">
-																							<span class="material-icons"> paid </span>
+																							<img src="images/edit.gif" width="auto"
+																								height="auto" />
 																						</button>
 																					</td>
 																				</tr>
@@ -183,29 +184,51 @@
 			</div>
 
 			<!-- Modal de Detalle de Pedido -->
-			<div class="modal fade" id="idModalDetalleReserva"
+			<div class="modal fade" id="idModalMetodoPago"
 				data-backdrop="static" tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 50%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Pago de Reserva</h3>
-							</div>
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Realizar Pago</h3>
+						</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<table id="tablaDetallePedido" class="table table-hover">
-									<thead class="text-primary">
-										<tr>
-											<th style="width: 40px;">ID</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Costo</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<button type="button" onclick="cerrarModalDetalleBoleta();"
+								<form action="RealizarPago">
+						
+										<div class="dropdown-divider"></div>
+										<div class="row">
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Número de Tarjeta</label> <input
+														class="form-control number" type="text" ng-model="ncard"
+														maxlength="19" id="id_numTarjeta" placeholder="XXXX-XXXX-XXXX-XXXX"
+														onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+												</div>
+											</div>
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Fecha de Vencimiento</label> <input
+														class="form-control expire" id="id_fechaVencimiento"
+														type="text" placeholder="MM / YYYY" maxlength="9" />
+												</div>
+											</div>
+											<div class="col-md-12" style="margin-top: 5px;">
+												<div class="form-group">
+													<label>Número de Seguridad</label> <input
+														class="form-control ccv" type="text" placeholder="CVC"
+														maxlength="3" id="id_numSeguridad"
+														onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+												</div>
+											</div>
+										</div>
+										<div class="snipcart-details" style="margin-top: 12px">
+											<button id="btn_aceptar" type="submit"
+												class="button w3l-cart" data-id="cart-8">ACEPTAR</button>
+										</div>
+									
+									</form>
+								<button type="button" onclick="cerrarModalMetodoPago();"
 									class="btn btn-primary pull-right">Cerrar</button>
 							</div>
 						</div>
@@ -243,8 +266,164 @@
 			$("#idModalDetalleBoleta").modal("hide");
 		}
 
+		function verModalMetodoPago(id) {
+			$("#idModalMetodoPago").modal("show");
+		}
+
+		function cerrarModalMetodoPago() {
+			$("#idModalMetodoPago").modal("hide");
+		}
+		
+
 		$('#id_menuTrackingClientes').addClass('active');
 	</script>
+	
+	<script type="text/javascript">
+	$(function() {
+		var month = 0;
+		var html = document.getElementsByTagName('html')[0];
+		var number = "";
+		var selected_card = -1;
 
+		$(document).click(
+				function(e) {
+					if (!$(e.target).is(".ccv")
+							|| !$(e.target).closest(".ccv").length) {
+						$(".seccode").css("color", "var(--text-color)");
+					}
+					if (!$(e.target).is(".expire")
+							|| !$(e.target).closest(".expire").length) {
+						$(".date_value").css("color", "var(--text-color)");
+					}
+					if (!$(e.target).is(".number")
+							|| !$(e.target).closest(".number").length) {
+						$(".card_number").css("color", "var(--text-color)");
+					}
+				});
+
+		//Card number input
+		$(".number")
+				.keyup(
+						function(event) {
+							$(".card_number").text($(this).val());
+							number = $(this).val();
+							if ($(".card_number").text().length === 0) {
+								$(".card_number")
+										.html(
+												"&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF;");
+							}
+						}).focus(function() {
+					$(".card_number").css("color", "white");
+				}).on(
+						"keydown input",
+						function() {
+							$(".card_number").text($(this).val());
+							if (event.key >= 0 && event.key <= 9) {
+								if ($(this).val().length === 4
+										|| $(this).val().length === 9
+										|| $(this).val().length === 14) {
+									$(this).val($(this).val() + " ");
+								}
+							}
+						});
+
+		//Security code Input
+		$(".ccv").focus(function() {
+			$(".seccode").css("color", "white");
+		}).keyup(function() {
+			$(".seccode").text($(this).val());
+			if ($(this).val().length === 0) {
+				$(".seccode").html("&#x25CF;&#x25CF;&#x25CF;");
+			}
+		}).focusout(function() {
+			$(".seccode").css("color", "var(--text-color)");
+		});
+
+		//Date expire input
+		$(".expire").keypress(
+				function(event) {
+					if (event.charCode >= 48 && event.charCode <= 57) {
+						if ($(this).val().length === 1) {
+							$(this).val($(this).val() + event.key + " / ");
+						} else if ($(this).val().length === 0) {
+							if (event.key == 1 || event.key == 0) {
+								month = event.key;
+								return event.charCode;
+							} else {
+								$(this).val(0 + event.key + " / ");
+							}
+						} else if ($(this).val().length > 2
+								&& $(this).val().length < 9) {
+							return event.charCode;
+						}
+					}
+					return false;
+				}).keyup(function(event) {
+			$(".date_value").html($(this).val());
+			if (event.keyCode == 8 && $(".expire").val().length == 4) {
+				$(this).val(month);
+			}
+			if ($(this).val().length === 0) {
+				$(".date_value").text("MM / YYYY");
+			}
+		}).keydown(function() {
+			$(".date_value").html($(this).val());
+		}).focus(function() {
+			$(".date_value").css("color", "white");
+		});
+	});
+</script>
+
+<!-- Validación de Modal Detalle Pedido -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#form_boletaCompra').bootstrapValidator({
+			message : 'This value is not valid',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				numTarjeta : {
+					selector : "#id_numTarjeta",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese el número de tarjeta'
+						},
+						stringLength : {
+							min : 19,
+							message : 'Ingrese el número de tarjeta completo'
+						}
+					}
+				},
+				fechaVencimiento : {
+					selector : "#id_fechaVencimiento",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese la Fec. Vencimiento'
+						},
+						stringLength : {
+							min : 9,
+							message : 'Ingrese la Fec. Vencimiento completa'
+						}
+					}
+				},
+				numSeguridad : {
+					selector : "#id_numSeguridad",
+					validators : {
+						notEmpty : {
+							message : 'Ingrese el número de seguridad'
+						},
+						stringLength : {
+							min : 3,
+							message : 'Ingrese el número de seguridad completo'
+						}
+					}
+				}
+			}
+		});
+	});
+</script>
 </body>
 </html>
