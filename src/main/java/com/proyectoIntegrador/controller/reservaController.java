@@ -71,6 +71,26 @@ public class reservaController {
 		}
 	}
 
+	@RequestMapping("/editarReserva")
+	@ResponseBody
+	public Map<String, Object> editarReserva(HttpServletRequest request, String idReserva, String estado) {
+		Map<String, Object> salida = new HashMap<>();
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
+				Reserva reserva = service.listarReservasId(Integer.parseInt(idReserva));
+				reserva.setEstado(estado);
+				service.actualizaReserva(reserva);
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Éxito al editar la Reserva.");
+				return salida;
+			}
+		}
+		salida.put("CONFIRMACION", "NO");
+		salida.put("MENSAJE", "Error al editar la Reserva.");
+		return salida;
+	}
+
 	@RequestMapping("/validacionReservaServicio")
 	@ResponseBody
 	public Map<String, Object> validacionReservaServicio(String idMascota, String idServicio, String fecha,

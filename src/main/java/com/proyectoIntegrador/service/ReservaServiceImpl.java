@@ -15,6 +15,16 @@ public class ReservaServiceImpl implements ReservaService {
 	private ReservaRepository repository;
 
 	@Override
+	public List<Reserva> listarReservas() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Reserva listarReservasId(int idReserva) {
+		return repository.findById(idReserva).get();
+	}
+
+	@Override
 	public List<Reserva> listarReservasCliente(int idCliente) {
 		return repository.listarReservasCliente(idCliente);
 	}

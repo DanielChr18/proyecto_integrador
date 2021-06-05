@@ -20,6 +20,11 @@ public class BoletaServiceImpl implements BoletaService {
 	}
 
 	@Override
+	public Boleta listarBoletasId(int idBoleta) {
+		return repository.findById(idBoleta).get();
+	}
+
+	@Override
 	public List<Boleta> listarBoletasCliente(int idCliente) {
 		return repository.listarBoletasCliente(idCliente);
 	}

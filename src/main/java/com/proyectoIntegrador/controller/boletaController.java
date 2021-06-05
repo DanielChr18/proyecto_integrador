@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.proyectoIntegrador.entity.Boleta;
 import com.proyectoIntegrador.entity.Cliente;
 import com.proyectoIntegrador.entity.DetalleBoleta;
-import com.proyectoIntegrador.entity.HorariosServicios;
 import com.proyectoIntegrador.entity.Producto;
-import com.proyectoIntegrador.entity.Usuario;
 import com.proyectoIntegrador.service.BoletaService;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.DetalleBoletaService;
@@ -193,6 +191,26 @@ public class boletaController {
 		} else {
 			return "redirect:login";
 		}
+	}
+
+	@RequestMapping("/editarBoleta")
+	@ResponseBody
+	public Map<String, Object> editarBoleta(HttpServletRequest request, String idBoleta, String estado) {
+		Map<String, Object> salida = new HashMap<>();
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
+				Boleta boleta = service.listarBoletasId(Integer.parseInt(idBoleta));
+				boleta.setEstado(estado);
+				service.agregarBoleta(boleta);
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Éxito al editar la Boleta.");
+				return salida;
+			}
+		}
+		salida.put("CONFIRMACION", "NO");
+		salida.put("MENSAJE", "Error al editar la Boleta.");
+		return salida;
 	}
 
 	@RequestMapping("/validacionProductos")

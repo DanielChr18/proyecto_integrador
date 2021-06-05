@@ -50,6 +50,9 @@
 					class="nav-link" href="crudProveedores"><i
 						class="material-icons">next_week</i>
 						<p>Proveedores</p></a></li>
+				<li class="nav-item" id="id_menuCrudTracking"><a class="nav-link"
+					href="trackingCliente"><i class="material-icons">leaderboard</i>
+						<p>Transacciones</p></a></li>
 			</c:if>
 			<c:if test="${objCargo == 'Cliente'}">
 				<li class="nav-item" id="id_menuClientes"><a class="nav-link"
