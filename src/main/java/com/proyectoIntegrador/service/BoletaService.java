@@ -8,6 +8,8 @@ public interface BoletaService {
 
 	public abstract List<Boleta> listarBoletas();
 
+	public abstract Boleta listarBoletasId(int idBoleta);
+
 	public abstract List<Boleta> listarBoletasCliente(int idCliente);
 
 	public abstract Boleta agregarBoleta(Boleta obj);
