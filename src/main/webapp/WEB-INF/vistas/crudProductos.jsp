@@ -146,7 +146,7 @@
 										<div class="form-group">
 											<label class="bmd-label-floating">Stock</label> <input
 												class="form-control" type="text" id="id_stockRegistrar"
-												name="stock">
+												name="stock" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-4" id="id_divSerieRegistrar">
@@ -300,7 +300,7 @@
 										<div class="form-group" id="div_stockModificar">
 											<label class="bmd-label-floating">Stock</label> <input
 												class="form-control" type="text" id="id_stockModificar"
-												name="stock">
+												name="stock" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-4">

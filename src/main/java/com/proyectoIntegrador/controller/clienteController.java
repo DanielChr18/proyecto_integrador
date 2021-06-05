@@ -50,12 +50,11 @@ public class clienteController {
 					Cliente cliente = service.listaClientesId(idCliente);
 					model.addAttribute("clientes", cliente);
 				}
-				List<Distrito> distritos = new ArrayList<Distrito>();
-				distritos = serviceDis.listarDistritos();
-				model.addAttribute("distritos", distritos);
-				return "datosClientes";
 			}
 		}
+		List<Distrito> distritos = new ArrayList<Distrito>();
+		distritos = serviceDis.listarDistritos();
+		model.addAttribute("distritos", distritos);
 		return "datosClientes";
 	}
 

@@ -62,8 +62,19 @@
 							<button id="id_ingresar" class="login100-form-btn" type="submit">Entrar</button>
 						</div>
 					</div>
-					<div class="flex-col-c p-t-30">
-						<a href="javascript: history.go(-1)" class="txt2"> REGRESAR </a>
+					<div class="container-login100-form-btn p-t-20">
+						<div class="wrap-login100-form-btn" style="width: 50%;">
+							<div class="login100-form-bgbtn"></div>
+							<a href="datosClientes">
+								<button id="id_registrar" class="btn login100-form-btn"
+									type="button" style="height: 35px;">Registrarme</button>
+							</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="flex-col-c p-t-30 pull-left">
+							<a href="javascript: history.go(-1)" class="txt2"> REGRESAR </a>
+						</div>
 					</div>
 				</form>
 			</div>

@@ -126,8 +126,7 @@
 																						<button type="button"
 																							onclick="verModalDetalleReserva('${s.idReserva}');"
 																							class="btn btn-primary">
-																							<img src="images/edit.gif" width="auto"
-																								height="auto" />
+																							<span class="material-icons"> paid </span>
 																						</button>
 																					</td>
 																				</tr>

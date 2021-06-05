@@ -25,7 +25,7 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-8">
+						<div class="col-md-9">
 							<div class="card">
 								<div class="card-header card-header-primary">
 									<h3 class="card-title">
@@ -59,6 +59,7 @@
 																	<th>Raza</th>
 																	<th>Fecha Nac.</th>
 																	<th>Sexo</th>
+																	<th>Foto</th>
 																	<th style="width: 8%">Editar</th>
 																	<th style="width: 8%">Eliminar</th>
 																</tr>
@@ -72,6 +73,8 @@
 																		<td>${mascota.raza}</td>
 																		<td>${mascota.fechaNacimiento}</td>
 																		<td>${mascota.sexo}</td>
+																		<td><img src="images/mascotas/${mascota.imagen}"
+																			alt="img" width="50px" height="50px"></td>
 																		<td>
 																			<button type='button'
 																				onclick="verModalMascotaModifica('${mascota.idMascota}','${mascota.nombre}','${mascota.tipo}','${mascota.raza}','${mascota.fechaNacimiento}','${mascota.sexo}');"
@@ -100,7 +103,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="card card-profile">
 								<div class="card-avatar">
 									<a href="javascript:;"> <img class="img"
@@ -121,7 +124,7 @@
 			</div>
 		</div>
 
-	<jsp:include page="RegistraMascota.jsp" />
+		<jsp:include page="RegistraMascota.jsp" />
 
 		<!-- Modal Mascota Modificar -->
 		<div class="modal fade" id="idModalModificaMascota"
@@ -261,7 +264,7 @@
 
 	<script type="text/javascript">
 		$("#id_menuClientes").addClass("active");
-		
+
 		imagen('#id_imagenModificar', '#boxFileModificar', null);
 
 		function verModalMascotaRegistra() {
@@ -269,8 +272,6 @@
 			$('#boxFileRegistrar').removeClass("attached");
 			$('#idModalRegistraMascota').modal("show");
 		}
-
-
 
 		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo) {
 			$("#id_codigoMascotaModificar").val(id);
@@ -346,7 +347,7 @@
 	</script>
 
 
-	
+
 
 	<!-- Validaciones de Registrar -->
 	<script type="text/javascript">

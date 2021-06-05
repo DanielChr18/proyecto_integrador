@@ -85,21 +85,23 @@
 																<div class="form-group">
 																	<label class="bmd-label-floating">Teléfono</label> <input
 																		id="id_telefono" type="text" class="form-control"
-																		name="telefono">
+																		name="telefono"
+																		onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 															<div class="col-md-4">
 																<div class="form-group">
 																	<label class="bmd-label-floating">Celular</label> <input
 																		id="id_celular" type="text" class="form-control"
-																		name="celular">
+																		name="celular"
+																		onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 															<div class="col-md-4">
 																<div class="form-group">
 																	<label class="bmd-label-floating">D.N.I.</label> <input
 																		id="id_dni" type="text" class="form-control"
-																		name="dni">
+																		name="dni" onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 														</div>
@@ -257,21 +259,24 @@
 																<div class="form-group">
 																	<label class="bmd-label-floating">Teléfono</label> <input
 																		id="id_telefonoModificar" type="text"
-																		class="form-control" value="${clientes.telefono}">
+																		class="form-control" value="${clientes.telefono}"
+																		onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 															<div class="col-md-4">
 																<div class="form-group">
 																	<label class="bmd-label-floating">Celular</label> <input
 																		id="id_celularModificar" type="text"
-																		class="form-control" value="${clientes.celular}">
+																		class="form-control" value="${clientes.celular}"
+																		onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 															<div class="col-md-4">
 																<div class="form-group">
 																	<label class="bmd-label-floating">D.N.I.</label> <input
 																		id="id_dniModificar" type="text" class="form-control"
-																		value="${clientes.dni}">
+																		value="${clientes.dni}"
+																		onkeypress='return validaNumericos(event);'>
 																</div>
 															</div>
 														</div>

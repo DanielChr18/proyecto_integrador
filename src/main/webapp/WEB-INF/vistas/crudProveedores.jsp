@@ -124,7 +124,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group">
-											<label class="bmd-label-floating">Razon Social</label> <input
+											<label class="bmd-label-floating">Razón Social</label> <input
 												class="form-control" type="text"
 												id="id_razonSocialRegistrar" name="razonSocial">
 										</div>
@@ -133,28 +133,28 @@
 										<div class="form-group">
 											<label class="bmd-label-floating">RUC</label> <input
 												class="form-control" type="text" id="id_rucRegistrar"
-												name="ruc">
+												name="ruc" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
-											<label class="bmd-label-floating">Direccion</label> <input
+											<label class="bmd-label-floating">Dirección</label> <input
 												class="form-control" type="text" id="id_direccionRegistrar"
 												name="direccion">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
-											<label class="bmd-label-floating">Telefono</label> <input
+											<label class="bmd-label-floating">Teléfono</label> <input
 												class="form-control" type="text" id="id_telefonoRegistrar"
-												name="telefono">
+												name="telefono" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<label class="bmd-label-floating">Celular</label> <input
 												class="form-control" type="text" id="id_celularRegistrar"
-												name="Celular">
+												name="Celular" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -201,7 +201,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group" id="div_razonSocialModificar">
-											<label class="bmd-label-floating">Razon Social</label> <input
+											<label class="bmd-label-floating">Razón Social</label> <input
 												class="form-control" type="text"
 												id="id_razonSocialModificar" name="razonSocial">
 										</div>
@@ -210,28 +210,28 @@
 										<div class="form-group" id="div_rucModificar">
 											<label class="bmd-label-floating">RUC</label> <input
 												class="form-control" type="text" id="id_rucModificar"
-												name="ruc">
+												name="ruc" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group" id="div_direccionModificar">
-											<label class="bmd-label-floating">Direccion</label> <input
+											<label class="bmd-label-floating">Dirección</label> <input
 												class="form-control" type="text" id="id_direccionModificar"
 												name="direccion">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group" id="div_telefonoModificar">
-											<label class="bmd-label-floating">Telefono</label> <input
+											<label class="bmd-label-floating">Teléfono</label> <input
 												class="form-control" type="text" id="id_telefonoModificar"
-												name="telefono">
+												name="telefono" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group" id="div_celularModificar">
 											<label class="bmd-label-floating">Celular</label> <input
 												class="form-control" type="text" id="id_celularModificar"
-												name="celular">
+												name="celular" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
