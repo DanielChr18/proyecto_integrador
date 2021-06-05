@@ -815,6 +815,10 @@
 															stringLength : {
 																min : 3,
 																message : 'El nombre debe ser más de 3 caracteres'
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
 															}
 														}
 													},
@@ -835,7 +839,16 @@
 														validators : {
 															notEmpty : {
 																message : 'El descripcion es obligatorio'
-															}
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().;,\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															},
+															stringLength : {
+																min : 5,
+																message : 'la descripción debe ser más de 5 caracteres'
+															},
+															
 														}
 													},
 													imagen : {
@@ -875,7 +888,11 @@
 															stringLength : {
 																min : 3,
 																message : 'El nombre debe ser más de 3 caracteres'
-															}
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															},
 														}
 													},
 													precio : {
@@ -895,7 +912,15 @@
 														validators : {
 															notEmpty : {
 																message : 'El descripcion es obligatorio'
-															}
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().;,\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															},
+															stringLength : {
+																min : 5,
+																message : 'la descripción debe ser más de 5 caracteres'
+															},
 														}
 													}
 												}

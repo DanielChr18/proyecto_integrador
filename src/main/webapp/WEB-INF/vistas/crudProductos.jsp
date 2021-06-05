@@ -196,10 +196,11 @@
 								<div class="row">
 									<div class="col-md-12">
 										<label class="bmd-label-floating">Descripción Larga</label>
-										<textarea id="editor1" name="descripcionLarga"></textarea>
+										<textarea id="editor1" name="descripcionLarga" ></textarea>
 										<small id="id_mensajeDescripcionLargaRegistrar"
 											style="color: #cc0000;">La descripción larga no puede
 											estar vacía</small>
+											
 									</div>
 								</div>
 								<div class="row">
@@ -490,7 +491,7 @@
 						evt.preventDefault();
 						var c = "NO";
 					}
-					if (CKEDITOR.instances['editor1'].getData() == "") {
+					if (CKEDITOR.instances['editor1'].getData() == "" || CKEDITOR.instances['editor1'].getData().length < 23) {
 						$('#id_mensajeDescripcionLargaRegistrar').show();
 						evt.preventDefault();
 						var c = "NO";
@@ -510,7 +511,7 @@
 				'submit',
 				function(evt) {
 					$("#id_btnModificarProducto").attr("disabled", false);
-					if (CKEDITOR.instances['editor2'].getData() == "") {
+					if (CKEDITOR.instances['editor2'].getData() == "" || CKEDITOR.instances['editor2'].getData().length < 23) {
 						$('#id_mensajeDescripcionLargaModificar').show();
 						evt.preventDefault();
 					} else {
@@ -701,7 +702,7 @@
 									change : function() {
 										var des = CKEDITOR.instances[identificador]
 												.getData();
-										if (des === '') {
+										if (des === '' || des.length < 20) {
 											$(
 													'#id_mensajeDescripcionLarga'
 															+ mensaje).show();
@@ -710,6 +711,8 @@
 													'#id_mensajeDescripcionLarga'
 															+ mensaje).hide();
 										}
+										
+										
 									}
 								}
 							});
@@ -741,6 +744,10 @@
 																min : 3,
 																message : 'El nombre debe ser más de 3 caracteres'
 															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															}
 														}
 													},
 													precio : {
@@ -797,8 +804,17 @@
 															notEmpty : {
 																message : 'La descripción es obligatoria'
 															},
+															stringLength : {
+																min : 10,
+																message : 'La descripcion debe ser más de 10 caracteres'
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().,;\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															}
 														}
-													}
+													},
+													
 												}
 											});
 						});
@@ -829,6 +845,10 @@
 																min : 3,
 																message : 'El nombre debe ser más de 3 caracteres'
 															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															}
 														}
 													},
 													precio : {
@@ -881,8 +901,18 @@
 															notEmpty : {
 																message : 'La descripción es obligatorio'
 															},
+															stringLength : {
+																min : 10,
+																message : 'La descripcion debe ser más de 10 caracteres'
+															},
+															regexp : {
+																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().,;\s?]+$/,
+																message : 'Solo se aceptan letras y numeros'
+															}
 														}
 													},
+													
+													
 												}
 											});
 						});
