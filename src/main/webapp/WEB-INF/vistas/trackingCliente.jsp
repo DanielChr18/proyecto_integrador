@@ -155,9 +155,20 @@
 																					<td>${s.fecha}</td>
 																					<td>${s.horario}</td>
 																					<td>${s.estado}</td>
-																					<c:if test="${objCargo == 'Cliente'}">
+																					<c:if
+																						test="${objCargo == 'Cliente' && s.estado == 'pendiente de pago'}">
 																						<td>
 																							<button type="button"
+																								onclick="verModalMetodoPago('${s.idReserva}');"
+																								class="btn btn-primary">
+																								<span class="material-icons"> paid </span>
+																							</button>
+																						</td>
+																					</c:if>
+																					<c:if
+																						test="${objCargo == 'Cliente' && s.estado != 'pendiente de pago'}">
+																						<td>
+																							<button type="button" disabled="disabled"
 																								onclick="verModalMetodoPago('${s.idReserva}');"
 																								class="btn btn-primary">
 																								<span class="material-icons"> paid </span>
@@ -317,7 +328,7 @@
 														<option value="pendiente de pago">pendiente de
 															pago</option>
 														<option value="pagado">pagado</option>
-														<option value="confirmado">confirmado</option>
+														<option value="realizado">realizado</option>
 													</select>
 												</div>
 											</div>
@@ -375,9 +386,11 @@
 							<div class="card-header card-header-primary">
 								<h3 class="card-title">Realizar Pago</h3>
 							</div>
+							<input class="form-control" type="text"
+											id="id_idReservaPagar" hidden="hidden" >
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formRealizarPago"
-									action="RealizarPago" method="post">
+								<form accept-charset="UTF-8" id="id_formRealizarPago">
+									
 									<div class="dropdown-divider"></div>
 									<div class="row">
 										<div class="col-md-12" style="margin-top: 5px;">
@@ -407,8 +420,8 @@
 										</div>
 									</div>
 									<div class="snipcart-details" style="margin-top: 12px">
-										<button id="btn_aceptar" type="submit" class="button w3l-cart"
-											data-id="cart-8">ACEPTAR</button>
+										<button id="btn_aceptar" type="button" class="button w3l-cart"
+											data-id="cart-8" onclick="pagarReserva();">ACEPTAR</button>
 									</div>
 								</form>
 								<button type="button" onclick="cerrarModalMetodoPago();"
@@ -427,6 +440,37 @@
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
 
+
+	<script type="text/javascript">
+		function pagarReserva() {
+			var validator = $('#id_formRealizarPago').data(
+			'bootstrapValidator');
+			validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type : 'POST',
+			data : {
+				'idReserva' : $("#id_idReservaPagar").val()
+			},
+			url : 'pagarReserva',
+			success : function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'trackingCliente';
+					}, 1500);
+				} else {
+					swal("¡Error!", data.MENSAJE, "error");
+				}
+			},
+			error : function() {
+				swal("¡Error!", "", "error");
+			}
+		});
+	}
+			
+		}
+	</script>
 	<script type="text/javascript">
 		function editarBoleta() {
 			$.ajax({
@@ -502,6 +546,7 @@
 		}
 
 		function verModalMetodoPago(id) {
+			$("#id_idReservaPagar").val(id);
 			$("#idModalMetodoPago").modal("show");
 		}
 

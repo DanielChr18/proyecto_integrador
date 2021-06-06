@@ -23,6 +23,8 @@ import com.proyectoIntegrador.service.ReservaService;
 @Controller
 public class reservaController {
 
+
+
 	@Autowired
 	private ReservaService service;
 
@@ -90,6 +92,30 @@ public class reservaController {
 		salida.put("MENSAJE", "Error al editar la Reserva.");
 		return salida;
 	}
+
+	
+	@RequestMapping("/pagarReserva")
+	@ResponseBody
+	public Map<String, Object> pagarReserva(HttpServletRequest request, String idReserva) {
+		Map<String, Object> salida = new HashMap<>();
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Cliente")) {
+				Reserva reserva = service.listarReservasId(Integer.parseInt(idReserva));
+				reserva.setEstado("pagado");
+				service.actualizaReserva(reserva);
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Éxito al editar la Reserva.");
+				return salida;
+			}
+		}
+		salida.put("CONFIRMACION", "NO");
+		salida.put("MENSAJE", "Error al editar la Reserva.");
+		return salida;
+	}
+	
+	
+	
 
 	@RequestMapping("/validacionReservaServicio")
 	@ResponseBody
