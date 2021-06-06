@@ -198,7 +198,7 @@
 												<div class="form-group">
 													<label>Fecha de Vencimiento</label> <input
 														class="form-control expire" id="id_fechaVencimiento"
-														type="text" placeholder="MM/YYYY" maxlength="7" />
+														type="text" placeholder="MM / YYYY" maxlength="9" />
 												</div>
 											</div>
 											<div class="col-md-12" style="margin-top: 5px;">
@@ -392,13 +392,13 @@
 				function(event) {
 					if (event.charCode >= 48 && event.charCode <= 57) {
 						if ($(this).val().length === 1) {
-							$(this).val($(this).val() + event.key + "/");
+							$(this).val($(this).val() + event.key + " / ");
 						} else if ($(this).val().length === 0) {
 							if (event.key == 1 || event.key == 0) {
 								month = event.key;
 								return event.charCode;
 							} else {
-								$(this).val(0 + event.key + "/");
+								$(this).val(0 + event.key + " / ");
 							}
 						} else if ($(this).val().length > 2
 								&& $(this).val().length < 9) {
@@ -445,21 +445,23 @@
 						}
 					}
 				},
-				
 				fechaVencimiento : {
 					selector : "#id_fechaVencimiento",
 					validators : {
 						notEmpty : {
-							message : ' La Fec. Vencimiento es requerida y no puede estar vacia'
+							message : 'Ingrese la Fec. Vencimiento'
 						},
-				
+						stringLength : {
+							min : 9,
+							message : 'Ingrese la Fec. Vencimiento completa'
+						}
 					}
 				},
 				numSeguridad : {
 					selector : "#id_numSeguridad",
 					validators : {
 						notEmpty : {
-							message : 'Ingrese el número de seguridad y no puede estar vacio'
+							message : 'Ingrese el número de seguridad'
 						},
 						stringLength : {
 							min : 3,
