@@ -165,16 +165,20 @@
 																message : 'El nombre es obligatorio'
 															},
 															stringLength : {
-																max : 40,
-																message : 'El nombre es de 40 caracteres como m·ximo'
+																max : 20,
+																message : 'El nombre es de 20 caracteres como m·ximo'
 															},
+															regexp: {
+										                        regexp: /^[a-zA-Z¡…Õ”⁄·ÈÌÛ˙\s?]+$/,
+										                        message: 'El nombre solo debe contener letras y no otros caracteres'
+										                    }
 														}
 													},
 													tipo : {
 														selector : "#id_tipoMascotaRegistrar",
 														validators : {
 															notEmpty : {
-																message : 'El tipo de mascota es obligatorio'
+																message : 'El tipo de mascota es obligatorio y no puede estar vacia'
 															},
 														}
 													},
@@ -184,17 +188,22 @@
 															notEmpty : {
 																message : 'La raza es obligatoria'
 															},
-														},
+														
 														stringLength : {
 															max : 40,
 															message : 'El nombre es de 40 caracteres como m·ximo'
 														},
+														regexp: {
+									                        regexp: /^[a-zA-Z¡…Õ”⁄·ÈÌÛ˙\s?]+$/,
+									                        message: 'La raza solo debe contener letras y no otros caracteres'
+									                    }
+													  }
 													},
 													fecha : {
 														selector : "#id_fechaNacMascotaRegistrar",
 														validators : {
 															notEmpty : {
-																message : 'La fecha es obligatoria'
+																message : 'La fecha es obligatoria y no puede estar vacia'
 															},
 														}
 													},
