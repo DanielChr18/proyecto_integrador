@@ -326,150 +326,70 @@
 	}
 </script>
 
-<script type="text/javascript">
-	$(function() {
-		var month = 0;
-		var html = document.getElementsByTagName('html')[0];
-		var number = "";
-		var selected_card = -1;
-
-		$(document).click(
-				function(e) {
-					if (!$(e.target).is(".ccv")
-							|| !$(e.target).closest(".ccv").length) {
-						$(".seccode").css("color", "var(--text-color)");
-					}
-					if (!$(e.target).is(".expire")
-							|| !$(e.target).closest(".expire").length) {
-						$(".date_value").css("color", "var(--text-color)");
-					}
-					if (!$(e.target).is(".number")
-							|| !$(e.target).closest(".number").length) {
-						$(".card_number").css("color", "var(--text-color)");
-					}
-				});
-
-		//Card number input
-		$(".number")
-				.keyup(
-						function(event) {
-							$(".card_number").text($(this).val());
-							number = $(this).val();
-							if ($(".card_number").text().length === 0) {
-								$(".card_number")
-										.html(
-												"&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF;");
-							}
-						}).focus(function() {
-					$(".card_number").css("color", "white");
-				}).on(
-						"keydown input",
-						function() {
-							$(".card_number").text($(this).val());
-							if (event.key >= 0 && event.key <= 9) {
-								if ($(this).val().length === 4
-										|| $(this).val().length === 9
-										|| $(this).val().length === 14) {
-									$(this).val($(this).val() + " ");
-								}
-							}
-						});
-
-		//Security code Input
-		$(".ccv").focus(function() {
-			$(".seccode").css("color", "white");
-		}).keyup(function() {
-			$(".seccode").text($(this).val());
-			if ($(this).val().length === 0) {
-				$(".seccode").html("&#x25CF;&#x25CF;&#x25CF;");
-			}
-		}).focusout(function() {
-			$(".seccode").css("color", "var(--text-color)");
-		});
-
-		//Date expire input
-		$(".expire").keypress(
-				function(event) {
-					if (event.charCode >= 48 && event.charCode <= 57) {
-						if ($(this).val().length === 1) {
-							$(this).val($(this).val() + event.key + " / ");
-						} else if ($(this).val().length === 0) {
-							if (event.key == 1 || event.key == 0) {
-								month = event.key;
-								return event.charCode;
-							} else {
-								$(this).val(0 + event.key + " / ");
-							}
-						} else if ($(this).val().length > 2
-								&& $(this).val().length < 9) {
-							return event.charCode;
-						}
-					}
-					return false;
-				}).keyup(function(event) {
-			$(".date_value").html($(this).val());
-			if (event.keyCode == 8 && $(".expire").val().length == 4) {
-				$(this).val(month);
-			}
-			if ($(this).val().length === 0) {
-				$(".date_value").text("MM / YYYY");
-			}
-		}).keydown(function() {
-			$(".date_value").html($(this).val());
-		}).focus(function() {
-			$(".date_value").css("color", "white");
-		});
-	});
-</script>
-
 <!-- Validación de Modal Detalle Pedido -->
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#form_boletaCompra').bootstrapValidator({
-			message : 'This value is not valid',
-			feedbackIcons : {
-				valid : 'glyphicon glyphicon-ok',
-				invalid : 'glyphicon glyphicon-remove',
-				validating : 'glyphicon glyphicon-refresh'
-			},
-			fields : {
-				numTarjeta : {
-					selector : "#id_numTarjeta",
-					validators : {
-						notEmpty : {
-							message : 'Ingrese el número de tarjeta'
-						},
-						stringLength : {
-							min : 19,
-							message : 'Ingrese el número de tarjeta completo'
-						}
-					}
-				},
-				fechaVencimiento : {
-					selector : "#id_fechaVencimiento",
-					validators : {
-						notEmpty : {
-							message : 'Ingrese la Fec. Vencimiento'
-						},
-						stringLength : {
-							min : 9,
-							message : 'Ingrese la Fec. Vencimiento completa'
-						}
-					}
-				},
-				numSeguridad : {
-					selector : "#id_numSeguridad",
-					validators : {
-						notEmpty : {
-							message : 'Ingrese el número de seguridad'
-						},
-						stringLength : {
-							min : 3,
-							message : 'Ingrese el número de seguridad completo'
-						}
-					}
-				}
-			}
-		});
-	});
+	$(document)
+			.ready(
+					function() {
+						$('#form_boletaCompra')
+								.bootstrapValidator(
+										{
+											message : 'This value is not valid',
+											feedbackIcons : {
+												valid : 'glyphicon glyphicon-ok',
+												invalid : 'glyphicon glyphicon-remove',
+												validating : 'glyphicon glyphicon-refresh'
+											},
+											fields : {
+												numTarjeta : {
+													selector : "#id_numTarjeta",
+													validators : {
+														notEmpty : {
+															message : 'Ingrese el número de tarjeta'
+														},
+														regexp : {
+															regexp : /^[1-9][0-9]{3}[\s][0-9]{4}[\s][0-9]{4}[\s][0-9]{4}$/,
+															message : 'Número de tarjeta no válida'
+														},
+														stringLength : {
+															min : 19,
+															message : 'Ingrese el número de tarjeta completo'
+														}
+													}
+												},
+												fechaVencimiento : {
+													selector : "#id_fechaVencimiento",
+													validators : {
+														notEmpty : {
+															message : 'Ingrese la Fec. Vencimiento'
+														},
+														regexp : {
+															regexp : /^[0-1][0-9][\s][/][\s][0-9]{4}$/,
+															message : 'Fecha de vencimiento no válida'
+														},
+														stringLength : {
+															min : 9,
+															message : 'Ingrese la Fec. Vencimiento completa'
+														}
+													}
+												},
+												numSeguridad : {
+													selector : "#id_numSeguridad",
+													validators : {
+														notEmpty : {
+															message : 'Ingrese el número de seguridad'
+														},
+														regexp : {
+															regexp : /^[0-9]{3}$/,
+															message : 'Número de seguridad no válida'
+														},
+														stringLength : {
+															min : 3,
+															message : 'Ingrese el número de seguridad completo'
+														}
+													}
+												}
+											}
+										});
+					});
 </script>

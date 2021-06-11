@@ -196,11 +196,11 @@
 								<div class="row">
 									<div class="col-md-12">
 										<label class="bmd-label-floating">Descripción Larga</label>
-										<textarea id="editor1" name="descripcionLarga" ></textarea>
+										<textarea id="editor1" name="descripcionLarga"></textarea>
 										<small id="id_mensajeDescripcionLargaRegistrar"
-											style="color: #cc0000;">La descripción larga no puede
-											estar vacía</small>
-											
+											style="color: #cc0000;">La descripción larga debe ser
+											mayor a 30 caracteres</small>
+
 									</div>
 								</div>
 								<div class="row">
@@ -352,8 +352,8 @@
 										<label class="bmd-label-floating">Descripción Larga</label>
 										<textarea id="editor2" name="descripcionLarga"></textarea>
 										<small id="id_mensajeDescripcionLargaModificar"
-											style="color: #cc0000;">La descripción larga no puede
-											estar vacía</small>
+											style="color: #cc0000;">La descripción larga debe ser
+											mayor a 30 caracteres</small>
 									</div>
 								</div>
 								<div class="row">
@@ -491,7 +491,10 @@
 						evt.preventDefault();
 						var c = "NO";
 					}
-					if (CKEDITOR.instances['editor1'].getData() == "" || CKEDITOR.instances['editor1'].getData().length < 23) {
+					if (CKEDITOR.instances[identificador].document.getBody()
+							.getText() == ""
+							|| CKEDITOR.instances[identificador].document
+									.getBody().getText().length <= 30) {
 						$('#id_mensajeDescripcionLargaRegistrar').show();
 						evt.preventDefault();
 						var c = "NO";
@@ -511,7 +514,9 @@
 				'submit',
 				function(evt) {
 					$("#id_btnModificarProducto").attr("disabled", false);
-					if (CKEDITOR.instances['editor2'].getData() == "" || CKEDITOR.instances['editor2'].getData().length < 23) {
+					if (CKEDITOR.instances['editor2'].getData() == ""
+							|| CKEDITOR.instances['editor2'].getData()
+									.toString().length < 23) {
 						$('#id_mensajeDescripcionLargaModificar').show();
 						evt.preventDefault();
 					} else {
@@ -700,9 +705,9 @@
 								removeButtons : 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source',
 								on : {
 									change : function() {
-										var des = CKEDITOR.instances[identificador]
-												.getData();
-										if (des === '' || des.length < 20) {
+										var des = CKEDITOR.instances[identificador].document
+												.getBody().getText();
+										if (des === '' || des.length <= 30) {
 											$(
 													'#id_mensajeDescripcionLarga'
 															+ mensaje).show();
@@ -711,8 +716,6 @@
 													'#id_mensajeDescripcionLarga'
 															+ mensaje).hide();
 										}
-										
-										
 									}
 								}
 							});
@@ -814,7 +817,7 @@
 															}
 														}
 													},
-													
+
 												}
 											});
 						});
@@ -911,8 +914,7 @@
 															}
 														}
 													},
-													
-													
+
 												}
 											});
 						});

@@ -1,6 +1,5 @@
 package com.proyectoIntegrador.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoIntegrador.entity.Boleta;
-import com.proyectoIntegrador.entity.Cliente;
-import com.proyectoIntegrador.entity.Distrito;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.BoletaService;
 import com.proyectoIntegrador.service.ReservaService;

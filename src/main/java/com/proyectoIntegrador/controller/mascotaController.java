@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.proyectoIntegrador.entity.Cliente;
-import com.proyectoIntegrador.entity.Marca;
 import com.proyectoIntegrador.entity.Mascota;
-import com.proyectoIntegrador.entity.Producto;
-import com.proyectoIntegrador.entity.Servicio;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.MascotaService;
 

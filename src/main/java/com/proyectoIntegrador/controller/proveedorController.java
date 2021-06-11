@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.proyectoIntegrador.entity.Marca;
 import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Proveedor;
 import com.proyectoIntegrador.service.ProductoService;

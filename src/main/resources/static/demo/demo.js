@@ -297,3 +297,276 @@ function imagen(idInput, idBox, idMensaje) {
 				}
 			});
 }
+
+
+
+$(function() {
+	//Card number input
+	$(".number").on(
+		"keydown input",
+		function() {
+			if (event.key >= 0 && event.key <= 9) {
+				if ($(this).val().length === 4
+					|| $(this).val().length === 9
+					|| $(this).val().length === 14) {
+					$(this).val($(this).val() + " ");
+				}
+			}
+		});
+
+	//Date expire input
+	$(".expire")
+		.keypress(
+			function(event) {
+				if (event.charCode >= 48 && event.charCode <= 57) {
+					var anio = (new Date).getFullYear();
+					var anioAyuda = 0;
+					if ($(this).val().length === 0) {
+						if (event.key == 1 || event.key == 0)
+							return event.charCode;
+						else
+							$(this).val(0 + event.key + " / ");
+					} else if ($(this).val().length === 1
+						&& $(this).val() === '1') {
+						if (event.key == 0 || event.key == 1
+							|| event.key == 2)
+							$(this).val(
+								$(this).val() + event.key
+								+ " / ");
+					} else if ($(this).val().length === 1
+						&& $(this).val() !== '1') {
+						if (event.key != 0)
+							$(this).val(
+								$(this).val() + event.key
+								+ " / ");
+					} else if ($(this).val().length === 2
+						&& event.key >= anio.toString()
+							.substring(0, 1)) {
+						$(this).val(
+							$(this).val() + " / " + event.key);
+					} else if ($(this).val().length === 3
+						&& event.key >= anio.toString()
+							.substring(0, 1)) {
+						$(this).val(
+							$(this).val() + "/ " + event.key);
+					} else if ($(this).val().length === 4
+						&& event.key >= anio.toString()
+							.substring(0, 1)) {
+						$(this)
+							.val(
+								$(this).val() + " "
+								+ event.key);
+					} else if ($(this).val().length === 5
+						&& event.key >= anio.toString()
+							.substring(0, 1)) {
+						return event.charCode;
+					} else if ($(this).val().length === 6) {
+						anioAyuda = $(this).val().substring(
+							$(this).val().length - 1,
+							$(this).val().length)
+							+ event.key;
+						if (anioAyuda >= anio.toString().substring(
+							0, 2)) {
+							return event.charCode;
+						}
+					} else if ($(this).val().length === 7) {
+						anioAyuda = $(this).val().substring(
+							$(this).val().length - 2,
+							$(this).val().length)
+							+ event.key;
+						if (anioAyuda >= anio.toString().substring(
+							0, 3))
+							return event.charCode;
+					} else if ($(this).val().length === 8) {
+						anioAyuda = $(this).val().substring(
+							$(this).val().length - 3,
+							$(this).val().length)
+							+ event.key;
+						if (anioAyuda >= anio)
+							return event.charCode;
+					}
+				}
+				return false;
+			});
+});
+
+
+
+
+
+var contadorReg = 0;
+var horasReg = [];
+var confirmarReg = 0;
+
+function agregarHorarioRegistrar() {
+	var horaReg = $("#id_horarioRegistrar").val();
+	if (horaReg > 7 && horaReg <= 20) {
+		if (contadorReg <= 2) {
+			if (horasReg.length != 0) {
+				for (var i = 0; i < horasReg.length; i++) {
+					if (horasReg[i] == horaReg) {
+						confirmarReg = 1;
+						break;
+					}
+				}
+				if (confirmarReg == 0) {
+					horasReg.push(horaReg);
+					$("#id_horariosServiciosRegistrar")
+						.append(
+							"<div class='col-md-2' id='id_boton" + horaReg + "'><div class='form-group'>"
+							+ "<button type='button' class='close' onclick=\"eliminarHorarioRegistrar('"
+							+ horaReg
+							+ "');\">&times;</button><h4>"
+							+ horaReg
+							+ ":00</h4></div></div>");
+					contadorReg = contadorReg + 1;
+					$('#id_mensajeHoraConfirmarRegistrar').hide();
+				} else if (confirmarReg == 1) {
+					alert('Horario repetido');
+					confirmarReg = 0;
+				}
+				var horariosReg = "";
+				for (var i = 0; i < horasReg.length; i++) {
+					if ((horasReg.length - 1) == i) {
+						horariosReg += horasReg[i];
+					} else {
+						horariosReg += horasReg[i] + ",";
+					}
+				}
+				$("#id_ayudaHoraRegistrar").val(horariosReg);
+			} else if (horasReg.length == 0) {
+				horasReg.push(horaReg);
+				$("#id_horariosServiciosRegistrar")
+					.append(
+						"<div class='col-md-2' id='id_boton" + horaReg + "'><div class='form-group'>"
+						+ "<button type='button' class='close' onclick=\"eliminarHorarioRegistrar('"
+						+ horaReg
+						+ "');\">&times;</button><h4>"
+						+ horaReg
+						+ ":00</h4></div></div>");
+				$("#id_ayudaHoraRegistrar").val(horaReg);
+				$('#id_mensajeHoraConfirmarRegistrar').hide();
+				contadorReg = contadorReg + 1;
+			}
+		} else {
+			alert('Solo se pueden agregar hasta 3 horarios de atención');
+		}
+	} else if ((horaReg < 8) || (horaReg > 20)) {
+		alert('El horario es desde las 10 Hr hasta las 20 Hr');
+	} else {
+		alert('Solo se permiten números');
+	}
+}
+
+function eliminarHorarioRegistrar(id) {
+	for (var i = 0; i < horasReg.length; i++) {
+		if (horasReg[i] == id) {
+			var h = horasReg.indexOf(id);
+			horasReg.splice(h, 1);
+			$("#id_horariosServiciosRegistrar #id_boton" + id).remove();
+			var horariosReg = "";
+			for (var i = 0; i < horasReg.length; i++) {
+				if ((horasReg.length - 1) == i) {
+					horariosReg += horasReg[i];
+				} else {
+					horariosReg += horasReg[i] + ",";
+				}
+			}
+			$("#id_ayudaHoraRegistrar").val(horariosReg);
+			contadorReg = contadorReg - 1;
+			break;
+		}
+	}
+	if (horasReg.length == 0) {
+		$('#id_mensajeHoraConfirmarRegistrar').show();
+	}
+}
+
+
+var contadorMod = 0;
+var horasMod = [];
+var confirmarMod = 0;
+
+function agregarHorarioModificar() {
+	var horaMod = $("#id_horarioModificar").val();
+	if (horaMod > 7 && horaMod <= 20) {
+		if (contadorMod <= 2) {
+			if (horasMod.length != 0) {
+				for (var i = 0; i < horasMod.length; i++) {
+					if (horasMod[i] == horaMod) {
+						confirmarMod = 1;
+						break;
+					}
+				}
+				if (confirmarMod == 0) {
+					horasMod.push(horaMod);
+					$("#id_horariosServiciosModificar")
+						.append(
+							"<div class='col-md-2' id='id_boton" + horaMod + "'><div class='form-group'>"
+							+ "<button type='button' class='close' onclick=\"eliminarHorarioModificar('"
+							+ horaMod
+							+ "');\">&times;</button><h4>"
+							+ horaMod
+							+ ":00</h4></div></div>");
+					contadorMod = contadorMod + 1;
+					$('#id_mensajeHoraConfirmarModificar').hide();
+				} else if (confirmarMod == 1) {
+					alert('Horario repetido');
+					confirmarMod = 0;
+				}
+				var horariosMod = "";
+				for (var i = 0; i < horasMod.length; i++) {
+					if ((horasMod.length - 1) == i) {
+						horariosMod += horasMod[i];
+					} else {
+						horariosMod += horasMod[i] + ",";
+					}
+				}
+				$("#id_ayudaHoraModificar").val(horariosMod);
+			} else if (horasMod.length == 0) {
+				horasMod.push(horaMod);
+				$("#id_horariosServiciosModificar")
+					.append(
+						"<div class='col-md-2' id='id_boton" + horaMod + "'><div class='form-group'>"
+						+ "<button type='button' class='close' onclick=\"eliminarHorarioModificar('"
+						+ horaMod
+						+ "');\">&times;</button><h4>"
+						+ horaMod
+						+ ":00</h4></div></div>");
+				$("#id_ayudaHoraModificar").val(horaMod);
+				contadorMod = contadorMod + 1;
+				$('#id_mensajeHoraConfirmarModificar').hide();
+			}
+		} else {
+			alert('Solo se pueden agregar hasta 3 horarios de atención');
+		}
+	} else if ((horaMod < 8) || (horaMod > 20)) {
+		alert('El horario es desde las 10 Hr hasta las 20 Hr');
+	} else {
+		alert('Solo se permiten números');
+	}
+}
+
+function eliminarHorarioModificar(id) {
+	for (var i = 0; i < horasMod.length; i++) {
+		if (horasMod[i] == id) {
+			var h = horasMod.indexOf(id);
+			horasMod.splice(h, 1);
+			$("#id_horariosServiciosModificar #id_boton" + id).remove();
+			var horariosMod = "";
+			for (var i = 0; i < horasMod.length; i++) {
+				if ((horasMod.length - 1) == i) {
+					horariosMod += horasMod[i];
+				} else {
+					horariosMod += horasMod[i] + ",";
+				}
+			}
+			$("#id_ayudaHoraModificar").val(horariosMod);
+			contadorMod = contadorMod - 1;
+			break;
+		}
+	}
+	if (horasMod.length == 0) {
+		$('#id_mensajeHoraConfirmarModificar').show();
+	}
+}
