@@ -10,10 +10,10 @@ public interface ProductoService {
 
 	public abstract Producto listaProductosId(int idProducto);
 
-	public abstract List<Producto> ListaProductosNombre(String nombre);
+	public abstract List<Producto> listaProductosNombre(String nombre);
 
-	public abstract Producto agregarProducto(Producto obj);
+	public abstract List<Producto> listaProductosNombreDiferenteId(int idProducto, String nombre);
 
-	public abstract Producto modificarProducto(Producto obj);
+	public abstract Producto agregarModificarProducto(Producto obj);
 
 }

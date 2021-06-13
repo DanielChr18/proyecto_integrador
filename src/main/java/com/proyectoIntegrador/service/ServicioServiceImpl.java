@@ -20,22 +20,21 @@ public class ServicioServiceImpl implements ServicioService {
 	}
 
 	@Override
-	public Servicio listaServiciosNombre(String nombre) {
+	public List<Servicio> listaServiciosNombre(String nombre) {
 		return repository.findByNombre(nombre);
 	}
 
+	@Override
+	public List<Servicio> listaNombreDiferenteId(int idServicio, String nombre) {
+		return repository.listaNombreDiferenteId(idServicio, nombre);
+	}
 	@Override
 	public Servicio listaServiciosId(int idServicio) {
 		return repository.findById(idServicio).get();
 	}
 
 	@Override
-	public Servicio agregarServicio(Servicio obj) {
-		return repository.save(obj);
-	}
-
-	@Override
-	public Servicio modificarServicio(Servicio obj) {
+	public Servicio agregarModificarServicio(Servicio obj) {
 		return repository.save(obj);
 	}
 

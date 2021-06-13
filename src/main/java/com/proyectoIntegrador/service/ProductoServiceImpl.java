@@ -32,17 +32,18 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 	@Override
-	public List<Producto> ListaProductosNombre(String nombre) {
-		return repository.listaProductosNombre("%" + nombre + "%");
+	public List<Producto> listaProductosNombre(String nombre) {
+		return repository.findByNombre(nombre);
 	}
 
 	@Override
-	public Producto agregarProducto(Producto obj) {
-		return repository.save(obj);
+	public List<Producto> listaProductosNombreDiferenteId(int idProducto, String nombre) {
+		return repository.listaProductosNombreDiferenteId(idProducto, nombre);
 	}
 
 	@Override
-	public Producto modificarProducto(Producto obj) {
+	public Producto agregarModificarProducto(Producto obj) {
 		return repository.save(obj);
 	}
+
 }

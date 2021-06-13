@@ -43,52 +43,81 @@ public class proveedorController {
 	}
 
 	@RequestMapping("/registrarProveedor")
-	public String registrarProveedor(Proveedor obj) {
+	@ResponseBody
+	public Map<String, Object> registrarProveedor(Proveedor obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getRazonSocial() != null) {
-				service.agregarProveedor(obj);
-				Thread.sleep(2000);
-				return "redirect:crudProveedores";
+				List<Proveedor> listaProvRaz = service.listaProveedoresRazonSocial(obj.getRazonSocial());
+				List<Proveedor> listaProvRuc = service.listaProveedoresRuc(obj.getRuc());
+				if (listaProvRaz.size() == 0 && listaProvRuc.size() == 0) {
+					service.agregarModificarProveedor(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Proveedor registrado correctamente.");
+				} else if (listaProvRaz.size() > 0) {
+					salida.put("MENSAJE", "La razón social del proveedor ya existe.");
+				} else if (listaProvRuc.size() > 0) {
+					salida.put("MENSAJE", "El R.U.C. del proveedor ya existe.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al registrar el proveedor.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar el proveedor.");
+			return salida;
 		}
-		return "redirect:crudProveedores";
 	}
 
 	@RequestMapping("/modificarProveedor")
-	public String modificarProveedor(Proveedor obj) {
+	@ResponseBody
+	public Map<String, Object> modificarProveedor(Proveedor obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getRazonSocial() != null) {
-				service.modificarProveedor(obj);
-				Thread.sleep(2000);
-				return "redirect:crudProveedores";
+				List<Proveedor> listaProvRaz = service.listaProveedoresRazonSocialDiferenteId(obj.getIdProveedor(),
+						obj.getRazonSocial());
+				List<Proveedor> listaProvRuc = service.listaProveedoresRucDiferenteId(obj.getIdProveedor(),
+						obj.getRuc());
+				if (listaProvRaz.size() == 0 && listaProvRuc.size() == 0) {
+					service.agregarModificarProveedor(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Proveedor modificado correctamente.");
+				} else if (listaProvRaz.size() > 0) {
+					salida.put("MENSAJE", "La razón social del proveedor ya existe.");
+				} else if (listaProvRuc.size() > 0) {
+					salida.put("MENSAJE", "El R.U.C. del proveedor ya existe.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al modificar el proveedor.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al modificar el proveedor.");
+			return salida;
 		}
-		return "redirect:crudProveedores";
 	}
 
 	@RequestMapping("/eliminarProveedor")
-	public String eliminarProveedor(Proveedor obj) {
+	@ResponseBody
+	public Map<String, Object> eliminarProveedor(Proveedor obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getIdProveedor() > 0) {
-				System.out.println(obj.getIdProveedor());
 				service.eliminarProveedor(obj.getIdProveedor());
-				Thread.sleep(2000);
-				return "redirect:crudProveedores";
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Proveedor eliminado correctamente.");
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al eliminar el proveedor.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al eliminar el proveedor.");
+			return salida;
 		}
-		return "redirect:crudProveedores";
 	}
 
 	@RequestMapping("/verificarProveedor")

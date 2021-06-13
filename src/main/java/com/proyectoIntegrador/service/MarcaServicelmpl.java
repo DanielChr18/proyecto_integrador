@@ -13,7 +13,7 @@ public class MarcaServicelmpl implements MarcaService {
 
 	@Autowired
 	private MarcaRepository repository;
-	
+
 	@Override
 	public List<Marca> listaMarcas() {
 		return repository.findAll();
@@ -25,24 +25,23 @@ public class MarcaServicelmpl implements MarcaService {
 	}
 
 	@Override
-	public List<Marca> ListaMarcasNombre(String nombre) {
-		return repository.listaMarcasNombre(nombre + "%");
+	public List<Marca> listaMarcasNombre(String nombre) {
+		return repository.findByNombre(nombre);
 	}
 
 	@Override
-	public Marca agregarMarca(Marca obj) {
-		return repository.save(obj);
+	public List<Marca> listaMarcasNombreDiferenteId(int idMarca, String nombre) {
+		return repository.listaMarcasNombreDiferenteId(idMarca, nombre);
 	}
 
 	@Override
-	public Marca modificarMarca(Marca obj) {
+	public Marca agregarModificarMarca(Marca obj) {
 		return repository.save(obj);
 	}
 
 	@Override
 	public void eliminarMarca(int idMarca) {
 		repository.deleteById(idMarca);
-		
 	}
 
 }

@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -134,7 +135,6 @@
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" id="id_formRegistrarServicio"
-								action="registrarServicio" method="post"
 								enctype="multipart/form-data">
 								<div class="row" id="id_divNombreRegistrar">
 									<div class="col-md-12">
@@ -233,7 +233,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalServicioRegistra();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnRegistrarServicio" type="submit"
+								<button id="id_btnRegistrarServicio" type="button"
+									onclick="registrarServicio();"
 									class="btn btn-primary pull-right">Registrar</button>
 							</form>
 						</div>
@@ -243,7 +244,6 @@
 		</div>
 
 		<!-- Modal de Modificar Servicio -->
-
 		<div class="modal fade" id="idModalModificaServicio"
 			data-backdrop="static" tabindex="-1" role="dialog">
 			<div class="modal-dialog" style="width: 45%;">
@@ -255,7 +255,6 @@
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form id="id_formModificarServicio" accept-charset="UTF-8"
-								action="modificarServicio" method="post"
 								enctype="multipart/form-data">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
@@ -267,7 +266,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_nombreModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Nombre de Servicio</label>
 											<input class="form-control" type="text"
 												id="id_nombreModificar" name="nombre">
@@ -276,7 +275,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_precioModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Precio</label> <input
 												class="form-control" type="text" id="id_precioModificar"
 												name="precio">
@@ -285,7 +284,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_descripcionModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Descripción</label> <input
 												class="form-control" type="text"
 												id="id_descripcionModificar" name="descripcion">
@@ -359,7 +358,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalServicioModifica();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnModificarServicio" type="submit"
+								<button id="id_btnModificarServicio" type="button"
+									onclick="modificarServicio();"
 									class="btn btn-primary pull-right">Actualizar</button>
 							</form>
 						</div>
@@ -369,7 +369,6 @@
 		</div>
 
 		<!-- Modal de Eliminar Servicio -->
-
 		<div class="modal fade" id="idModalEliminaServicio"
 			data-backdrop="static" tabindex="-1" role="dialog">
 			<div class="modal-dialog" style="width: 25%;">
@@ -400,7 +399,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalServicioElimina();"
 									class="btn btn-primary pull-right">NO</button>
-								<button type="submit" class="btn btn-primary pull-left">SI</button>
+								<button type="button" onclick="eliminarServicio();"
+									class="btn btn-primary pull-left">SI</button>
 							</form>
 						</div>
 					</div>
@@ -409,29 +409,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		function validarFechas() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					'parametro' : 'Ninguno'
-				},
-				url : 'validarFechas',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Excelente!", data.MENSAJE, "success");
-					} else {
-						swal("¡Aviso!", data.MENSAJE, "warning");
-					}
-				},
-				error : function() {
-					swal("ERROR!", "Hubo un error en las fechas!", "error");
-				}
-			});
-		}
-	</script>
-
-	<!-- Validación de Horarios -->
+	<!-- Script para Horarios e Imagenes -->
 	<script type="text/javascript">
 		$('#id_mensajeHoraConfirmarRegistrar').hide();
 		$('#id_mensajeHoraConfirmarModificar').hide();
@@ -439,56 +417,6 @@
 		imagen('#id_imagenRegistrar', '#boxFileRegistrar',
 				'#id_mensajeImagenRegistrar');
 		imagen('#id_imagenModificar', '#boxFileModificar', null);
-
-		$("#id_formRegistrarServicio").on(
-				'submit',
-				function(evt) {
-					var confirmHora = $("#id_ayudaHoraRegistrar").val();
-					var c = "SI";
-					$("#id_btnRegistrarMascota").attr("disabled", false);
-					if (confirmHora == "") {
-						$('#id_mensajeHoraConfirmarRegistrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if ($("#id_imagenRegistrar").val() === "") {
-						$('#id_mensajeImagenRegistrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if (c == "SI") {
-						var validator = $('#id_formRegistrarServicio').data(
-								'bootstrapValidator');
-						if (validator.isValid()) {
-							swal("¡Éxito!",
-									"Servicio registrado correctamente.",
-									"success");
-						}
-					}
-				});
-
-		$("#id_formModificarServicio").on(
-				'submit',
-				function(evt) {
-					$("#id_btnModificarServicio").attr("disabled", false);
-					var confirmHora = $("#id_ayudaHoraModificar").val();
-					if (confirmHora == "") {
-						$('#id_mensajeHoraConfirmarModificar').show();
-						evt.preventDefault();
-					} else {
-						var validator = $('#id_formModificarServicio').data(
-								'bootstrapValidator');
-						if (validator.isValid()) {
-							swal("¡Éxito!",
-									"Servicio modificado correctamente.",
-									"success");
-						}
-					}
-				});
-
-		$("#id_formEliminarServicio").on('submit', function(evt) {
-			swal("¡Éxito!", "Servicio eliminado correctamente.", "success");
-		});
 	</script>
 
 	<!-- Script de Modal's  -->
@@ -523,11 +451,8 @@
 			confirmarMod = 0;
 			$("#id_codigoModificar").val(id);
 			$("#id_nombreModificar").val(nombre);
-			$("#div_nombreModificar").addClass("is-filled");
 			$("#id_precioModificar").val(precio);
-			$("#div_precioModificar").addClass("is-filled");
 			$("#id_descripcionModificar").val(descripcion);
-			$("#div_descripcionModificar").addClass("is-filled");
 			$("#id_diasServiciosModificar input[name=dia]").attr("disabled",
 					false);
 			$("#id_diasServiciosModificar input[name=dia][value='" + dia + "']")
@@ -583,6 +508,8 @@
 								}
 								$("#id_ayudaHoraModificar").val(horariosMod);
 							});
+			$("#id_formModificarServicio .col-md-12 .form-group").addClass(
+					"is-filled");
 			$("#idModalModificaServicio").modal("show");
 		}
 
@@ -612,16 +539,19 @@
 						},
 						url : 'verificarServicio',
 						success : function(data) {
-							if (data.CONFIRMACION == 'SI') {
-								$("#idModalEliminaServicio").modal("show");
-							} else {
+							if (data.CONFIRMACION == 'NO') {
 								swal(
-										"¡Error!",
+										"¡Aviso!",
 										"El Servicio no se puede eliminar porque hay reservas pendientes.",
-										"error");
+										"warning");
+							} else {
+								$("#idModalEliminaServicio").modal("show");
 							}
 						},
 						error : function() {
+							swal("¡Error!",
+									"¡Comunicate con el administrador!",
+									"error");
 						}
 					});
 		}
@@ -684,13 +614,13 @@
 															},
 															regexp : {
 																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().;,\s?]+$/,
-																message : 'Solo se aceptan letras y numeros'
+																message : 'Solo se aceptan letras y numeros \n'
 															},
 															stringLength : {
 																min : 5,
-																message : 'la descripción debe ser más de 5 caracteres'
+																message : 'La descripción debe ser más de 5 caracteres'
 															},
-															
+
 														}
 													},
 													imagen : {

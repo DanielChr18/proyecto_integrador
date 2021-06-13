@@ -43,52 +43,73 @@ public class marcaController {
 	}
 
 	@RequestMapping("/registrarMarca")
-	public String registrarMarca(Marca obj) {
+	@ResponseBody
+	public Map<String, Object> registrarMarca(Marca obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				service.agregarMarca(obj);
-				Thread.sleep(2000);
-				return "redirect:crudMarcas";
+				List<Marca> listaMarcas = service.listaMarcasNombre(obj.getNombre());
+				if (listaMarcas.size() == 0) {
+					service.agregarModificarMarca(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Marca registrada correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre de la marca ya existe.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al registrar la marca.");
 			}
-		} catch (InterruptedException e) {
+			return salida;
+		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar la marca.");
+			return salida;
 		}
-		return "redirect:crudMarcas";
 	}
 
 	@RequestMapping("/modificarMarca")
-	public String modificarMarca(Marca obj) {
+	@ResponseBody
+	public Map<String, Object> modificarMarca(Marca obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				service.modificarMarca(obj);
-				Thread.sleep(2000);
-				return "redirect:crudMarcas";
+				List<Marca> listaMarcas = service.listaMarcasNombreDiferenteId(obj.getIdMarca(), obj.getNombre());
+				if (listaMarcas.size() == 0) {
+					service.agregarModificarMarca(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Marca modificada correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre de la marca ya existe.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al modificar la marca.");
 			}
-		} catch (InterruptedException e) {
+			return salida;
+		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al modificar la marca.");
+			return salida;
 		}
-		return "redirect:crudMarcas";
 	}
 
 	@RequestMapping("/eliminarMarca")
-	public String eliminarMarca(Marca obj) {
+	@ResponseBody
+	public Map<String, Object> eliminarMarca(Marca obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getIdMarca() > 0) {
-				System.out.println(obj.getIdMarca());
 				service.eliminarMarca(obj.getIdMarca());
-				Thread.sleep(2000);
-				return "redirect:crudMarcas";
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Marca eliminada correctamente.");
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al eliminar la marca.");
 			}
-		} catch (InterruptedException e) {
+			return salida;
+		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al eliminar la marca.");
+			return salida;
 		}
-		return "redirect:crudMarcas";
 	}
 
 	@RequestMapping("/verificarMarca")

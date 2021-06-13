@@ -5,9 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-
 <!--===============================================================================================-->
-<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+<link rel="icon" type="image/png" href="images/logo.png">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css"
 	href="vendor/bootstrap/css/bootstrap.min.css">
@@ -112,8 +111,6 @@
 						if (data.CONFIRMACION == 'SI') {
 							if (data.USUARIO != null) {
 								swal("¡Bienvenido!", data.USUARIO, "success");
-							} else {
-								swal("¡Bienvenido!", "", "success");
 							}
 							setTimeout(function() {
 								event.target.submit();
@@ -123,6 +120,8 @@
 						}
 					},
 					error : function() {
+						swal("¡Error!", "¡Comunicate con el administrador!",
+								"error");
 					}
 				});
 			}

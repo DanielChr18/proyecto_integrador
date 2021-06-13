@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -137,8 +138,7 @@
 							<h3 class="card-title">Modificar Mascota</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formModificarMascota" accept-charset="UTF-8"
-								action="modificarMascota" method="post"
+							<form id="id_formModificarMascota" accept-charset="UTF-8"F
 								enctype="multipart/form-data">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
@@ -150,7 +150,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_nombreMascotaModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Nombre</label> <input
 												type="text" id="id_nombreMascotaModificar"
 												class="form-control" name="nombre">
@@ -172,7 +172,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_razaMascotaModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Raza</label> <input
 												type="text" id="id_razaMascotaModificar"
 												class="form-control" name="raza">
@@ -181,16 +181,17 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_fechaNacMascotaModificar">
+										<div class="form-group">
 											<label class="bmd-label">Fecha de Nacimiento</label><br>
 											<input type="date" id="id_fechaNacMascotaModificar"
-												class="form-control" name="fechaNacimiento">
+												class="form-control" name="fechaNacimiento"
+												onkeydown="return false">
 										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_sexoMascotaModificar">
+										<div class="form-group">
 											<input type="radio" name="sexo" value="Macho" checked>
 											Macho <input type="radio" name="sexo" value="Hembra">
 											Hembra
@@ -213,7 +214,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalMascotaModifica();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnModificarMascota" type="submit"
+								<button id="id_btnModificarMascota" type="button"
+									onclick="modificarMascota();"
 									class="btn btn-primary pull-right">Modificar</button>
 							</form>
 						</div>
@@ -233,8 +235,7 @@
 							<h3 class="card-title">Eliminar Mascota</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formEliminarMascota" accept-charset="UTF-8"
-								action="eliminarMascota" method="post">
+							<form id="id_formEliminarMascota" accept-charset="UTF-8">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -253,7 +254,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalMascotaElimina();"
 									class="btn btn-primary pull-right">NO</button>
-								<button type="submit" class="btn btn-primary pull-left">SI</button>
+								<button type="button" onclick="eliminarMascota();"
+									class="btn btn-primary pull-left">SI</button>
 							</form>
 						</div>
 					</div>
@@ -276,14 +278,13 @@
 		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo) {
 			$("#id_codigoMascotaModificar").val(id);
 			$("#id_nombreMascotaModificar").val(nombre);
-			$("#div_nombreMascotaModificar").addClass("is-filled");
 			$("#id_tipoMascotaModificar").val(tipo);
 			$("#id_razaMascotaModificar").val(raza);
 			$("#idModalModificaMascota input[name=sexo][value='" + sexo + "']")
 					.prop("checked", true);
-			$("#div_razaMascotaModificar").addClass("is-filled");
 			$("#id_fechaNacMascotaModificar").val(fecha);
-			$("#div_fechaNacMascotaModificar").addClass("is-filled");
+			$("#id_formModificarMascota .col-md-12 .form-group").addClass(
+					"is-filled");
 			$("#idModalModificaMascota").modal("show");
 		}
 
@@ -312,42 +313,8 @@
 	</script>
 
 	<script type="text/javascript">
-		$("#id_formRegistrarMascota").on(
-				'submit',
-				function(evt) {
-					$("#id_btnRegistrarMascota").attr("disabled", false);
-					if ($("#id_imagenRegistrar").val() == "") {
-						$('#id_mensajeImagenRegistrar').show();
-						evt.preventDefault();
-					} else {
-						var validator = $('#id_formRegistrarMascota').data(
-								'bootstrapValidator');
-						if (validator.isValid()) {
-							swal("¡Éxito!",
-									"Mascota registrada correctamente.",
-									"success");
-						}
-					}
-				});
-
-		$("#id_formModificarMascota").on(
-				'submit',
-				function(evt) {
-					var validator = $('#id_formModificarMascota').data(
-							'bootstrapValidator');
-					if (validator.isValid()) {
-						swal("¡Éxito!", "Mascota actualizada correctamente.",
-								"success");
-					}
-				});
-
-		$("#id_formEliminarMascota").on('submit', function(evt) {
-			swal("¡Éxito!", "Mascota eliminada correctamente.", "success");
-		});
+		
 	</script>
-
-
-
 
 	<!-- Validaciones de Registrar -->
 	<script type="text/javascript">
@@ -408,7 +375,6 @@
 											});
 						});
 	</script>
-
 </body>
 
 </html>

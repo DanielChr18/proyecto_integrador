@@ -59,101 +59,105 @@ public class clienteController {
 	}
 
 	@RequestMapping("/registrarCliente")
-	public String registrarCliente(HttpServletRequest request, Cliente obj) {
+	@ResponseBody
+	public Map<String, Object> registrarCliente(HttpServletRequest request, Cliente obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			HttpSession session = request.getSession(true);
 			if (obj.getNombre() != null) {
-				System.out.println("|---------- En Registro de Cliente ----------|");
-				obj.getIdUsuario().setContrasenia(encoder.encode(obj.getIdUsuario().getContrasenia()));
-				serviceUsu.agregarUsuario(obj.getIdUsuario());
-				service.agregarCliente(obj);
-				Cliente cliente = service.buscarClienteUsuario(obj.getIdUsuario().getIdUsuario());
-				session.setAttribute("objIdCliente", cliente.getIdCliente());
-				session.setAttribute("objCargo", "Cliente");
-				Thread.sleep(2000);
-				return "redirect:datosMascotas";
+				List<Cliente> listaClientesDni = service.listaClientesDni(obj.getDni());
+				List<Cliente> listaClientesEmail = service.listaClientesEmail(obj.getEmail());
+				Usuario listaUsuarioNombre = serviceUsu.findByNomUsuario(obj.getIdUsuario().getNomUsuario());
+				if (listaClientesDni.size() != 0) {
+					salida.put("MENSAJE", "El Dni ingresado ya está registrado a otro Cliente.");
+				} else if (listaClientesEmail.size() != 0) {
+					salida.put("MENSAJE", "El Email ingresado ya está registrado a otro Cliente.");
+				} else if (listaUsuarioNombre != null) {
+					salida.put("MENSAJE", "El Usuario ingresado ya está registrado a otro Cliente.");
+				} else {
+					obj.getIdUsuario().setContrasenia(encoder.encode(obj.getIdUsuario().getContrasenia()));
+					serviceUsu.agregarUsuario(obj.getIdUsuario());
+					service.agregarModificarCliente(obj);
+					Cliente cliente = service.listaClienteUsuario(obj.getIdUsuario().getIdUsuario());
+					session.setAttribute("objIdCliente", cliente.getIdCliente());
+					session.setAttribute("objCargo", "Cliente");
+					session.setAttribute("objUsuario", cliente.getIdUsuario().getNomUsuario());
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Cliente registrado correctamente.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al registrar el cliente.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return "redirect:datosClientes";
-	}
-
-	@RequestMapping("/validacionUsuario")
-	@ResponseBody
-	public Map<String, Object> validacionUsuario(String nom_usuario) {
-		Map<String, Object> salida = new HashMap<>();
-		Usuario usu = serviceUsu.findByNomUsuario(nom_usuario);
-		if (usu == null) {
-			salida.put("CONFIRMACION", "SI");
-			salida.put("MENSAJE", "Usuario creado satisfactoriamente.");
-			return salida;
-		} else {
-			salida.put("CONFIRMACION", "NO");
-			salida.put("MENSAJE", "El usuario ya existe.");
-			return salida;
-		}
-	}
-
-	@RequestMapping("/validacionContrasenia")
-	@ResponseBody
-	public Map<String, Object> validacionContrasenia(HttpServletRequest request, String con_usuario) {
-		HttpSession session = request.getSession(true);
-		Map<String, Object> salida = new HashMap<>();
-		Usuario usu = serviceUsu.findByNomUsuario(session.getAttribute("objUsuario").toString());
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		boolean confirmar = passwordEncoder.matches(con_usuario, usu.getContrasenia());
-		if (confirmar) {
-			salida.put("CONFIRMACION", "SI");
-			salida.put("MENSAJE", "Tus datos se cambiaron satisfactoriamente.");
-			return salida;
-		} else {
-			salida.put("CONFIRMACION", "NO");
-			salida.put("MENSAJE", "Contreña Incorrecta.");
+			salida.put("MENSAJE", "Error al registrar el cliente.");
 			return salida;
 		}
 	}
 
 	@RequestMapping("/modificarCliente")
-	public String modificarCliente(HttpServletRequest request, Cliente obj) {
+	@ResponseBody
+	public Map<String, Object> modificarCliente(HttpServletRequest request, Cliente obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
-			System.out.println("-- Modificar Cliente --");
 			HttpSession session = request.getSession(true);
 			if (obj.getNombre() != null) {
-				System.out.println("id ---------> " + obj.getIdCliente());
-				Usuario usu = serviceUsu.findByNomUsuario(session.getAttribute("objUsuario").toString());
-				obj.setIdUsuario(usu);
-				service.modificarCliente(obj);
-				Thread.sleep(2000);
-				return "redirect:datosClientes";
+				List<Cliente> listaClientesDni = service.listaClientesDniDiferenteId(obj.getIdCliente(), obj.getDni());
+				List<Cliente> listaClientesEmail = service.listaClientesEmailDiferenteId(obj.getIdCliente(),
+						obj.getEmail());
+				if (listaClientesDni.size() != 0) {
+					salida.put("MENSAJE", "El Dni ingresado ya está registrado a otro Cliente.");
+				} else if (listaClientesEmail.size() != 0) {
+					salida.put("MENSAJE", "El Email ingresado ya está registrado a otro Cliente.");
+				} else {
+					Usuario usu = serviceUsu.findByNomUsuario(session.getAttribute("objUsuario").toString());
+					PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					boolean confirmar = passwordEncoder.matches(obj.getIdUsuario().getContrasenia(),
+							usu.getContrasenia());
+					if (confirmar) {
+						obj.setIdUsuario(usu);
+						service.agregarModificarCliente(obj);
+						salida.put("CONFIRMACION", "SI");
+						salida.put("MENSAJE", "Cliente modificado correctamente.");
+					} else {
+						salida.put("MENSAJE", "Contreña Incorrecta.");
+					}
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al modificar el cliente.");
 			}
-		} catch (Exception e) {
+			return salida;
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al modificar el cliente.");
+			return salida;
 		}
-		return "redirect:datosClientes";
 	}
 
 	@RequestMapping("/eliminarCliente")
-	public String eliminarCliente(Cliente obj) {
+	@ResponseBody
+	public Map<String, Object> eliminarCliente(Cliente obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getIdCliente() > 0) {
 				System.out.println(obj.getIdCliente());
 				Cliente cliente = service.listaClientesId(obj.getIdCliente());
 				service.eliminarCliente(obj.getIdCliente());
 				serviceUsu.eliminarUsuario(cliente.getIdUsuario().getIdUsuario());
-				Thread.sleep(2000);
-				return "redirect:datosClientes";
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Cliente eliminado correctamente.");
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al eliminar el cliente.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al eliminar el cliente.");
+			return salida;
 		}
-		return "redirect:datosClientes";
 	}
 
 }

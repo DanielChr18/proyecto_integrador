@@ -169,7 +169,7 @@ public class boletaController {
 					}
 					Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
 					producto.setStock(producto.getStock() - contador);
-					servicePro.modificarProducto(producto);
+					servicePro.agregarModificarProducto(producto);
 					DetalleBoleta detalleBoleta = new DetalleBoleta();
 					detalleBoleta.setCantidad(contador);
 					detalleBoleta.setCosto(costo);

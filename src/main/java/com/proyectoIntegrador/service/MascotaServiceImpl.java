@@ -20,12 +20,7 @@ public class MascotaServiceImpl implements MascotaService {
 	}
 
 	@Override
-	public Mascota agregarMascota(Mascota obj) {
-		return repository.save(obj);
-	}
-
-	@Override
-	public Mascota modificarMascota(Mascota obj) {
+	public Mascota agregarModificarMascota(Mascota obj) {
 		return repository.save(obj);
 	}
 

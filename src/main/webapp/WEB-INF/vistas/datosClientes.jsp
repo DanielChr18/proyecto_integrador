@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -33,8 +34,7 @@
 										</h3>
 									</div>
 									<div class="card-body">
-										<form id="form_crearCliente" accept-charset="UTF-8"
-											action="registrarCliente" method="post">
+										<form id="id_formRegistrarCliente" accept-charset="UTF-8">
 											<div class="row">
 												<div class="col-md-12">
 													<div class="card-header"
@@ -170,7 +170,8 @@
 												<div class="col-md-12">
 													<button type="button" onclick="history.go(-1)"
 														class="btn btn-primary pull-right">Cancelar</button>
-													<button id="id_crearCliente" type="submit"
+													<button id="id_crearCliente" type="button"
+														onclick="registrarCliente();"
 														class="btn btn-primary pull-right">Crear Cliente</button>
 												</div>
 											</div>
@@ -201,7 +202,7 @@
 										</h3>
 									</div>
 									<div class="card-body">
-										<form id="form_modificarCliente" accept-charset="UTF-8">
+										<form id="id_formModificarCliente" accept-charset="UTF-8">
 											<div class="row">
 												<div class="col-md-12">
 													<div class="card-header"
@@ -320,8 +321,7 @@
 							<h3 class="card-title">Confirmar Contraseña</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" action="modificarCliente"
-								method="post" id="form_modificarCliente">
+							<form accept-charset="UTF-8" id="id_formModificarClienteModal">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<input class="form-control" type="text" name="idCliente"
@@ -381,7 +381,8 @@
 								<button type="button"
 									onclick="cerrarModalConfirmarContrasenia();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_modificarCliente" type="submit"
+								<button id="id_modificarCliente" type="button"
+									onclick="modificarCliente();"
 									class="btn btn-primary pull-right">Confirmar</button>
 							</form>
 						</div>
@@ -393,7 +394,7 @@
 
 	<script type="text/javascript">
 		function verModalConfirmarContrasenia() {
-			var validator = $('#form_modificarCliente').data(
+			var validator = $('#id_formModificarCliente').data(
 					'bootstrapValidator');
 			validator.validate();
 			if (validator.isValid()) {
@@ -423,31 +424,6 @@
 					"is-filled has-success");
 			$("#idModalConfirmarContrasenia").modal("hide");
 		}
-
-		$("#form_modificarCliente").on('submit', function(evt) {
-			evt.preventDefault();
-			$("#id_modificarCliente").attr("disabled", false);
-			var contra = $('#id_contraseniaModificar').val();
-			$.ajax({
-				type : 'POST',
-				data : {
-					'con_usuario' : contra
-				},
-				url : 'validacionContrasenia',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("Éxito!", data.MENSAJE, "success");
-						setTimeout(function() {
-							evt.target.submit();
-						}, 1000);
-					} else {
-						swal("Error!", data.MENSAJE, "error");
-					}
-				},
-				error : function() {
-				}
-			});
-		});
 	</script>
 
 	<!-- Validar Contraseña de Registrar Usuario -->
@@ -473,47 +449,12 @@
 
 		$("#id_contrasenia").on('keyup', comfirmarPassRegistrar);
 		$("#id_contraseniaConfirmar").on('keyup', comfirmarPassRegistrar);
-
-		$("#form_crearCliente").on(
-				'submit',
-				function(evt) {
-					var contra = $('#id_contrasenia').val();
-					var contra2 = $('#id_contraseniaConfirmar').val();
-					var usuario = $('#id_usuario').val();
-
-					evt.preventDefault();
-
-					if ((contra == contra2) && (usuario != '')
-							&& (contra != '') && (contra2 != '')) {
-						$.ajax({
-							type : 'POST',
-							data : {
-								'nom_usuario' : usuario
-							},
-							url : 'validacionUsuario',
-							success : function(data) {
-								if (data.CONFIRMACION == 'SI') {
-									swal("¡Registrado con éxito!",
-											data.MENSAJE, "success");
-									setTimeout(function() {
-										evt.target.submit();
-									}, 1000);
-								} else {
-									swal("¡Error!", data.MENSAJE, "error");
-								}
-							},
-							error : function() {
-								swal("¡Error!", "", "error");
-							}
-						});
-					}
-				});
 	</script>
 
 	<!-- Validaciones de Registrar -->
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#form_crearCliente').bootstrapValidator({
+			$('#id_formRegistrarCliente').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
 					valid : 'glyphicon glyphicon-ok',
@@ -651,7 +592,7 @@
 	<!-- Validaciones de Modificar -->
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#form_modificarCliente').bootstrapValidator({
+			$('#id_formModificarCliente').bootstrapValidator({
 				message : 'This value is not valid',
 				feedbackIcons : {
 					valid : 'glyphicon glyphicon-ok',

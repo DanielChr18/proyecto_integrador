@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -111,7 +112,6 @@
 
 
 		<!-- Modal de Registro de Producto -->
-
 		<div class="modal fade" id="idModalRegistraProducto"
 			data-backdrop="static" tabindex="-1" role="dialog">
 			<div class="modal-dialog" style="width: 55%;">
@@ -123,7 +123,6 @@
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" id="id_formRegistrarProducto"
-								action="registrarProducto" method="post"
 								enctype="multipart/form-data">
 								<div class="row" id="id_divNombreRegistrar">
 									<div class="col-md-12">
@@ -253,7 +252,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProductoRegistra();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnRegistrarProducto" type="submit"
+								<button id="id_btnRegistrarProducto" type="button"
+									onclick="registrarProducto();"
 									class="btn btn-primary pull-right">Registrar</button>
 							</form>
 						</div>
@@ -274,7 +274,6 @@
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" id="id_formModificarProducto"
-								action="modificarProducto" method="post"
 								enctype="multipart/form-data">
 								<div class="row" hidden="hidden">
 									<input class="form-control" type="text" id="id_codigoModificar"
@@ -282,7 +281,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_nombreModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Nombre de Artículo</label>
 											<input class="form-control" type="text"
 												id="id_nombreModificar" name="nombre">
@@ -291,21 +290,21 @@
 								</div>
 								<div class="row">
 									<div class="col-md-4">
-										<div class="form-group" id="div_precioModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Precio</label> <input
 												class="form-control" type="text" id="id_precioModificar"
 												name="precio">
 										</div>
 									</div>
 									<div class="col-md-4">
-										<div class="form-group" id="div_stockModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Stock</label> <input
 												class="form-control" type="text" id="id_stockModificar"
 												name="stock" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-4">
-										<div class="form-group" id="div_serieModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Serie</label> <input
 												class="form-control" type="text" id="id_serieModificar"
 												name="serie">
@@ -340,7 +339,7 @@
 								</div>
 								<div class="row" style="margin-top: 15px;">
 									<div class="col-md-12">
-										<div class="form-group" id="div_descripcionModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Descripción</label> <input
 												class="form-control" type="text"
 												id="id_descripcionModificar" name="descripcion">
@@ -349,7 +348,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<label class="bmd-label-floating">Descripción Larga</label>
+										<label class="bmd-label">Descripción Larga</label>
 										<textarea id="editor2" name="descripcionLarga"></textarea>
 										<small id="id_mensajeDescripcionLargaModificar"
 											style="color: #cc0000;">La descripción larga debe ser
@@ -403,7 +402,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProductoModifica();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnModificarProducto" type="submit"
+								<button id="id_btnModificarProducto" type="button"
+									onclick="modificarProducto();"
 									class="btn btn-primary pull-right">Actualizar</button>
 							</form>
 						</div>
@@ -423,8 +423,7 @@
 							<h3 class="card-title">Eliminar Producto</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formEliminarProducto" accept-charset="UTF-8"
-								action="eliminarProducto" method="post">
+							<form id="id_formEliminarProducto" accept-charset="UTF-8">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -443,7 +442,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProductoElimina();"
 									class="btn btn-primary pull-right">NO</button>
-								<button type="submit" class="btn btn-primary pull-left">SI</button>
+								<button type="button" onclick="eliminarProducto();"
+									class="btn btn-primary pull-left">SI</button>
 							</form>
 						</div>
 					</div>
@@ -469,77 +469,12 @@
 		$('#id_mensajeDescripcionLargaModificar').hide();
 	</script>
 
-
-	<script type="text/javascript">
-		$("#id_formRegistrarProducto").on(
-				'submit',
-				function(evt) {
-					$("#id_btnRegistrarProducto").attr("disabled", false);
-					var c = "SI";
-					if ($("#id_imagen1Registrar").val() === "") {
-						$('#id_mensajeImagen1Registrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if ($("#id_imagen2Registrar").val() === "") {
-						$('#id_mensajeImagen2Registrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if ($("#id_imagen3Registrar").val() === "") {
-						$('#id_mensajeImagen3Registrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if (CKEDITOR.instances[identificador].document.getBody()
-							.getText() == ""
-							|| CKEDITOR.instances[identificador].document
-									.getBody().getText().length <= 30) {
-						$('#id_mensajeDescripcionLargaRegistrar').show();
-						evt.preventDefault();
-						var c = "NO";
-					}
-					if (c == "SI") {
-						var validator = $('#id_formRegistrarProducto').data(
-								'bootstrapValidator');
-						if (validator.isValid()) {
-							swal("¡Éxito!",
-									"Producto registrado correctamente.",
-									"success");
-						}
-					}
-				});
-
-		$("#id_formModificarProducto").on(
-				'submit',
-				function(evt) {
-					$("#id_btnModificarProducto").attr("disabled", false);
-					if (CKEDITOR.instances['editor2'].getData() == ""
-							|| CKEDITOR.instances['editor2'].getData()
-									.toString().length < 23) {
-						$('#id_mensajeDescripcionLargaModificar').show();
-						evt.preventDefault();
-					} else {
-						var validator = $('#id_formModificarProducto').data(
-								'bootstrapValidator');
-						if (validator.isValid()) {
-							swal("¡Éxito!",
-									"Producto modificado correctamente.",
-									"success");
-						}
-					}
-				});
-
-		$("#id_formEliminarProducto").on('submit', function(evt) {
-			swal("¡Éxito!", "Producto eliminado correctamente.", "success");
-		});
-	</script>
-
 	<!-- Script de Modal's  -->
 	<script type="text/javascript">
 		$('#id_menuCrudProductos').addClass('active');
 
 		function verModalProductoRegistra() {
+			$('#id_mensajeDescripcionLargaRegistrar').hide();
 			$('#idModalRegistraProducto').modal("show");
 		}
 
@@ -551,12 +486,12 @@
 			$('#boxFile2Registrar').removeClass("attached");
 			$('#boxFile3Registrar').text("Seleccionar Imagen");
 			$('#boxFile3Registrar').removeClass("attached");
+			$("#idModalRegistraProducto input").val("");
+			CKEDITOR.instances['editor1'].setData('');
 			$('#id_mensajeImagen1Registrar').hide();
 			$('#id_mensajeImagen2Registrar').hide();
 			$('#id_mensajeImagen3Registrar').hide();
 			$('#id_mensajeDescripcionLargaRegistrar').hide();
-			$("#idModalRegistraProducto input").val("");
-			CKEDITOR.instances['editor1'].setData('');
 			$("#idModalRegistraProducto div.form-group").removeClass(
 					"is-filled has-success");
 			$('#id_formRegistrarProducto').data('bootstrapValidator')
@@ -567,19 +502,12 @@
 				marca, proveedor, descripcion) {
 			$("#id_codigoModificar").val(id);
 			$("#id_nombreModificar").val(nombre);
-			$("#div_nombreModificar").addClass('is-filled');
 			$("#id_precioModificar").val(precio);
-			$("#div_precioModificar").addClass('is-filled');
 			$("#id_stockModificar").val(stock);
-			$("#div_stockModificar").addClass('is-filled');
 			$("#id_serieModificar").val(serie);
-			$("#div_serieModificar").addClass('is-filled');
 			$("#id_marcaModificar").val(marca);
-			$("#div_marcaModificar").addClass('is-filled');
 			$("#id_proveedorModificar").val(proveedor);
-			$("#div_proveedorModificar").addClass('is-filled');
 			$("#id_descripcionModificar").val(descripcion);
-			$("#div_descripcionModificar").addClass('is-filled');
 			$
 					.getJSON(
 							'obtenerHtmlProducto',
@@ -599,6 +527,10 @@
 										.html(
 												"<img src='images/productos/" + data.imagen3 +"' alt='img'>");
 							});
+			$("#id_formModificarProducto .col-md-12 .form-group").addClass(
+					"is-filled");
+			$("#id_formModificarProducto .col-md-4 .form-group").addClass(
+					"is-filled");
 			$('#idModalModificaProducto').modal("show");
 		}
 
@@ -635,91 +567,6 @@
 			modificarTextArea('editor1', 'Registrar');
 			modificarTextArea('editor2', 'Modificar');
 		});
-
-		function modificarTextArea(identificador, mensaje) {
-			CKEDITOR
-					.replace(
-							identificador,
-							{
-								allowedContent : true,
-								removePlugins : 'resize',
-								language : 'es',
-								toolbarGroups : [
-										{
-											name : 'clipboard',
-											groups : [ 'undo', 'clipboard' ]
-										},
-										{
-											name : 'editing',
-											groups : [ 'find', 'selection',
-													'spellchecker', 'editing' ]
-										},
-										{
-											name : 'links',
-											groups : [ 'links' ]
-										},
-										{
-											name : 'insert',
-											groups : [ 'insert' ]
-										},
-										{
-											name : 'forms',
-											groups : [ 'forms' ]
-										},
-										{
-											name : 'tools',
-											groups : [ 'tools' ]
-										},
-										{
-											name : 'others',
-											groups : [ 'others' ]
-										},
-										'/',
-										{
-											name : 'basicstyles',
-											groups : [ 'basicstyles', 'cleanup' ]
-										},
-										{
-											name : 'paragraph',
-											groups : [ 'list', 'indent',
-													'blocks', 'align', 'bidi',
-													'paragraph' ]
-										},
-										{
-											name : 'styles',
-											groups : [ 'styles' ]
-										},
-										{
-											name : 'colors',
-											groups : [ 'colors' ]
-										},
-										{
-											name : 'about',
-											groups : [ 'about' ]
-										},
-										{
-											name : 'document',
-											groups : [ 'mode', 'document',
-													'doctools' ]
-										} ],
-								removeButtons : 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source',
-								on : {
-									change : function() {
-										var des = CKEDITOR.instances[identificador].document
-												.getBody().getText();
-										if (des === '' || des.length <= 30) {
-											$(
-													'#id_mensajeDescripcionLarga'
-															+ mensaje).show();
-										} else {
-											$(
-													'#id_mensajeDescripcionLarga'
-															+ mensaje).hide();
-										}
-									}
-								}
-							});
-		}
 	</script>
 
 	<!-- Validación de Registrar  -->
@@ -749,7 +596,7 @@
 															},
 															regexp : {
 																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
-																message : 'Solo se aceptan letras y numeros'
+																message : 'Solo se aceptan letras y números'
 															}
 														}
 													},
@@ -809,11 +656,11 @@
 															},
 															stringLength : {
 																min : 10,
-																message : 'La descripcion debe ser más de 10 caracteres'
+																message : 'La descripción debe ser más de 10 caracteres'
 															},
 															regexp : {
 																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().,;\s?]+$/,
-																message : 'Solo se aceptan letras y numeros'
+																message : 'Solo se aceptan letras y números'
 															}
 														}
 													},
@@ -850,7 +697,7 @@
 															},
 															regexp : {
 																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú()\s?]+$/,
-																message : 'Solo se aceptan letras y numeros'
+																message : 'Solo se aceptan letras y números'
 															}
 														}
 													},
@@ -906,11 +753,11 @@
 															},
 															stringLength : {
 																min : 10,
-																message : 'La descripcion debe ser más de 10 caracteres'
+																message : 'La descripción debe ser más de 10 caracteres'
 															},
 															regexp : {
 																regexp : /^[a-zA-Z0-9-ÁÉÍÓÚáéíóú().,;\s?]+$/,
-																message : 'Solo se aceptan letras y numeros'
+																message : 'Solo se aceptan letras y números'
 															}
 														}
 													},

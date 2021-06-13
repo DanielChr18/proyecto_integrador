@@ -64,7 +64,7 @@ public class usuarioController {
 		if (confirmar) {
 			session.setAttribute("objUsuario", usu.getNomUsuario());
 			if (usu.getCargo().equals("Cliente")) {
-				Cliente cli = serviceCli.buscarClienteUsuario(usu.getIdUsuario());
+				Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
 				if (cli != null) {
 					salida.put("USUARIO", cli.getApellido() + ", " + cli.getNombre());
 				}
@@ -92,7 +92,7 @@ public class usuarioController {
 			Usuario usu = service.findByNomUsuario(nomUsu);
 			session.setAttribute("objCargo", usu.getCargo());
 			if (usu.getCargo().equals("Cliente")) {
-				Cliente cli = serviceCli.buscarClienteUsuario(usu.getIdUsuario());
+				Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
 				session.setAttribute("objIdCliente", cli.getIdCliente());
 				return "redirect:datosMascotas";
 			} else if (!usu.getCargo().equals("Cliente")) {

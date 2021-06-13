@@ -59,7 +59,7 @@ public class productoController {
 	@ResponseBody
 	public List<Producto> listadoProductosNombre(String nombreArticulo) {
 		System.out.println("Listar Productos por Nombre : Filtro -----> " + nombreArticulo);
-		List<Producto> lista = service.ListaProductosNombre(nombreArticulo);
+		List<Producto> lista = service.listaProductosNombre("%" + nombreArticulo + "%");
 		return lista;
 	}
 
@@ -140,93 +140,116 @@ public class productoController {
 	}
 
 	@RequestMapping("/registrarProducto")
-	public String registrarProducto(
+	@ResponseBody
+	public Map<String, Object> registrarProducto(
 			@RequestParam(value = "imagen1ProductoRegistrar", required = false) MultipartFile imagen1,
 			@RequestParam(value = "imagen2ProductoRegistrar", required = false) MultipartFile imagen2,
 			@RequestParam(value = "imagen3ProductoRegistrar", required = false) MultipartFile imagen3, Producto obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				List<Producto> lista = service.listaProductos();
-				int idProducto = 0;
-				if (lista == null)
-					idProducto = 1;
-				else
-					idProducto = lista.get(lista.size() - 1).getIdProducto() + 1;
-				Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-1.jpeg");
-				Files.write(rutaCompleta1, imagen1.getBytes());
-				Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-2.jpeg");
-				Files.write(rutaCompleta2, imagen2.getBytes());
-				Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-3.jpeg");
-				Files.write(rutaCompleta3, imagen3.getBytes());
-				obj.setEstado("activado");
-				obj.setImagen1("PRODUCTO" + idProducto + "-1.jpeg");
-				obj.setImagen2("PRODUCTO" + idProducto + "-2.jpeg");
-				obj.setImagen3("PRODUCTO" + idProducto + "-3.jpeg");
-				service.agregarProducto(obj);
-				Thread.sleep(2000);
-				return "redirect:crudProductos";
+				List<Producto> listaProductosNombres = service.listaProductosNombre(obj.getNombre());
+				if (listaProductosNombres.size() == 0) {
+					List<Producto> lista = service.listaProductos();
+					int idProducto = 0;
+					if (lista == null)
+						idProducto = 1;
+					else
+						idProducto = lista.get(lista.size() - 1).getIdProducto() + 1;
+					Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-1.jpeg");
+					Files.write(rutaCompleta1, imagen1.getBytes());
+					Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-2.jpeg");
+					Files.write(rutaCompleta2, imagen2.getBytes());
+					Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-3.jpeg");
+					Files.write(rutaCompleta3, imagen3.getBytes());
+					obj.setEstado("activado");
+					obj.setImagen1("PRODUCTO" + idProducto + "-1.jpeg");
+					obj.setImagen2("PRODUCTO" + idProducto + "-2.jpeg");
+					obj.setImagen3("PRODUCTO" + idProducto + "-3.jpeg");
+					service.agregarModificarProducto(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Producto registrado correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre del producto ya existe.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al registrar el producto.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar el producto.");
+			return salida;
 		}
-		return "redirect:crudProductos";
 	}
 
 	@RequestMapping("/modificarProducto")
-	public String modificarProducto(
+	@ResponseBody
+	public Map<String, Object> modificarProducto(
 			@RequestParam(value = "imagen1ProductoModificar", required = false) MultipartFile imagen1,
 			@RequestParam(value = "imagen2ProductoModificar", required = false) MultipartFile imagen2,
 			@RequestParam(value = "imagen3ProductoModificar", required = false) MultipartFile imagen3, Producto obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				Producto producto = service.listaProductosId(obj.getIdProducto());
-				if (!imagen1.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen1());
-					Files.write(rutaCompleta, imagen1.getBytes());
+				List<Producto> listaProductosNombres = service.listaProductosNombreDiferenteId(obj.getIdProducto(),
+						obj.getNombre());
+				if (listaProductosNombres.size() == 0) {
+					Producto producto = service.listaProductosId(obj.getIdProducto());
+					if (!imagen1.isEmpty()) {
+						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen1());
+						Files.write(rutaCompleta, imagen1.getBytes());
+					}
+					if (!imagen2.isEmpty()) {
+						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen2());
+						Files.write(rutaCompleta, imagen2.getBytes());
+					}
+					if (!imagen3.isEmpty()) {
+						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen3());
+						Files.write(rutaCompleta, imagen3.getBytes());
+					}
+					obj.setEstado("activado");
+					obj.setImagen1(producto.getImagen1());
+					obj.setImagen2(producto.getImagen2());
+					obj.setImagen3(producto.getImagen3());
+					service.agregarModificarProducto(obj);
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Producto modificado correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre del producto ya existe.");
 				}
-				if (!imagen2.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen2());
-					Files.write(rutaCompleta, imagen2.getBytes());
-				}
-				if (!imagen3.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen3());
-					Files.write(rutaCompleta, imagen3.getBytes());
-				}
-				obj.setEstado("activado");
-				obj.setImagen1(producto.getImagen1());
-				obj.setImagen2(producto.getImagen2());
-				obj.setImagen3(producto.getImagen3());
-				service.modificarProducto(obj);
-				Thread.sleep(2000);
-				return "redirect:crudProductos";
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al modificar el producto.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al modificar el producto.");
+			return salida;
 		}
-		return "redirect:crudProductos";
 	}
 
 	@RequestMapping("/eliminarProducto")
-	public String eliminarProducto(Producto obj) {
+	@ResponseBody
+	public Map<String, Object> eliminarProducto(Producto obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getIdProducto() > 0) {
 				System.out.println(obj.getIdProducto());
 				Producto p = service.listaProductosId(obj.getIdProducto());
 				p.setEstado("desactivado");
-				service.modificarProducto(p);
-				Thread.sleep(2000);
-				return "redirect:crudProductos";
+				service.agregarModificarProducto(p);
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Producto eliminado correctamente.");
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al eliminar el producto.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al eliminar el producto.");
+			return salida;
 		}
-		return "redirect:crudProductos";
 	}
 
 	@RequestMapping("/obtenerHtmlProducto")

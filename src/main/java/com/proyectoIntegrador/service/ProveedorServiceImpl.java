@@ -14,40 +14,43 @@ public class ProveedorServiceImpl implements ProveedorService {
 	@Autowired
 	ProveedorRepository repositorio;
 
-	
-	@Override
-	public Proveedor agregarProveedor(Proveedor obj) {
-		// TODO Auto-generated method stub
-		return repositorio.save(obj);
-	}
-
 	@Override
 	public List<Proveedor> listaProveedores() {
-		// TODO Auto-generated method stub
 		return repositorio.findAll();
 	}
 
 	@Override
 	public Proveedor listaProveedoresId(int idProveedor) {
-		// TODO Auto-generated method stub
 		return repositorio.findById(idProveedor).get();
 	}
 
 	@Override
-	public List<Proveedor> ListaProveedoresNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return repositorio.listaProveedoresNombre(nombre + "%");
+	public List<Proveedor> listaProveedoresRazonSocial(String razonSocial) {
+		return repositorio.findByRazonSocial(razonSocial);
 	}
 
 	@Override
-	public Proveedor modificarProveedor(Proveedor obj) {
-		// TODO Auto-generated method stub
+	public List<Proveedor> listaProveedoresRuc(String ruc) {
+		return repositorio.findByRuc(ruc);
+	}
+
+	@Override
+	public List<Proveedor> listaProveedoresRazonSocialDiferenteId(int idProveedor, String razonSocial) {
+		return repositorio.listaProveedoresRazonSocialDiferenteId(idProveedor, razonSocial);
+	}
+
+	@Override
+	public List<Proveedor> listaProveedoresRucDiferenteId(int idProveedor, String ruc) {
+		return repositorio.listaProveedoresRucDiferenteId(idProveedor, ruc);
+	}
+
+	@Override
+	public Proveedor agregarModificarProveedor(Proveedor obj) {
 		return repositorio.save(obj);
 	}
 
 	@Override
 	public void eliminarProveedor(int idProveedor) {
-		// TODO Auto-generated method stub
 		repositorio.deleteById(idProveedor);
 	}
 

@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -118,9 +119,7 @@
 							<h3 class="card-title">Registrar Proveedor</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" id="id_formRegistrarProveedor"
-								action="registrarProveedor" method="post"
-								enctype="multipart/form-data">
+							<form accept-charset="UTF-8" id="id_formRegistrarProveedor">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -167,7 +166,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProveedorRegistra();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnRegistrarServicio" type="submit"
+								<button id="id_btnRegistrarServicio" type="button"
+									onclick="registrarProveedor();"
 									class="btn btn-primary pull-right">Registrar</button>
 							</form>
 						</div>
@@ -187,9 +187,7 @@
 							<h3 class="card-title">Modificar Proveedor</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" id="id_formModificarProveedor"
-								action="modificarProveedor" method="post"
-								enctype="multipart/form-data">
+							<form accept-charset="UTF-8" id="id_formModificarProveedor">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -200,42 +198,42 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_razonSocialModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Razón Social</label> <input
 												class="form-control" type="text"
 												id="id_razonSocialModificar" name="razonSocial">
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group" id="div_rucModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">RUC</label> <input
 												class="form-control" type="text" id="id_rucModificar"
 												name="ruc" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group" id="div_direccionModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Dirección</label> <input
 												class="form-control" type="text" id="id_direccionModificar"
 												name="direccion">
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group" id="div_telefonoModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Teléfono</label> <input
 												class="form-control" type="text" id="id_telefonoModificar"
 												name="telefono" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group" id="div_celularModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Celular</label> <input
 												class="form-control" type="text" id="id_celularModificar"
 												name="celular" onkeypress='return validaNumericos(event);'>
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group" id="div_contactoModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Contacto</label> <input
 												class="form-control" type="text" id="id_contactoModificar"
 												name="contacto">
@@ -244,7 +242,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProveedorModifica();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnModificarServicio" type="submit"
+								<button id="id_btnModificarServicio" type="button"
+									onclick="modificarProveedor();"
 									class="btn btn-primary pull-right">Actualizar</button>
 							</form>
 						</div>
@@ -264,8 +263,7 @@
 							<h3 class="card-title">Eliminar Proveedor</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formEliminarProveedor" accept-charset="UTF-8"
-								action="eliminarProveedor" method="post">
+							<form id="id_formEliminarProveedor" accept-charset="UTF-8">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -284,7 +282,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalProveedorElimina();"
 									class="btn btn-primary pull-right">NO</button>
-								<button type="submit" class="btn btn-primary pull-left">SI</button>
+								<button type="button" onclick="eliminarProveedor();"
+									class="btn btn-primary pull-left">SI</button>
 							</form>
 						</div>
 					</div>
@@ -319,13 +318,8 @@
 			$("#id_telefonoModificar").val(telefono);
 			$("#id_celularModificar").val(celular);
 			$("#id_contactoModificar").val(contacto);
-			$("#id_codigoModificar").addClass("is-filled");
-			$("#id_razonSocialModificar").addClass("is-filled");
-			$("#id_rucModificar").addClass("is-filled");
-			$("#id_direccionModificar").addClass("is-filled");
-			$("#id_telefonoModificar").addClass("is-filled");
-			$("#id_celularModificar").addClass("is-filled");
-			$("#id_contactoModificar").addClass("is-filled");
+			$("#id_formModificarProveedor .col-md-12 .form-group").addClass(
+					"is-filled");
 			$("#idModalModificaProveedor").modal("show");
 		}
 
@@ -352,12 +346,15 @@
 								$("#idModalEliminaProveedor").modal("show");
 							} else {
 								swal(
-										"¡Error!",
+										"¡Aviso!",
 										"El Proveedor no se puede eliminar porque está asociado a un producto.",
-										"error");
+										"warning");
 							}
 						},
 						error : function() {
+							swal("¡Error!",
+									"¡Comunicate con el administrador!",
+									"error");
 						}
 					});
 		}
@@ -366,39 +363,6 @@
 			$("#idModalEliminaProveedor").modal("hide");
 		}
 	</script>
-
-
-	<script type="text/javascript">
-		$("#id_formRegistrarProveedor").on(
-				'submit',
-				function(evt) {
-					$("#id_btnRegistrarProveedor").attr("disabled", false);
-					var validator = $('#id_formRegistrarProveedor').data(
-							'bootstrapValidator');
-					if (validator.isValid()) {
-						swal("¡Éxito!", "Proveedor registrado correctamente.",
-								"success");
-					}
-				});
-
-		$("#id_formModificarProveedor").on(
-				'submit',
-				function(evt) {
-					$("#id_btnModificarProveedor").attr("disabled", false);
-					var validator = $('#id_formModificarProveedor').data(
-							'bootstrapValidator');
-					if (validator.isValid()) {
-						swal("¡Éxito!", "Proveedor modificado correctamente.",
-								"success");
-					}
-				});
-
-		$("#id_formEliminarProveedor").on('submit', function(evt) {
-			swal("¡Éxito!", "Proveedor eliminado correctamente.", "success");
-		});
-	</script>
-
-
 
 	<!-- Validación de Modal Registrar -->
 	<script type="text/javascript">
@@ -504,19 +468,74 @@
 													validating : 'glyphicon glyphicon-refresh'
 												},
 												fields : {
-													nombre : {
-														selector : "#id_nombreModificar",
+													razonSocial : {
+														selector : "#id_razonSocialModificar",
 														validators : {
 															notEmpty : {
-																message : 'El nombre es obligatorio'
+																message : 'El campo es obligatorio'
 															},
 															stringLength : {
 																min : 3,
-																message : 'El nombre debe ser más de 3 caracteres'
+																message : 'El campo debe ser más de 3 caracteres'
+															}
+														}
+													},
+													ruc : {
+														selector : "#id_rucModificar",
+														validators : {
+															notEmpty : {
+																message : 'El ruc es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{11}$/,
+																message : 'El ruc es de 11 dígitos'
+															}
+														}
+													},
+													direccion : {
+														selector : "#id_direccionModificar",
+														validators : {
+															notEmpty : {
+																message : 'El direccion es obligatorio'
+															},
+														}
+													},
+													telefono : {
+														selector : "#id_telefonoModificar",
+														validators : {
+															notEmpty : {
+																message : 'El telefono es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{7}$/,
+																message : 'El telefono es 7 dígitos'
+															}
+														}
+													},
+													celular : {
+														selector : "#id_celularModificar",
+														validators : {
+															notEmpty : {
+																message : 'El celular es obligatorio'
+															},
+															regexp : {
+																regexp : /^[0-9]{9}$/,
+																message : 'El celular es 9 dígitos'
+															}
+														}
+													},
+													contacto : {
+														selector : "#id_contactoModificar",
+														validators : {
+															notEmpty : {
+																message : 'El contacto es obligatorio'
+															},
+															stringLength : {
+																min : 3,
+																message : 'El contacto debe ser más de 3 caracteres'
 															}
 														}
 													}
-
 												}
 											});
 						});

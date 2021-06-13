@@ -7,6 +7,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
+<link rel="icon" type="image/png" href="images/logo.png">
 <title>Proyecto Integrador</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -108,9 +109,7 @@
 							<h3 class="card-title">Registrar Marca</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" id="id_formRegistrarMarca"
-								action="registrarMarca" method="post"
-								enctype="multipart/form-data">
+							<form accept-charset="UTF-8" id="id_formRegistrarMarca">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -122,8 +121,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalMarcaRegistra();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnRegistrarMarca" type="submit"
-									class="btn btn-primary pull-right">Registrar</button>
+								<button id="id_btnRegistrarMarca" onclick="registrarMarca();"
+									type="button" class="btn btn-primary pull-right">Registrar</button>
 							</form>
 						</div>
 					</div>
@@ -142,9 +141,7 @@
 							<h3 class="card-title">Modificar Marca</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" id="id_formModificarMarca"
-								action="modificarMarca" method="post"
-								enctype="multipart/form-data">
+							<form accept-charset="UTF-8" id="id_formModificarMarca">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -155,7 +152,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<div class="form-group" id="div_nombreModificar">
+										<div class="form-group">
 											<label class="bmd-label-floating">Nombre de Marca</label> <input
 												class="form-control" type="text" id="id_nombreModificar"
 												name="nombre">
@@ -164,8 +161,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalMarcaModifica();"
 									class="btn btn-primary pull-right">Cancelar</button>
-								<button id="id_btnModificarMarca" type="submit"
-									class="btn btn-primary pull-right">Actualizar</button>
+								<button id="id_btnModificarMarca" onclick="modificarMarca();"
+									type="button" class="btn btn-primary pull-right">Actualizar</button>
 							</form>
 						</div>
 					</div>
@@ -184,8 +181,7 @@
 							<h3 class="card-title">Eliminar Marca</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formEliminarMarca" accept-charset="UTF-8"
-								action="eliminarMarca" method="post">
+							<form id="id_formEliminarMarca" accept-charset="UTF-8">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -204,7 +200,8 @@
 								</div>
 								<button type="button" onclick="cerrarModalMarcaElimina();"
 									class="btn btn-primary pull-right">NO</button>
-								<button type="submit" class="btn btn-primary pull-left">SI</button>
+								<button type="button" onclick="eliminarMarca();"
+									class="btn btn-primary pull-left">SI</button>
 							</form>
 						</div>
 					</div>
@@ -213,34 +210,68 @@
 		</div>
 	</div>
 
+	<!-- Script's Modal -->
 	<script type="text/javascript">
-		$("#id_formRegistrarMarca").on(
-				'submit',
-				function(evt) {
-					$("#id_btnRegistrarMarca").attr("disabled", false);
-					var validator = $('#id_formRegistrarMarca').data(
-							'bootstrapValidator');
-					if (validator.isValid()) {
-						swal("¡Éxito!", "Marca registrada correctamente.",
-								"success");
-					}
-				});
+		$("#id_menuCrudMarcas").addClass("active");
 
-		$("#id_formModificarMarca").on(
-				'submit',
-				function(evt) {
-					$("#id_btnModificarMarca").attr("disabled", false);
-					var validator = $('#id_formModificarMarca').data(
-							'bootstrapValidator');
-					if (validator.isValid()) {
-						swal("¡Éxito!", "Marca modificada correctamente.",
-								"success");
-					}
-				});
+		function verModalMarcaRegistra() {
+			$("#idModalRegistraMarca").modal("show");
+		}
 
-		$("#id_formEliminarMarca").on('submit', function(evt) {
-			swal("¡Éxito!", "Marca eliminada correctamente.", "success");
-		});
+		function cerrarModalMarcaRegistra() {
+			$("#idModalRegistraMarca").modal("hide");
+			$("#idModalRegistraMarca input").val("");
+			$("#idModalRegistraMarca div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formRegistrarMarca').data('bootstrapValidator').resetForm();
+		}
+
+		function verModalMarcaModifica(id, nombre) {
+			$("#id_codigoModificar").val(id);
+			$("#id_nombreModificar").val(nombre);
+			$("#id_formModificarMarca .col-md-12 .form-group").addClass(
+					"is-filled");
+			$("#idModalModificaMarca").modal("show");
+		}
+
+		function cerrarModalMarcaModifica() {
+			$('#idModalModificaMarca').modal("hide");
+			$("#idModalModificaMarca input").val("");
+			$("#idModalModificaMarca div.form-group").removeClass(
+					"is-filled has-success");
+			$('#id_formModificarMarca').data('bootstrapValidator').resetForm();
+		}
+
+		function verModalMarcaElimina(id) {
+			$("#id_codigoEliminar").val(id);
+			$
+					.ajax({
+						type : 'POST',
+						data : {
+							'idMarca' : id
+						},
+						url : 'verificarMarca',
+						success : function(data) {
+							if (data.CONFIRMACION == 'SI') {
+								$("#idModalEliminaMarca").modal("show");
+							} else {
+								swal(
+										"¡Aviso!",
+										"La Marca no se puede eliminar porque está asociado a un producto.",
+										"warning");
+							}
+						},
+						error : function() {
+							swal("¡Error!",
+									"¡Comunicate con el administrador!",
+									"error");
+						}
+					});
+		}
+
+		function cerrarModalMarcaElimina() {
+			$("#idModalEliminaMarca").modal("hide");
+		}
 	</script>
 
 	<!-- Validación de Modal Registrar -->
@@ -305,66 +336,6 @@
 												}
 											});
 						});
-	</script>
-
-	<!-- Script's Modal -->
-	<script type="text/javascript">
-		$("#id_menuCrudMarcas").addClass("active");
-
-		function verModalMarcaRegistra() {
-			$("#idModalRegistraMarca").modal("show");
-		}
-
-		function cerrarModalMarcaRegistra() {
-			$("#idModalRegistraMarca").modal("hide");
-			$("#idModalRegistraMarca input").val("");
-			$("#idModalRegistraMarca div.form-group").removeClass(
-					"is-filled has-success");
-			$('#id_formRegistrarMarca').data('bootstrapValidator').resetForm();
-		}
-
-		function verModalMarcaModifica(id, nombre) {
-			$("#id_codigoModificar").val(id);
-			$("#id_nombreModificar").val(nombre);
-			$("#div_nombreModificar").addClass("is-filled");
-			$("#idModalModificaMarca").modal("show");
-		}
-
-		function cerrarModalMarcaModifica() {
-			$('#idModalModificaMarca').modal("hide");
-			$("#idModalModificaMarca input").val("");
-			$("#idModalModificaMarca div.form-group").removeClass(
-					"is-filled has-success");
-			$('#id_formModificarMarca').data('bootstrapValidator').resetForm();
-		}
-
-		function verModalMarcaElimina(id) {
-			$("#id_codigoEliminar").val(id);
-			$
-					.ajax({
-						type : 'POST',
-						data : {
-							'idMarca' : id
-						},
-						url : 'verificarMarca',
-						success : function(data) {
-							if (data.CONFIRMACION == 'SI') {
-								$("#idModalEliminaMarca").modal("show");
-							} else {
-								swal(
-										"¡Error!",
-										"La Marca no se puede eliminar porque está asociado a un producto.",
-										"error");
-							}
-						},
-						error : function() {
-						}
-					});
-		}
-
-		function cerrarModalMarcaElimina() {
-			$("#idModalEliminaMarca").modal("hide");
-		}
 	</script>
 </body>
 </html>

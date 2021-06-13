@@ -10,7 +10,11 @@ import com.proyectoIntegrador.entity.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-	@Query("select e from Producto e where e.nombre like :param_nombre and e.estado = 'activado'")
-	public abstract List<Producto> listaProductosNombre(@Param("param_nombre") String nombre);
+	@Query("select p from Producto p where p.nombre like :param_nombre and p.estado = 'activado'")
+	public abstract List<Producto> findByNombre(@Param("param_nombre") String nombre);
+
+	@Query("select p from Producto p where p.idProducto != :param_producto and p.nombre like :param_nombre and p.estado = 'activado'")
+	public abstract List<Producto> listaProductosNombreDiferenteId(@Param("param_producto") int idProducto,
+			@Param("param_nombre") String nombre);
 
 }

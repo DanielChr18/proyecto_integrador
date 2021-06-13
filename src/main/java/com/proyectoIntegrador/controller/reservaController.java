@@ -92,7 +92,6 @@ public class reservaController {
 		salida.put("MENSAJE", "Error al editar la Reserva.");
 		return salida;
 	}
-
 	
 	@RequestMapping("/pagarReserva")
 	@ResponseBody
@@ -113,9 +112,6 @@ public class reservaController {
 		salida.put("MENSAJE", "Error al editar la Reserva.");
 		return salida;
 	}
-	
-	
-	
 
 	@RequestMapping("/validacionReservaServicio")
 	@ResponseBody

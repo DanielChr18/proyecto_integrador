@@ -3,7 +3,6 @@ package com.proyectoIntegrador.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,7 +55,6 @@ public class servicioController {
 				return "redirect:error403";
 			}
 		}
-		System.out.println("Listar Todos los Servicios");
 		List<Servicio> servicios = service.listaServicios();
 		List<Servicio> listaServicios = new ArrayList<>();
 		for (Servicio x : servicios) {
@@ -76,7 +74,6 @@ public class servicioController {
 		} else if (!session.getAttribute("objCargo").toString().equals("Personal de Ventas")) {
 			return "redirect:error403";
 		} else {
-			System.out.println("Listar Todos los Servicios CRUD");
 			List<Servicio> servicios = service.listaServicios();
 			List<Servicio> listaServicios = new ArrayList<>();
 			List<HorariosServicios> horarios = serviceHorSer.listarHorarios();
@@ -100,7 +97,6 @@ public class servicioController {
 	@RequestMapping("/listadoHorariosServicios")
 	@ResponseBody
 	public List<HorariosServicios> listadoHorariosServicios(String idServicio) {
-		System.out.println("Listar Servicios : ID -----> " + idServicio);
 		int id = Integer.parseInt(idServicio);
 		List<HorariosServicios> lista = serviceHorSer.listarHorariosServicios(id);
 		List<HorariosServicios> horarios = new ArrayList<>();
@@ -114,155 +110,176 @@ public class servicioController {
 	}
 
 	@RequestMapping("/registrarServicio")
-	public String registrarServicio(
+	@ResponseBody
+	public Map<String, Object> registrarServicio(
 			@RequestParam(value = "imagenServicioRegistrar", required = false) MultipartFile imagen,
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				System.out.println(obj);
-				List<Servicio> lista = service.listaServicios();
-				Path rutaCompleta = Paths.get(
-						rutaAbsoluta + "//" + "SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
-				Files.write(rutaCompleta, imagen.getBytes());
-				obj.setImagen("SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
-				obj.setEstado("activado");
-				service.agregarServicio(obj);
-				for (int i = 10; i < 21; i++) {
-					HorariosServicios horSer = new HorariosServicios();
-					horSer.setHorario(i + ":00");
-					horSer.setIdServicio(obj);
-					horSer.setEstado("desactivado");
-					serviceHorSer.agregarHorario(horSer);
+				List<Servicio> listaServiciosNombres = service.listaServiciosNombre(obj.getNombre());
+				if (listaServiciosNombres.size() == 0) {
+					List<Servicio> lista = service.listaServicios();
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "SERVICIO"
+							+ (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
+					Files.write(rutaCompleta, imagen.getBytes());
+					obj.setImagen("SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
+					obj.setEstado("activado");
+					service.agregarModificarServicio(obj);
+					for (int i = 10; i < 21; i++) {
+						HorariosServicios horSer = new HorariosServicios();
+						horSer.setHorario(i + ":00");
+						horSer.setIdServicio(obj);
+						horSer.setEstado("desactivado");
+						serviceHorSer.agregarHorario(horSer);
+					}
+					String[] horas = horarios.split(",");
+					for (int h = 0; h < horas.length; h++) {
+						String hora = horas[h] + ":00";
+						metodo_agregarFechas(hora, obj.getIdServicio(), obj.getDia());
+					}
+					validarFechas();
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Servicio registrado correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre del servicio ya existe.");
 				}
-				String[] horas = horarios.split(",");
-				for (int h = 0; h < horas.length; h++) {
-					String hora = horas[h] + ":00";
-					metodo_agregarFechas(hora, obj.getIdServicio(), obj.getDia());
-				}
-				Thread.sleep(2000);
-				return "redirect:crudServicios";
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al registrar el servicio.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar el servicio.");
+			return salida;
 		}
-		return "redirect:crudServicios";
 	}
 
 	@RequestMapping("/modificarServicio")
-	public String modificarServicio(
+	@ResponseBody
+	public Map<String, Object> modificarServicio(
 			@RequestParam(value = "imagenServicioModificar", required = false) MultipartFile imagen,
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getNombre() != null) {
-				System.out.println(obj.getDia());
-				Servicio servicio = service.listaServiciosId(obj.getIdServicio());
-				if (!imagen.isEmpty()) {
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + servicio.getImagen());
-					Files.write(rutaCompleta, imagen.getBytes());
-				}
-				List<String> horasAgregar = new ArrayList<String>();
-				List<String> horasEliminar = new ArrayList<String>();
-				List<String> horasMantener = new ArrayList<String>();
-				String[] horas = horarios.split(",");
-				for (int h = 0; h < horas.length; h++) {
-					HorariosServicios horarioServicio = serviceHorSer.listarHoraServicio(obj.getIdServicio(),
-							horas[h] + ":00");
-					if (horarioServicio.getEstado().equals("desactivado")) {
-						horasAgregar.add(horarioServicio.getHorario());
-					} else if (horarioServicio.getEstado().equals("activado")) {
-						horasMantener.add(horarioServicio.getHorario());
+				List<Servicio> listaServiciosNombres = service.listaNombreDiferenteId(obj.getIdServicio(),
+						obj.getNombre());
+				if (listaServiciosNombres.size() == 0) {
+					Servicio servicio = service.listaServiciosId(obj.getIdServicio());
+					if (!imagen.isEmpty()) {
+						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + servicio.getImagen());
+						Files.write(rutaCompleta, imagen.getBytes());
 					}
-				}
-				Servicio ser = service.listaServiciosId(obj.getIdServicio());
-				if (!ser.getDia().equals(obj.getDia())) {
-					List<FechasServicios> listaFechas = serviceFecSer.findByServicio(obj.getIdServicio());
-					for (FechasServicios f : listaFechas) {
-						serviceFecSer.eliminarFechaServicio(f.getIdFechasServicios());
-					}
-					int cont = obtener_numeroSermana(obj.getDia());
-					List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
-					for (HorariosServicios x : listaHoras) {
-						if (x.getEstado().equals("activado")) {
-							LocalDateTime hoy = LocalDateTime.now();
-							LocalDateTime fechaSiguiente = hoy.plusDays(cont);
-							FechasServicios fecha = new FechasServicios();
-							fecha.setEstado("libre");
-							fecha.setFecha(fechaSiguiente.toString().split("T")[0]);
-							fecha.setIdHorariosServicios(x);
-							serviceFecSer.agregarFechaServicio(fecha);
+					List<String> horasAgregar = new ArrayList<String>();
+					List<String> horasEliminar = new ArrayList<String>();
+					List<String> horasMantener = new ArrayList<String>();
+					String[] horas = horarios.split(",");
+					for (int h = 0; h < horas.length; h++) {
+						HorariosServicios horarioServicio = serviceHorSer.listarHoraServicio(obj.getIdServicio(),
+								horas[h] + ":00");
+						if (horarioServicio.getEstado().equals("desactivado")) {
+							horasAgregar.add(horarioServicio.getHorario());
+						} else if (horarioServicio.getEstado().equals("activado")) {
+							horasMantener.add(horarioServicio.getHorario());
 						}
 					}
-				}
-				List<HorariosServicios> listaHorarios = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
-				for (HorariosServicios x : listaHorarios) {
-					if (x.getEstado().equals("activado"))
-						horasEliminar.add(x.getHorario());
-				}
-				for (int e = 0; e < horasEliminar.size(); e++) {
-					for (int m = 0; m < horasMantener.size(); m++) {
-						if (horasEliminar.get(e).equals(horasMantener.get(m))) {
-							horasEliminar.remove(e);
+					Servicio ser = service.listaServiciosId(obj.getIdServicio());
+					if (!ser.getDia().equals(obj.getDia())) {
+						List<FechasServicios> listaFechas = serviceFecSer.findByServicio(obj.getIdServicio());
+						for (FechasServicios f : listaFechas) {
+							serviceFecSer.eliminarFechaServicio(f.getIdFechasServicios());
+						}
+						int cont = obtener_numeroSermana(obj.getDia());
+						List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
+						for (HorariosServicios x : listaHoras) {
+							if (x.getEstado().equals("activado")) {
+								LocalDateTime hoy = LocalDateTime.now();
+								LocalDateTime fechaSiguiente = hoy.plusDays(cont);
+								FechasServicios fecha = new FechasServicios();
+								fecha.setEstado("libre");
+								fecha.setFecha(fechaSiguiente.toString().split("T")[0]);
+								fecha.setIdHorariosServicios(x);
+								serviceFecSer.agregarFechaServicio(fecha);
+							}
 						}
 					}
-				}
-				if (horasAgregar.size() == horasEliminar.size()) {
-					for (int i = 0; i < horasAgregar.size(); i++) {
-						metodo_reemplazarFechas(horasEliminar.get(i), horasAgregar.get(i), obj.getIdServicio());
+					List<HorariosServicios> listaHorarios = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
+					for (HorariosServicios x : listaHorarios) {
+						if (x.getEstado().equals("activado"))
+							horasEliminar.add(x.getHorario());
 					}
-				} else if (horasAgregar.size() == 0 && (horasEliminar.size() > 0)) {
-					for (int i = 0; i < horasEliminar.size(); i++) {
-						metodo_eliminarFechas(horasEliminar.get(i), obj.getIdServicio());
+					for (int e = 0; e < horasEliminar.size(); e++) {
+						for (int m = 0; m < horasMantener.size(); m++) {
+							if (horasEliminar.get(e).equals(horasMantener.get(m))) {
+								horasEliminar.remove(e);
+							}
+						}
 					}
-				} else if (horasAgregar.size() < horasEliminar.size()) {
-					int contAgregar = 0;
-					for (int i = 0; i < horasEliminar.size(); i++) {
-						if (horasAgregar.size() > contAgregar) {
-							metodo_reemplazarFechas(horasEliminar.get(i), horasAgregar.get(contAgregar),
-									obj.getIdServicio());
-							contAgregar++;
-						} else {
+					if (horasAgregar.size() == horasEliminar.size()) {
+						for (int i = 0; i < horasAgregar.size(); i++) {
+							metodo_reemplazarFechas(horasEliminar.get(i), horasAgregar.get(i), obj.getIdServicio());
+						}
+					} else if (horasAgregar.size() == 0 && (horasEliminar.size() > 0)) {
+						for (int i = 0; i < horasEliminar.size(); i++) {
 							metodo_eliminarFechas(horasEliminar.get(i), obj.getIdServicio());
 						}
-					}
-				} else if (horasAgregar.size() > 0 && (horasEliminar.size() == 0)) {
-					for (int i = 0; i < horasAgregar.size(); i++) {
-						metodo_agregarFechas(horasAgregar.get(i), obj.getIdServicio(), obj.getDia());
-					}
-				} else if (horasAgregar.size() > horasEliminar.size()) {
-					int contEliminar = 0;
-					for (int i = 0; i < horasAgregar.size(); i++) {
-						if (horasEliminar.size() > contEliminar) {
-							metodo_reemplazarFechas(horasEliminar.get(contEliminar), horasAgregar.get(i),
-									obj.getIdServicio());
-							contEliminar++;
-						} else {
+					} else if (horasAgregar.size() < horasEliminar.size()) {
+						int contAgregar = 0;
+						for (int i = 0; i < horasEliminar.size(); i++) {
+							if (horasAgregar.size() > contAgregar) {
+								metodo_reemplazarFechas(horasEliminar.get(i), horasAgregar.get(contAgregar),
+										obj.getIdServicio());
+								contAgregar++;
+							} else {
+								metodo_eliminarFechas(horasEliminar.get(i), obj.getIdServicio());
+							}
+						}
+					} else if (horasAgregar.size() > 0 && (horasEliminar.size() == 0)) {
+						for (int i = 0; i < horasAgregar.size(); i++) {
 							metodo_agregarFechas(horasAgregar.get(i), obj.getIdServicio(), obj.getDia());
 						}
+					} else if (horasAgregar.size() > horasEliminar.size()) {
+						int contEliminar = 0;
+						for (int i = 0; i < horasAgregar.size(); i++) {
+							if (horasEliminar.size() > contEliminar) {
+								metodo_reemplazarFechas(horasEliminar.get(contEliminar), horasAgregar.get(i),
+										obj.getIdServicio());
+								contEliminar++;
+							} else {
+								metodo_agregarFechas(horasAgregar.get(i), obj.getIdServicio(), obj.getDia());
+							}
+						}
 					}
+					obj.setEstado("activado");
+					obj.setImagen(servicio.getImagen());
+					service.agregarModificarServicio(obj);
+					validarFechas();
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Servicio modificado correctamente.");
+				} else {
+					salida.put("MENSAJE", "El nombre del servicio ya existe.");
 				}
-				obj.setEstado("activado");
-				obj.setImagen(servicio.getImagen());
-				service.modificarServicio(obj);
-				Thread.sleep(2000);
-				return "redirect:crudServicios";
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al modificar el servicio.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al modificar el servicio.");
+			return salida;
 		}
-		return "redirect:crudServicios";
 	}
 
 	@RequestMapping("/eliminarServicio")
-	public String eliminarServicio(Servicio obj) {
+	@ResponseBody
+	public Map<String, Object> eliminarServicio(Servicio obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			if (obj.getIdServicio() > 0) {
 				Servicio ser = service.listaServiciosId(obj.getIdServicio());
 				ser.setEstado("desactivado");
-				service.modificarServicio(ser);
+				service.agregarModificarServicio(ser);
 				List<HorariosServicios> listaHorarios = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
 				for (HorariosServicios h : listaHorarios) {
 					if (!h.getEstado().equals("ocupado")) {
@@ -280,15 +297,17 @@ public class servicioController {
 						}
 					}
 				}
-				Thread.sleep(2000);
-				return "redirect:crudServicios";
+				salida.put("CONFIRMACION", "SI");
+				salida.put("MENSAJE", "Servicio eliminado correctamente.");
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error al eliminar el servicio.");
 			}
+			return salida;
 		} catch (Exception e) {
 			e.printStackTrace();
+			salida.put("MENSAJE", "Error al eliminar el servicio.");
+			return salida;
 		}
-		return "redirect:crudServicios";
 	}
 
 	@RequestMapping("/verificarServicio")
@@ -297,80 +316,87 @@ public class servicioController {
 		Map<String, Object> salida = new HashMap<>();
 		List<HorariosServicios> listaHorariosServicios = serviceHorSer
 				.listarHorariosServicios(Integer.parseInt(idServicio));
-		String confirmacion = "SI";
 		for (HorariosServicios h : listaHorariosServicios) {
 			if (h.getEstado().equals("ocupado")) {
-				confirmacion = "NO";
-				break;
+				salida.put("CONFIRMACION", "NO");
+				return salida;
 			}
 		}
-		salida.put("CONFIRMACION", confirmacion);
+		salida.put("CONFIRMACION", "SI");
 		return salida;
 	}
 
 	@RequestMapping("/validarFechas")
 	@ResponseBody
-	public Map<String, Object> validarFechas() throws ParseException {
+	public Map<String, Object> validarFechas() {
 		Map<String, Object> salida = new HashMap<>();
-		LocalDateTime hoy = LocalDateTime.now();
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-		Date fechaActual = formatoFecha.parse(hoy.toString().split("T")[0]);
-		Date fechaInicioDate = new Date();
-		List<Servicio> listaServicios = service.listaServicios();
-		List<FechasServicios> listaFechasServicios = serviceFecSer.findAll();
-		salida.put("CONFIRMACION", "NO");
-		salida.put("MENSAJE", "Las fechas están actualizadas.");
-		for (FechasServicios lf : listaFechasServicios) {
-			fechaInicioDate = formatoFecha.parse(lf.getFecha());
-			if (fechaInicioDate.before(fechaActual) && lf.getEstado().equals("libre")) {
-				serviceFecSer.eliminarFechaServicio(lf.getIdFechasServicios());
+		try {
+			LocalDateTime hoy = LocalDateTime.now();
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+			Date fechaActual = formatoFecha.parse(hoy.toString().split("T")[0]);
+			Date fechaInicioDate = new Date();
+			List<Servicio> listaServicios = service.listaServicios();
+			List<FechasServicios> listaFechasServicios = serviceFecSer.findAll();
+			salida.put("MENSAJE", "Las fechas están actualizadas.");
+			for (FechasServicios lf : listaFechasServicios) {
+				fechaInicioDate = formatoFecha.parse(lf.getFecha());
+				if (fechaInicioDate.before(fechaActual) && lf.getEstado().equals("libre")) {
+					serviceFecSer.eliminarFechaServicio(lf.getIdFechasServicios());
+				}
 			}
-		}
-		for (Servicio s : listaServicios) {
-			if (s.getEstado().equals("activado")) {
-				List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(s.getIdServicio());
-				for (HorariosServicios h : listaHoras) {
-					if (!h.getEstado().equals("desactivado")) {
-						List<FechasServicios> listaFechas = serviceFecSer.findByHoraServicio(h.getHorario(),
-								s.getIdServicio());
-						if (listaFechas.size() == 1) {
-							fechaInicioDate = formatoFecha.parse(listaFechas.get(0).getFecha().toString());
-						} else {
-							for (int i = 1; i < listaFechas.size(); i++) {
-								Date fecha1 = formatoFecha.parse(listaFechas.get(i - 1).getFecha().toString());
-								Date fecha2 = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
-								if (fecha1.after(fecha2)) {
-									fechaInicioDate = formatoFecha.parse(listaFechas.get(i - 1).getFecha().toString());
-								} else {
-									fechaInicioDate = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
+			for (Servicio s : listaServicios) {
+				if (s.getEstado().equals("activado")) {
+					List<HorariosServicios> listaHoras = serviceHorSer.listarHorariosServicios(s.getIdServicio());
+					for (HorariosServicios h : listaHoras) {
+						if (!h.getEstado().equals("desactivado")) {
+							List<FechasServicios> listaFechas = serviceFecSer.findByHoraServicio(h.getHorario(),
+									s.getIdServicio());
+							if (listaFechas.size() == 1) {
+								fechaInicioDate = formatoFecha.parse(listaFechas.get(0).getFecha().toString());
+							} else {
+								for (int i = 1; i < listaFechas.size(); i++) {
+									Date fecha1 = formatoFecha.parse(listaFechas.get(i - 1).getFecha().toString());
+									Date fecha2 = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
+									if (fecha1.after(fecha2)) {
+										fechaInicioDate = formatoFecha
+												.parse(listaFechas.get(i - 1).getFecha().toString());
+									} else {
+										fechaInicioDate = formatoFecha.parse(listaFechas.get(i).getFecha().toString());
+									}
 								}
 							}
-						}
-						long diffTime = fechaInicioDate.getTime() - fechaActual.getTime();
-						int diasssss = (int) TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
-						for (int i = diasssss; i < 35; i = i + 7) {
-							if (i < 35) {
-								LocalDateTime fechaAgregar = hoy.plusDays(i + 7);
-								FechasServicios fechas = new FechasServicios();
-								fechas.setEstado("libre");
-								fechas.setFecha(fechaAgregar.toString().split("T")[0]);
-								fechas.setIdHorariosServicios(h);
-								serviceFecSer.agregarFechaServicio(fechas);
-								salida.put("CONFIRMACION", "SI");
-								salida.put("MENSAJE", "Las fechas se actualizaron exitosamente.");
+							long diffTime = fechaInicioDate.getTime() - fechaActual.getTime();
+							int diasssss = (int) TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
+							for (int i = diasssss; i < 35; i = i + 7) {
+								if (i < 35) {
+									LocalDateTime fechaAgregar = hoy.plusDays(i + 7);
+									FechasServicios fechas = new FechasServicios();
+									fechas.setEstado("libre");
+									fechas.setFecha(fechaAgregar.toString().split("T")[0]);
+									fechas.setIdHorariosServicios(h);
+									serviceFecSer.agregarFechaServicio(fechas);
+									salida.put("CONFIRMACION", "SI");
+									salida.put("MENSAJE", "Las fechas se actualizaron exitosamente.");
+								}
 							}
 						}
 					}
 				}
 			}
+			return salida;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return salida;
 		}
-		return salida;
 	}
 
-	@SuppressWarnings("deprecation")
 	private int obtener_numeroSermana(String dia) {
 		GregorianCalendar c = new GregorianCalendar();
-		Date f = new Date();
+		LocalDateTime hoy = LocalDateTime.now();
+		String f = hoy.toString().split("T")[0];
+		String diaF = f.split("-")[2];
+		String mesF = f.split("-")[1];
+		String anioF = f.split("-")[0];
 		int numD = 0;
 		int cont = 0;
 		int numSemana = 0;
@@ -392,7 +418,7 @@ public class servicioController {
 			break;
 		}
 		for (int i = 0; i < 7; i++) {
-			c.set(f.getYear(), f.getMonth() - 1, f.getDay() + i);
+			c.set(Integer.parseInt(anioF), Integer.parseInt(mesF) - 1, Integer.parseInt(diaF) + i);
 			numD = c.get(Calendar.DAY_OF_WEEK);
 			if (numD == numSemana) {
 				break;

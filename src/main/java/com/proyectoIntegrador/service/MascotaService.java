@@ -12,9 +12,7 @@ public interface MascotaService {
 
 	public abstract List<Mascota> listarMascotas();
 
-	public abstract Mascota agregarMascota(Mascota obj);
-
-	public abstract Mascota modificarMascota(Mascota obj);
+	public abstract Mascota agregarModificarMascota(Mascota obj);
 
 	public abstract void eliminarMascota(int idMascota);
 }

@@ -258,45 +258,19 @@ function agregarProductos(id) {
 	});
 }
 
+$(function() {
+	var date = new Date();
+	date.setMonth(date.getMonth() - 2);
+	var fechaMaxima = date.toISOString().split("T")[0];
+	date.setMonth(date.getMonth() + 2);
+	date.setFullYear(date.getFullYear() - 15);
+	var fechaMinima = date.toISOString().split("T")[0];
 
-// Script Validar Números
-function validaNumericos(event) {
-	if (event.charCode >= 48 && event.charCode <= 57) {
-		return true;
-	}
-	return false;
-}
-
-// Script Imagen
-function imagen(idInput, idBox, idMensaje) {
-	document
-		.querySelector(idInput)
-		.addEventListener(
-			'change',
-			function(e) {
-				var boxFile = document.querySelector(idBox);
-				boxFile.classList.remove('attached');
-				boxFile.innerHTML = boxFile.getAttribute("data-text");
-				if (this.value !== '') {
-					var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.tiff)$/i;
-					if (allowedExtensions.exec(this.value)) {
-						boxFile.innerHTML = e.target.files[0].name;
-						boxFile.classList.add('attached');
-						if (idMensaje != null)
-							$(idMensaje).hide();
-					} else {
-						this.value = '';
-						alert('El archivo que intentas subir no está permitido.\nLos archivos permitidos son .jpg, .jpeg, .png y .tiff');
-						boxFile.classList.remove('attached');
-						if (idMensaje != null)
-							$(idMensaje).show();
-					}
-				} else {
-					if (idMensaje != null)
-						$(idMensaje).show();
-				}
-			});
-}
+	$("#id_fechaNacMascotaRegistrar").attr('max', fechaMaxima);
+	$("#id_fechaNacMascotaModificar").attr('max', fechaMaxima);
+	$("#id_fechaNacMascotaRegistrar").attr('min', fechaMinima);
+	$("#id_fechaNacMascotaModificar").attr('min', fechaMinima);
+});
 
 
 
@@ -394,6 +368,578 @@ $(function() {
 
 
 
+// ------------------- Funciones ------------------- //
+
+// ------------------- 1.- Script Validar Números ------------------- //
+function validaNumericos(event) {
+	if (event.charCode >= 48 && event.charCode <= 57) {
+		return true;
+	}
+	return false;
+}
+// ------------------- 1.- Script Validar Números ------------------- //
+
+// ------------------- 2.- Script Imagen ------------------- //
+function imagen(idInput, idBox, idMensaje) {
+	document
+		.querySelector(idInput)
+		.addEventListener(
+			'change',
+			function(e) {
+				var boxFile = document.querySelector(idBox);
+				boxFile.classList.remove('attached');
+				boxFile.innerHTML = boxFile.getAttribute("data-text");
+				if (this.value !== '') {
+					var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.tiff)$/i;
+					if (allowedExtensions.exec(this.value)) {
+						boxFile.innerHTML = e.target.files[0].name;
+						boxFile.classList.add('attached');
+						if (idMensaje != null)
+							$(idMensaje).hide();
+					} else {
+						this.value = '';
+						swal("¡Aviso!", "El archivo que intentas subir no está permitido. Los archivos permitidos son .jpg, .jpeg, .png y .tiff", "warning");
+						boxFile.classList.remove('attached');
+						if (idMensaje != null)
+							$(idMensaje).show();
+					}
+				} else {
+					if (idMensaje != null)
+						$(idMensaje).show();
+				}
+			});
+}
+// ------------------- 2.- Script Imagen ------------------- //
+
+// ------------------- Funciones ------------------- //
+
+
+
+
+// ------------------- Métodos del CRUD Marca ------------------- //
+function registrarMarca() {
+	var validator = $('#id_formRegistrarMarca').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formRegistrarMarca").serialize(),
+			url: 'registrarMarca',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudMarcas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarMarca() {
+	var validator = $('#id_formModificarMarca').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formModificarMarca").serialize(),
+			url: 'modificarMarca',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudMarcas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function eliminarMarca() {
+	$.ajax({
+		type: 'POST',
+		data: $("#id_formEliminarMarca").serialize(),
+		url: 'eliminarMarca',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Éxito!", data.MENSAJE, "success");
+				setTimeout(function() {
+					window.location = 'crudMarcas';
+				}, 1500);
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+// ------------------- Métodos del CRUD Marca ------------------- //
+
+
+
+
+
+
+
+// ------------------- Métodos del CRUD Proveedor ------------------- //
+function registrarProveedor() {
+	var validator = $('#id_formRegistrarProveedor').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formRegistrarProveedor").serialize(),
+			url: 'registrarProveedor',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudProveedores';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarProveedor() {
+	var validator = $('#id_formModificarProveedor').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formModificarProveedor").serialize(),
+			url: 'modificarProveedor',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudProveedores';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function eliminarProveedor() {
+	$.ajax({
+		type: 'POST',
+		data: $("#id_formEliminarProveedor").serialize(),
+		url: 'eliminarProveedor',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Éxito!", data.MENSAJE, "success");
+				setTimeout(function() {
+					window.location = 'crudProveedores';
+				}, 1500);
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+// ------------------- Métodos del CRUD Proveedor ------------------- //
+
+
+
+
+
+
+
+// ------------------- Métodos del CRUD Producto ------------------- //
+function registrarProducto() {
+	var c = "SI";
+	if ($("#id_imagen1Registrar").val() === "") {
+		$('#id_mensajeImagen1Registrar').show();
+		var c = "NO";
+	}
+	if ($("#id_imagen2Registrar").val() === "") {
+		$('#id_mensajeImagen2Registrar').show();
+		var c = "NO";
+	}
+	if ($("#id_imagen3Registrar").val() === "") {
+		$('#id_mensajeImagen3Registrar').show();
+		var c = "NO";
+	}
+	if (CKEDITOR.instances['editor1'].document.getBody().getText() == ""
+		|| CKEDITOR.instances['editor1'].document.getBody()
+			.getText().length <= 30) {
+		$('#id_mensajeDescripcionLargaRegistrar').show();
+		var c = "NO";
+	}
+	var validator = $('#id_formRegistrarProducto').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && c === "SI") {
+		var formData = new FormData($("#id_formRegistrarProducto")[0]);
+		formData.append('imagen1ProductoRegistrar', $(
+			'#id_imagen1Registrar').val());
+		formData.append('imagen2ProductoRegistrar', $(
+			'#id_imagen2Registrar').val());
+		formData.append('imagen3ProductoRegistrar', $(
+			'#id_imagen3Registrar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'registrarProducto',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudProductos';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarProducto() {
+	var c = "SI";
+	if (CKEDITOR.instances['editor2'].document.getBody().getText() == ""
+		|| CKEDITOR.instances['editor2'].document.getBody()
+			.getText().length < 30) {
+		$('#id_mensajeDescripcionLargaModificar').show();
+		c = "NO";
+	}
+	var validator = $('#id_formModificarProducto').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && c === "SI") {
+		var formData = new FormData($("#id_formModificarProducto")[0]);
+		formData.append('imagen1ProductoModificar', $(
+			'#id_imagen1Modificar').val());
+		formData.append('imagen2ProductoModificar', $(
+			'#id_imagen2Modificar').val());
+		formData.append('imagen3ProductoModificar', $(
+			'#id_imagen3Modificar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'modificarProducto',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudProductos';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function eliminarProducto() {
+	$.ajax({
+		type: 'POST',
+		data: $("#id_formEliminarProducto").serialize(),
+		url: 'eliminarProducto',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Éxito!", data.MENSAJE, "success");
+				setTimeout(function() {
+					window.location = 'crudProductos';
+				}, 1500);
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+
+// Funciones
+
+function modificarTextArea(identificador, mensaje) {
+	CKEDITOR
+		.replace(
+			identificador,
+			{
+				allowedContent: true,
+				removePlugins: 'resize',
+				language: 'es',
+				toolbarGroups: [
+					{
+						name: 'clipboard',
+						groups: ['undo', 'clipboard']
+					},
+					{
+						name: 'editing',
+						groups: ['find', 'selection',
+							'spellchecker', 'editing']
+					},
+					{
+						name: 'links',
+						groups: ['links']
+					},
+					{
+						name: 'insert',
+						groups: ['insert']
+					},
+					{
+						name: 'forms',
+						groups: ['forms']
+					},
+					{
+						name: 'tools',
+						groups: ['tools']
+					},
+					{
+						name: 'others',
+						groups: ['others']
+					},
+					'/',
+					{
+						name: 'basicstyles',
+						groups: ['basicstyles', 'cleanup']
+					},
+					{
+						name: 'paragraph',
+						groups: ['list', 'indent',
+							'blocks', 'align', 'bidi',
+							'paragraph']
+					},
+					{
+						name: 'styles',
+						groups: ['styles']
+					},
+					{
+						name: 'colors',
+						groups: ['colors']
+					},
+					{
+						name: 'about',
+						groups: ['about']
+					},
+					{
+						name: 'document',
+						groups: ['mode', 'document',
+							'doctools']
+					}],
+				removeButtons: 'Subscript,About,Blockquote,Outdent,Indent,RemoveFormat,Strike,Table,Source',
+				on: {
+					change: function() {
+						var des = CKEDITOR.instances[identificador].document
+							.getBody().getText();
+						if (des === '' || des.length <= 30) {
+							$(
+								'#id_mensajeDescripcionLarga'
+								+ mensaje).show();
+						} else {
+							$(
+								'#id_mensajeDescripcionLarga'
+								+ mensaje).hide();
+						}
+					}
+				}
+			});
+}
+
+
+// ------------------- Métodos del CRUD Producto ------------------- //
+
+
+
+
+
+
+
+// ------------------- Métodos del CRUD Servicio ------------------- //
+
+
+// ------------------- CRUD para el Servicio ------------------- //
+function registrarServicio() {
+	var confirmHora = $("#id_ayudaHoraRegistrar").val();
+	var c = "SI";
+	if (confirmHora == "") {
+		$('#id_mensajeHoraConfirmarRegistrar').show();
+		var c = "NO";
+	}
+	if ($("#id_imagenRegistrar").val() === "") {
+		$('#id_mensajeImagenRegistrar').show();
+		var c = "NO";
+	}
+	var validator = $('#id_formRegistrarServicio').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && c === "SI") {
+		var formData = new FormData($("#id_formRegistrarServicio")[0]);
+		formData.append('imagenServicioRegistrar', $(
+			'#id_imagenRegistrar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'registrarServicio',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudServicios';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarServicio() {
+	var confirmHora = $("#id_ayudaHoraModificar").val();
+	if (confirmHora == "") {
+		$('#id_mensajeHoraConfirmarModificar').show();
+		evt.preventDefault();
+	}
+	var validator = $('#id_formModificarServicio').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && confirmHora != "") {
+		var formData = new FormData($("#id_formModificarServicio")[0]);
+		formData.append('imagenServicioModificar', $(
+			'#id_imagenModificar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'modificarServicio',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'crudServicios';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function eliminarServicio() {
+	$.ajax({
+		type: 'POST',
+		data: $("#id_formEliminarServicio").serialize(),
+		url: 'eliminarServicio',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Éxito!", data.MENSAJE, "success");
+				setTimeout(function() {
+					window.location = 'crudServicios';
+				}, 1500);
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+// ------------------- CRUD para el Servicio ------------------- //
+
+
+// ------------------- Funciones para el Servicio ------------------- //
+
+// ------------------- Validar Fechas ------------------- //
+
+function validarFechas() {
+	$.ajax({
+		type: 'GET',
+		url: 'validarFechas',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Excelente!", data.MENSAJE, "success");
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+// ------------------- Validar Fechas ------------------- //
+
+// ------------------- Registrar Horarios ------------------- //
 var contadorReg = 0;
 var horasReg = [];
 var confirmarReg = 0;
@@ -449,12 +995,12 @@ function agregarHorarioRegistrar() {
 				contadorReg = contadorReg + 1;
 			}
 		} else {
-			alert('Solo se pueden agregar hasta 3 horarios de atención');
+			swal("¡Aviso!", 'Solo se pueden agregar hasta 3 horarios de atención.', "warning");
 		}
-	} else if ((horaReg < 8) || (horaReg > 20)) {
-		alert('El horario es desde las 10 Hr hasta las 20 Hr');
+	} else if ((horaReg < 10) || (horaReg > 20)) {
+		swal("¡Aviso!", 'El horario es desde las 10 Hrs hasta las 20 Hrs.', "warning");
 	} else {
-		alert('Solo se permiten números');
+		swal("¡Aviso!", 'Solo se permiten números.', "warning");
 	}
 }
 
@@ -481,8 +1027,10 @@ function eliminarHorarioRegistrar(id) {
 		$('#id_mensajeHoraConfirmarRegistrar').show();
 	}
 }
+// ------------------- Registrar Horarios ------------------- //
 
 
+// ------------------- Modificar Horarios ------------------- //
 var contadorMod = 0;
 var horasMod = [];
 var confirmarMod = 0;
@@ -538,12 +1086,12 @@ function agregarHorarioModificar() {
 				$('#id_mensajeHoraConfirmarModificar').hide();
 			}
 		} else {
-			alert('Solo se pueden agregar hasta 3 horarios de atención');
+			swal("¡Aviso!", 'Solo se pueden agregar hasta 3 horarios de atención.', "warning");
 		}
-	} else if ((horaMod < 8) || (horaMod > 20)) {
-		alert('El horario es desde las 10 Hr hasta las 20 Hr');
+	} else if ((horaMod < 10) || (horaMod > 20)) {
+		swal("¡Aviso!", 'El horario es desde las 10 Hrs hasta las 20 Hrs.', "warning");
 	} else {
-		alert('Solo se permiten números');
+		swal("¡Aviso!", 'Solo se permiten números.', "warning");
 	}
 }
 
@@ -570,3 +1118,173 @@ function eliminarHorarioModificar(id) {
 		$('#id_mensajeHoraConfirmarModificar').show();
 	}
 }
+// ------------------- Modificar Horarios ------------------- //
+
+// ------------------- Funciones para el Horario de Servicio ------------------- //
+
+
+// ------------------- Métodos del CRUD Servicio ------------------- //
+
+
+
+
+
+
+
+// ------------------- Métodos del CRUD Cliente ------------------- //
+function registrarCliente() {
+	var contra = $('#id_contrasenia').val();
+	var contra2 = $('#id_contraseniaConfirmar').val();
+	var validator = $('#id_formRegistrarCliente').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && (contra == contra2)) {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formRegistrarCliente").serialize(),
+			url: 'registrarCliente',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'datosMascotas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarCliente() {
+	if ($("#id_contraseniaModificar").val() !== '') {
+		$.ajax({
+			type: 'POST',
+			data: $("#id_formModificarClienteModal").serialize(),
+			url: 'modificarCliente',
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'datosMascotas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+// ------------------- Métodos del CRUD Cliente ------------------- //
+
+
+
+
+
+
+
+// ------------------- Métodos del CRUD Mascota ------------------- //
+function registrarMascota() {
+	var c = "SI";
+	if ($("#id_imagenRegistrar").val() == "") {
+		$('#id_mensajeImagenRegistrar').show();
+		c = "NO";
+	}
+	var validator = $('#id_formRegistrarMascota').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid() && c === "SI") {
+		var formData = new FormData($("#id_formRegistrarMascota")[0]);
+		formData.append('imagenMascotaRegistrar', $(
+			'#id_imagenRegistrar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'registrarMascota',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'datosMascotas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function modificarMascota() {
+	var validator = $('#id_formModificarMascota').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		var formData = new FormData($("#id_formModificarMascota")[0]);
+		formData.append('imagenMascotaModificar', $(
+			'#id_imagenModificar').val());
+		$.ajax({
+			type: 'POST',
+			data: formData,
+			enctype: 'multipart/form-data',
+			url: 'modificarMascota',
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Éxito!", data.MENSAJE, "success");
+					setTimeout(function() {
+						window.location = 'datosMascotas';
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+function eliminarMascota() {
+	$.ajax({
+		type: 'POST',
+		data: $("#id_formEliminarMascota").serialize(),
+		url: 'eliminarMascota',
+		success: function(data) {
+			if (data.CONFIRMACION == 'SI') {
+				swal("¡Éxito!", data.MENSAJE, "success");
+				setTimeout(function() {
+					window.location = 'datosMascotas';
+				}, 1500);
+			} else {
+				swal("¡Aviso!", data.MENSAJE, "warning");
+			}
+		},
+		error: function() {
+			swal("¡Error!", "¡Comunicate con el administrador!",
+				"error");
+		}
+	});
+}
+// ------------------- Métodos del CRUD Mascota ------------------- //
