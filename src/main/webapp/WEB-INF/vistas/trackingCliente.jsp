@@ -198,7 +198,7 @@
 																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
 																							<button type="button"
-																								onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																								
 																								class="btn btn-primary">
 																								<img src="images/edit.gif" width="auto"
 																									height="auto" />
