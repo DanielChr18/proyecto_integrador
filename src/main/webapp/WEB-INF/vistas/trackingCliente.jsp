@@ -83,9 +83,9 @@
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th style="width: 102.4px;">Editar</th>
 																				</c:if>
-																				
-																				
-																				
+
+
+
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -136,7 +136,26 @@
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th>Cliente</th>
 																				</c:if>
-																												
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<div class="row">
+																						<div class="col-md-6">
+																							<div class="form-group">
+																								<select id="id_cliente" name="idCliente"
+																									class='form-control'>
+																									<option value="-1">[Todos]</option>
+																								</select>
+																							</div>
+																						</div>
+																						<div class="col-md-3">
+																							<div class="form-group">
+																								<button id="id_filtrar" type="button"
+																									class="btn btn-primary">Filtrar</button>
+																							</div>
+																						</div>
+																					</div>
+																					
+																				</c:if>
+
 																				<th>Mascota</th>
 																				<th>Fecha</th>
 																				<th>Horario</th>
@@ -150,7 +169,7 @@
 																				<c:if test="${objCargo == 'Veterinario'}">
 																					<th style="width: 102.4px;">Atender</th>
 																				</c:if>
-																				
+
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -194,12 +213,12 @@
 																							</button>
 																						</td>
 																					</c:if>
-																					
+
 																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
-																							<button type="button"
-																								
-																								class="btn btn-primary">
+																							<button type="button" 
+																							onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																							class="btn btn-primary">
 																								<img src="images/edit.gif" width="auto"
 																									height="auto" />
 																							</button>
@@ -398,6 +417,7 @@
 
 			<!-- Modal de Pago de Reserva -->
 			<div class="modal fade" id="idModalMetodoPago" data-backdrop="static"
+			
 				tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 50%;">
 					<!-- Modal content-->
@@ -451,6 +471,82 @@
 					</div>
 				</div>
 			</div>
+		
+			<!-- Modal de Veterinario-->
+			<div class="modal fade" id="idModalVeterinario"
+				data-backdrop="static" tabindex="-1" role="dialog">
+				<div class="modal-dialog" style="width: 50%;">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="card">
+							<div class="card-header card-header-primary">
+								<h3 class="card-title">Veterinario</h3>
+							</div>
+							<div class="card-body" style="padding: 20px 18px;">
+								<form accept-charset="UTF-8" id="id_formEditarReserva">
+									<div class="row">
+										<input class="form-control" type="text"
+											id="id_idReservaEditar" hidden="hidden" name="idReserva">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label-floating">Nombre Cliente</label> <input
+													class="form-control" type="text"
+													id="id_nombreClienteReservaEditar" readonly="readonly">
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label-floating">Nombre Mascota</label> <input
+													class="form-control" type="text"
+													id="id_nombreMascotaClienteReservaEditar"
+													readonly="readonly">
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label-floating">Fecha</label> <input
+													class="form-control" type="text" id="id_fechaReservaEditar"
+													readonly="readonly">
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label-floating">Horario</label> <input
+													class="form-control" type="text"
+													id="id_horarioReservaEditar" readonly="readonly">
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="bmd-label">Estado</label>
+												<div class="caja">
+													<select class="estilo-select" id="id_estadoReservaEditar"
+														name="estado">
+														<option value="pendiente de pago">pendiente de
+															pago</option>
+														<option value="pagado">pagado</option>
+														<option value="realizado">realizado</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<button type="button" onclick="cerrarModalEditarReserva();"
+										class="btn btn-primary pull-right">Cerrar</button>
+									<button id="id_btnEditarBoleta" onclick="VeterinarioReserva();"
+										type="button" class="btn btn-primary pull-right">Editar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		
+		
+		
+		
+		
 		</div>
 	</c:if>
 
@@ -545,6 +641,33 @@
 			});
 		}
 	</script>
+	
+	<script type="text/javascript">
+		function VeterinarioReserva() {
+			$.ajax({
+				type : 'POST',
+				data : {
+					'idReserva' : $("#id_idReservaEditar").val(),
+					'estado' : $("#id_estadoReservaEditar").val()
+				},
+				url : 'editarReserva',
+				success : function(data) {
+					if (data.CONFIRMACION == 'SI') {
+						swal("¡Éxito!", data.MENSAJE, "success");
+						setTimeout(function() {
+							window.location = 'trackingCliente';
+						}, 1500);
+					} else {
+						swal("¡Error!", data.MENSAJE, "error");
+					}
+				},
+				error : function() {
+					swal("¡Error!", "¡Comunicate con el administrador!",
+							"error");
+				}
+			});
+		}
+	</script>
 
 	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
@@ -612,6 +735,28 @@
 
 		$('#id_menuTrackingClientes').addClass('active');
 		$('#id_menuCrudTracking').addClass('active');
+
+
+		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
+				horario, estado) {
+			$("#id_idReservaEditar").val(id);
+			$("#id_nombreClienteReservaEditar").val(nomCliente);
+			$("#id_nombreMascotaClienteReservaEditar").val(nomMascota);
+			$("#id_fechaReservaEditar").val(fecha);
+			$("#id_horarioReservaEditar").val(horario);
+			$("#id_estadoReservaEditar").val(estado);
+			$("#id_formEditarReserva .col-md-12 .form-group").addClass(
+					"is-filled");
+			$("#idModalVeterinario").modal("show");
+		}
+
+		function cerrarModalVeterinario() {
+			$("#idModalVeterinario").modal("hide");
+		}
+
+
+
+		
 	</script>
 
 	<!-- Validación de Modal Detalle Pedido -->
