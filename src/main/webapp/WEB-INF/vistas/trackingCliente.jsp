@@ -13,10 +13,13 @@
 <script type="text/javascript" src="js/core/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
+<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
 <link rel="stylesheet" href="css/estilo1.1.css" />
 <link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
+
+
 
 </head>
 <body class="">
@@ -475,7 +478,7 @@
 			<!-- Modal de Veterinario-->
 			<div class="modal fade" id="idModalVeterinario"
 				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 50%;">
+				<div class="modal-dialog" style="width: 55%;">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="card">
@@ -487,13 +490,6 @@
 									<div class="row">
 										<input class="form-control" type="text"
 											id="id_idReservaEditar" hidden="hidden" name="idReserva">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre Cliente</label> <input
-													class="form-control" type="text"
-													id="id_nombreClienteReservaEditar" readonly="readonly">
-											</div>
-										</div>
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Nombre Mascota</label> <input
@@ -516,6 +512,12 @@
 													id="id_horarioReservaEditar" readonly="readonly">
 											</div>
 										</div>
+									<div class="col-md-12">
+										<label class="bmd-label-floating">Observacion</label>
+										<textarea id="editor3" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaConsVeterinario"
+											style="color: #cc0000;">El campo no puede estar vacio</small>
+									</div>
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label">Estado</label>
@@ -531,10 +533,10 @@
 											</div>
 										</div>
 									</div>
-									<button type="button" onclick="cerrarModalEditarReserva();"
+									<button type="button" onclick="cerrarModalVeterinario();"
 										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnEditarBoleta" onclick="VeterinarioReserva();"
-										type="button" class="btn btn-primary pull-right">Editar</button>
+									<button id="id_btnEditarBoleta" onclick="editarReserva();"
+										type="button" class="btn btn-primary pull-right">Registrar</button>
 								</form>
 							</div>
 						</div>
@@ -650,7 +652,7 @@
 					'idReserva' : $("#id_idReservaEditar").val(),
 					'estado' : $("#id_estadoReservaEditar").val()
 				},
-				url : 'editarReserva',
+				url : 'veterinarioReserva',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Éxito!", data.MENSAJE, "success");
@@ -735,7 +737,7 @@
 
 		$('#id_menuTrackingClientes').addClass('active');
 		$('#id_menuCrudTracking').addClass('active');
-
+		
 
 		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
 				horario, estado) {
@@ -744,6 +746,7 @@
 			$("#id_nombreMascotaClienteReservaEditar").val(nomMascota);
 			$("#id_fechaReservaEditar").val(fecha);
 			$("#id_horarioReservaEditar").val(horario);
+		
 			$("#id_estadoReservaEditar").val(estado);
 			$("#id_formEditarReserva .col-md-12 .form-group").addClass(
 					"is-filled");
@@ -752,12 +755,20 @@
 
 		function cerrarModalVeterinario() {
 			$("#idModalVeterinario").modal("hide");
+	
 		}
 
-
-
-		
 	</script>
+	
+	<!-- Script de TextArea  -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				modificarTextArea('editor1', 'Registrar');
+				modificarTextArea('editor2', 'Modificar');
+				modificarTextArea('editor3', 'ConsVeterinario');
+			});
+		</script>
+	
 
 	<!-- Validación de Modal Detalle Pedido -->
 	<script type="text/javascript">
