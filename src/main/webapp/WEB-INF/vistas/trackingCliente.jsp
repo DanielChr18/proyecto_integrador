@@ -21,7 +21,7 @@
 </head>
 <body class="">
 	<c:if
-		test="${objCargo == 'Cliente' || objCargo == 'Personal de Ventas'}">
+		test="${objCargo == 'Cliente' || objCargo == 'Personal de Ventas'||objCargo == 'Veterinario'}">
 		<div class="wrapper ">
 			<jsp:include page="menuLateral.jsp" />
 			<div class="main-panel">
@@ -56,7 +56,7 @@
 																		href="#servicios" data-toggle="tab"> <i
 																			class="material-icons">medical_services</i> <c:if
 																				test="${objCargo == 'Cliente'}">Servicios</c:if> <c:if
-																				test="${objCargo == 'Personal de Ventas'}">Reservas</c:if>
+																				test="${objCargo == 'Personal de Ventas'|| objCargo == 'Veterinario'}">Reservas</c:if>
 																			<div class="ripple-container"></div>
 																	</a></li>
 																</ul>
@@ -83,6 +83,9 @@
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th style="width: 102.4px;">Editar</th>
 																				</c:if>
+																				
+																				
+																				
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -133,6 +136,7 @@
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th>Cliente</th>
 																				</c:if>
+																												
 																				<th>Mascota</th>
 																				<th>Fecha</th>
 																				<th>Horario</th>
@@ -143,6 +147,10 @@
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th style="width: 102.4px;">Editar</th>
 																				</c:if>
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<th style="width: 102.4px;">Atender</th>
+																				</c:if>
+																				
 																			</tr>
 																		</thead>
 																		<tbody>
@@ -177,6 +185,17 @@
 																						</td>
 																					</c:if>
 																					<c:if test="${objCargo == 'Personal de Ventas'}">
+																						<td>
+																							<button type="button"
+																								onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																								class="btn btn-primary">
+																								<img src="images/edit.gif" width="auto"
+																									height="auto" />
+																							</button>
+																						</td>
+																					</c:if>
+																					
+																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
 																							<button type="button"
 																								onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"

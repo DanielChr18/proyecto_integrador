@@ -60,6 +60,7 @@ public class redireccionesController {
 				else if (!listaServicios.isEmpty())
 					model.addAttribute("servicios", listaServicios);
 				return "trackingCliente";
+				
 			} else if (session.getAttribute("objCargo").equals("Cliente")) {
 				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 				List<Boleta> listaPedidos = serviceBoleta.listarBoletasCliente(idCliente);
@@ -73,7 +74,20 @@ public class redireccionesController {
 				else if (!listaServicios.isEmpty())
 					model.addAttribute("servicios", listaServicios);
 				return "trackingCliente";
-			} else {
+				
+			}else if (session.getAttribute("objCargo").equals("Veterinario")) {
+				List<Boleta> listaPedidos = serviceBoleta.listarBoletas();
+				if (listaPedidos.isEmpty())
+					model.addAttribute("pedidos", null);
+				else if (!listaPedidos.isEmpty())
+					model.addAttribute("pedidos", listaPedidos);
+				List<Reserva> listaServicios = serviceReserva.listarReservas();
+				if (listaServicios.isEmpty())
+					model.addAttribute("servicios", null);
+				else if (!listaServicios.isEmpty())
+					model.addAttribute("servicios", listaServicios);
+				return "trackingCliente";
+			}  else {
 				return "redirect:error403";
 			}
 		}
