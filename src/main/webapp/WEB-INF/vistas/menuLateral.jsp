@@ -62,6 +62,13 @@
 					href="trackingCliente"><i class="material-icons">leaderboard</i>
 						<p>Transacciones</p></a></li>
 			</c:if>
+			
+			<c:if test="${objCargo == 'Veterinario'}">
+				
+				<li class="nav-item" id="id_menuTrackingVeterinario"><a class="nav-link"
+					href="trackingCliente"><i class="material-icons">leaderboard</i>
+						<p>Transacciones</p></a></li>
+			</c:if>
 			<c:if test="${objCargo == null}">
 				<li class="nav-item" id="id_menuClientes"><a class="nav-link"
 					href="datosClientes"><i class="material-icons">contact_page</i>
