@@ -26,6 +26,7 @@ public class consultasBot {
 		for (Producto x : lista) {
 			nombres += x.getDescripcion() + ",";
 		}
+
 		if (nombres.length() != 0)
 			jsonObject.put("nombres", nombres.substring(0, nombres.length() - 1));
 		String jsonInString = gson.toJson(jsonObject);
