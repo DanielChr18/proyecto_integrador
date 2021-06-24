@@ -139,7 +139,7 @@
 												</div>
 												<div class="col-md-12">
 													<button type="button"
-														onclick="eliminarProducto('${x.idProducto}');"
+														onclick="eliminarProductoBoleta('${x.idProducto}');"
 														class="btn btn-primary pull-right">Eliminar</button>
 												</div>
 											</div>
@@ -298,7 +298,7 @@
 		});
 	}
 
-	function eliminarProducto(idProducto) {
+	function eliminarProductoBoleta(idProducto) {
 		$
 				.ajax({
 					type : 'POST',

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +20,7 @@ public class consultasBot {
 	private ProductoService service;
 
 	@GetMapping(produces = "application/json;charset=UTF-8", value = "/consultaProductoBot")
-	public Map<String, Object> listadoProductosNombre() {
+	public ResponseEntity<?> listadoProductosNombre() {
 		Map<String, Object> json = new HashMap<>();
 		List<Producto> lista = service.listaProductosNombre("%" + "r" + "%");
 		String nombres = "";
@@ -28,8 +30,8 @@ public class consultasBot {
 
 		if (nombres.length() != 0)
 			json.put("nombres", nombres.substring(0, nombres.length() - 1));
-		System.out.println(json);
-		return json;
+
+		return ResponseEntity.status(HttpStatus.OK).body(json);
 	}
 
 }
