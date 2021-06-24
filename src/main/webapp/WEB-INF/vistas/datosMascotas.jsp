@@ -74,7 +74,7 @@
 																		<td>${mascota.raza}</td>
 																		<td>${mascota.fechaNacimiento}</td>
 																		<td>${mascota.sexo}</td>
-																		<td><img src="images/mascotas/${mascota.imagen}"
+																		<td><img src="${mascota.imagen}"
 																			alt="img" width="50px" height="50px"></td>
 																		<td>
 																			<button type='button'
@@ -203,12 +203,16 @@
 										<div class="form-group">
 											<label class="bmd-label">Imagen</label>
 										</div>
+										
 										<div class="invoiceBox">
 											<label for="id_imagenModificar" id="boxFileModificar"
 												class="boxFile" data-text="Seleccionar Imagen">
 												Seleccionar Imagen </label> <input id="id_imagenModificar"
 												name="imagenMascotaModificar" size="6000" type="file"
 												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
+												<input
+												type="hidden" id="id_imagenModificar_01"
+												class="form-control" name="imagen">
 										</div>
 									</div>
 								</div>
@@ -275,11 +279,12 @@
 			$('#idModalRegistraMascota').modal("show");
 		}
 
-		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo) {
+		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo,imagen) {
 			$("#id_codigoMascotaModificar").val(id);
 			$("#id_nombreMascotaModificar").val(nombre);
 			$("#id_tipoMascotaModificar").val(tipo);
 			$("#id_razaMascotaModificar").val(raza);
+			$("#id_imagenModificar_01").val(imagen);
 			$("#idModalModificaMascota input[name=sexo][value='" + sexo + "']")
 					.prop("checked", true);
 			$("#id_fechaNacMascotaModificar").val(fecha);
