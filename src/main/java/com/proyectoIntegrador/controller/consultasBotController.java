@@ -1,5 +1,6 @@
 package com.proyectoIntegrador.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,40 +44,49 @@ public class consultasBotController {
 		Pageable pageable = PageRequest.of(0, 5);
 		String nombres = "";
 		try {
+			List<Producto> listaProductos = new ArrayList<Producto>();
+			List<Servicio> listaServicios = new ArrayList<Servicio>();
 			if (opcion.equals("producto")) {
-				List<Producto> lista = serviceProducto.consultaProductosChatBot(
+				listaProductos = serviceProducto.consultaProductosChatBot(
 						Integer.parseInt((mascota == null ? "-1" : mascota)), (categoria == null ? "" : categoria),
 						"%" + (nombreProducto == null ? "" : nombreProducto) + "%", pageable);
-				for (Producto x : lista) {
-					nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
-				}
 			} else if (opcion.equals("servicio")) {
-				List<Servicio> lista = serviceServicio
+				listaServicios = serviceServicio
 						.consultaServiciosChatBot("%" + (nombreServicio == null ? "" : nombreServicio) + "%", pageable);
-				for (Servicio x : lista) {
-					if (nombreServicio == null || nombreServicio.equals("")) {
-						nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
-					} else {
-						nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio()
-								+ " donde atendemos los días " + x.getDia() + " en los siguientes horarios : ";
-						List<HorariosServicios> listaHorarios = serviceServicioHorario
-								.listarHorariosServicios(x.getIdServicio());
-						for (HorariosServicios h : listaHorarios) {
-							if (!h.getEstado().equals("desactivado")) {
-								nombres += h.getHorario() + ", ";
-							}
-						}
-						nombres += "; ";
-					}
-
-				}
-				nombres = nombres.substring(0, nombres.length() - 2);
 			}
-			if (nombres.length() != 0)
+			if (listaProductos.size() > 0 || listaServicios.size() > 0) {
+				if (opcion.equals("producto")) {
+					for (Producto x : listaProductos) {
+						nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
+					}
+				} else if (opcion.equals("servicio")) {
+					for (Servicio x : listaServicios) {
+						if (nombreServicio == null || nombreServicio.equals("")) {
+							nombres += "El servicio de " + x.getNombre() + " tiene un costo de S/. " + x.getPrecio()
+									+ ", ";
+						} else {
+							nombres += "El servicio de " + x.getNombre() + " tiene un costo de S/. " + x.getPrecio()
+									+ " en el cual atendemos los días " + x.getDia() + " en los siguientes horarios : ";
+							List<HorariosServicios> listaHorarios = serviceServicioHorario
+									.listarHorariosServicios(x.getIdServicio());
+							for (HorariosServicios h : listaHorarios) {
+								if (!h.getEstado().equals("desactivado")) {
+									nombres += h.getHorario() + ", ";
+								}
+							}
+							nombres += "; ";
+						}
+
+					}
+					nombres = nombres.substring(0, nombres.length() - 2);
+				}
 				json.put("nombres", nombres.substring(0, nombres.length() - 2) + " .");
+			} else if (listaProductos.size() == 0 || listaServicios.size() == 0) {
+				json.put("vacio", "La consulta que realizó no contiene datos.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			json.put("nombres", "Error al realizar la consulta, intentelo más tarde.");
+			json.put("error", "Error al realizar la consulta, intentelo más tarde.");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(json);
 	}
