@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyectoIntegrador.entity.HorariosServicios;
 import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Servicio;
+import com.proyectoIntegrador.service.HorariosServiciosService;
 import com.proyectoIntegrador.service.ProductoService;
 import com.proyectoIntegrador.service.ServicioService;
 
@@ -26,6 +28,9 @@ public class consultasBotController {
 
 	@Autowired
 	private ServicioService serviceServicio;
+
+	@Autowired
+	private HorariosServiciosService serviceServicioHorario;
 
 	@GetMapping(produces = "application/json;charset=UTF-8", value = "/consultaProductoBot")
 	public ResponseEntity<?> listadoProductosNombre(String opcion,
@@ -40,8 +45,7 @@ public class consultasBotController {
 		try {
 			if (opcion.equals("producto")) {
 				List<Producto> lista = serviceProducto.consultaProductosChatBot(
-						Integer.parseInt((mascota == null ? "-1" : mascota)),
-						Integer.parseInt((categoria == null ? "-1" : categoria)),
+						Integer.parseInt((mascota == null ? "-1" : mascota)), (categoria == null ? "" : categoria),
 						"%" + (nombreProducto == null ? "" : nombreProducto) + "%", pageable);
 				for (Producto x : lista) {
 					nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
@@ -50,11 +54,26 @@ public class consultasBotController {
 				List<Servicio> lista = serviceServicio
 						.consultaServiciosChatBot("%" + (nombreServicio == null ? "" : nombreServicio) + "%", pageable);
 				for (Servicio x : lista) {
-					nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
+					if (nombreServicio == null || nombreServicio.equals("")) {
+						nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio() + ", ";
+					} else {
+						nombres += x.getNombre() + " con un costo de S/. " + x.getPrecio()
+								+ " donde atendemos los días " + x.getDia() + " en los siguientes horarios : ";
+						List<HorariosServicios> listaHorarios = serviceServicioHorario
+								.listarHorariosServicios(x.getIdServicio());
+						for (HorariosServicios h : listaHorarios) {
+							if (!h.getEstado().equals("desactivado")) {
+								nombres += h.getHorario() + ", ";
+							}
+						}
+						nombres += "; ";
+					}
+
 				}
+				nombres = nombres.substring(0, nombres.length() - 2);
 			}
 			if (nombres.length() != 0)
-				json.put("nombres", nombres.substring(0, nombres.length() - 2));
+				json.put("nombres", nombres.substring(0, nombres.length() - 2) + " .");
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("nombres", "Error al realizar la consulta, intentelo más tarde.");

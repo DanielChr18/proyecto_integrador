@@ -16,7 +16,7 @@ public interface ProductoService {
 
 	public abstract List<Producto> listaProductosNombreDiferenteId(int idProducto, String nombre);
 
-	public abstract List<Producto> consultaProductosChatBot(int mascota, int categoria, String nombre,
+	public abstract List<Producto> consultaProductosChatBot(int mascota, String categoria, String nombre,
 			Pageable pageable);
 
 	public abstract Producto agregarModificarProducto(Producto obj);

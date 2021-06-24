@@ -19,9 +19,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 			@Param("param_nombre") String nombre);
 
 	@Query("select p from Producto p where (:param_mascota is -1 or p.idTipoMascota.idTipoMascota = :param_mascota) and"
-			+ " (:param_categoria is -1 or p.idCategoria.idCategoria = :param_categoria) and"
+			+ " (:param_categoria is '' or p.idCategoria.nombre like :param_categoria) and"
 			+ " (:param_nombre is '' or p.nombre like :param_nombre) and p.estado = 'activado'")
 	public abstract List<Producto> consultaProductosChatBot(@Param("param_mascota") int mascota,
-			@Param("param_categoria") int categoria, @Param("param_nombre") String nombre, Pageable pageable);
+			@Param("param_categoria") String categoria, @Param("param_nombre") String nombre, Pageable pageable);
 
 }

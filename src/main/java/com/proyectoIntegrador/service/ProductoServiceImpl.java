@@ -43,7 +43,7 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 	@Override
-	public List<Producto> consultaProductosChatBot(int mascota, int categoria, String nombre, Pageable pageable) {
+	public List<Producto> consultaProductosChatBot(int mascota, String categoria, String nombre, Pageable pageable) {
 		return repository.consultaProductosChatBot(mascota, categoria, nombre, pageable);
 	}
 
