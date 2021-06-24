@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.proyectoIntegrador.entity.Producto;
@@ -39,6 +40,11 @@ public class ProductoServiceImpl implements ProductoService {
 	@Override
 	public List<Producto> listaProductosNombreDiferenteId(int idProducto, String nombre) {
 		return repository.listaProductosNombreDiferenteId(idProducto, nombre);
+	}
+
+	@Override
+	public List<Producto> consultaProductosChatBot(int mascota, int categoria, String nombre, Pageable pageable) {
+		return repository.consultaProductosChatBot(mascota, categoria, nombre, pageable);
 	}
 
 	@Override

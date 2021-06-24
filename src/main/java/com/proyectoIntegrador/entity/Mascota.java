@@ -27,8 +27,10 @@ public class Mascota {
 	@Column(name = "nombre")
 	private String nombre;
 
-	@Column(name = "tipo")
-	private String tipo;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idtipomascota")
+	private TipoMascota idTipoMascota;
 
 	@Column(name = "raza")
 	private String raza;

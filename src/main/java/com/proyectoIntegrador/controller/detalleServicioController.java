@@ -18,10 +18,12 @@ import com.proyectoIntegrador.entity.Cliente;
 import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.entity.Mascota;
 import com.proyectoIntegrador.entity.Servicio;
+import com.proyectoIntegrador.entity.TipoMascota;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.FechasServiciosService;
 import com.proyectoIntegrador.service.MascotaService;
 import com.proyectoIntegrador.service.ServicioService;
+import com.proyectoIntegrador.service.TipoMascotaService;
 
 @Controller
 public class detalleServicioController {
@@ -31,17 +33,20 @@ public class detalleServicioController {
 
 	@Autowired
 	private ServicioService serviceSer;
-	
+
 	@Autowired
 	private MascotaService serviceMasc;
 
 	@Autowired
 	private ClienteService serviceCli;
 
+	@Autowired
+	private TipoMascotaService serviceTipo;
+
 	@RequestMapping("/detalleServicios")
-	public String detalleServicios(@RequestParam(value = "idServicio", required = false) String idServicio,
-			Model modal, HttpServletRequest request) {
-		
+	public String detalleServicios(@RequestParam(value = "idServicio", required = false) String idServicio, Model modal,
+			HttpServletRequest request) {
+
 		HttpSession session = request.getSession(true);
 		if (idServicio == null) {
 			return "redirect:error404";
@@ -67,7 +72,7 @@ public class detalleServicioController {
 			case "Viernes":
 				numSemana = 5;
 			}
-			 if (session.getAttribute("objIdCliente") != null) {
+			if (session.getAttribute("objIdCliente") != null) {
 				System.out.println("Listar Todas las Macotas del Cliente");
 				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 				// Datos del Cliente
@@ -76,6 +81,8 @@ public class detalleServicioController {
 				// Datos de la Mascota
 				List<Mascota> lista = serviceMasc.listarMascotaCliente(idCliente);
 				modal.addAttribute("mascotas", lista);
+				List<TipoMascota> tipos = serviceTipo.listarMascotas();
+				modal.addAttribute("tipos", tipos);
 			}
 			modal.addAttribute("objNumeroDia", numSemana);
 			return "detalleServicios";
@@ -96,6 +103,5 @@ public class detalleServicioController {
 		}
 		return fechas;
 	}
-	
 
 }

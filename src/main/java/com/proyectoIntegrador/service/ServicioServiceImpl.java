@@ -3,6 +3,7 @@ package com.proyectoIntegrador.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.proyectoIntegrador.entity.Servicio;
@@ -28,6 +29,12 @@ public class ServicioServiceImpl implements ServicioService {
 	public List<Servicio> listaNombreDiferenteId(int idServicio, String nombre) {
 		return repository.listaNombreDiferenteId(idServicio, nombre);
 	}
+
+	@Override
+	public List<Servicio> consultaServiciosChatBot(String nombre, Pageable pageable) {
+		return repository.consultaServiciosChatBot(nombre, pageable);
+	}
+
 	@Override
 	public Servicio listaServiciosId(int idServicio) {
 		return repository.findById(idServicio).get();

@@ -46,6 +46,16 @@ public class Producto {
 	@JoinColumn(name = "idproveedor")
 	private Proveedor idProveedor;
 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idcategoria")
+	private Categoria idCategoria;
+
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idtipomascota")
+	private TipoMascota idTipoMascota;
+
 	@Column(name = "descripcion")
 	private String descripcion;
 

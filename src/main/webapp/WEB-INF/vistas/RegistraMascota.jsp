@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -28,10 +29,12 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="bmd-label">Tipo</label> <select
-										id="id_tipoMascotaRegistrar" class="form-control" name="tipo">
+										id="id_tipoMascotaRegistrar" class="form-control"
+										name="idTipoMascota.idTipoMascota">
 										<option value="">[ Seleccionar ]</option>
-										<option value="Perro">Perro</option>
-										<option value="Gato">Gato</option>
+										<c:forEach var="tipo" items="${tipos}">
+											<option value="${tipo.idTipoMascota}">${tipo.nombre}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>

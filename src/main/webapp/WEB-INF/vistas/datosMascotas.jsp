@@ -70,15 +70,15 @@
 																	<tr>
 																		<td>${mascota.idMascota}</td>
 																		<td>${mascota.nombre}</td>
-																		<td>${mascota.tipo}</td>
+																		<td>${mascota.idTipoMascota.nombre}</td>
 																		<td>${mascota.raza}</td>
 																		<td>${mascota.fechaNacimiento}</td>
 																		<td>${mascota.sexo}</td>
-																		<td><img src="${mascota.imagen}"
-																			alt="img" width="50px" height="50px"></td>
+																		<td><img src="${mascota.imagen}" alt="img"
+																			width="50px" height="50px"></td>
 																		<td>
 																			<button type='button'
-																				onclick="verModalMascotaModifica('${mascota.idMascota}','${mascota.nombre}','${mascota.tipo}','${mascota.raza}','${mascota.fechaNacimiento}','${mascota.sexo}');"
+																				onclick="verModalMascotaModifica('${mascota.idMascota}','${mascota.nombre}','${mascota.idTipoMascota.idTipoMascota}','${mascota.raza}','${mascota.fechaNacimiento}','${mascota.sexo}');"
 																				class='btn btn-primary'>
 																				<img src='images/edit.gif' width='auto'
 																					height='auto' />
@@ -138,7 +138,7 @@
 							<h3 class="card-title">Modificar Mascota</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
-							<form id="id_formModificarMascota" accept-charset="UTF-8"F
+							<form id="id_formModificarMascota" accept-charset="UTF-8" F
 								enctype="multipart/form-data">
 								<div class="row" hidden="hidden">
 									<div class="col-md-12">
@@ -162,10 +162,11 @@
 										<div class="form-group">
 											<label class="bmd-label">Tipo</label> <select
 												id="id_tipoMascotaModificar" class="form-control"
-												name="tipo">
+												name="idTipoMascota.idTipoMascota">
 												<option value="">[ Seleccionar ]</option>
-												<option value="Perro">Perro</option>
-												<option value="Gato">Gato</option>
+												<c:forEach var="tipo" items="${tipos}">
+													<option value="${tipo.idTipoMascota}">${tipo.nombre}</option>
+												</c:forEach>
 											</select>
 										</div>
 									</div>
@@ -203,15 +204,14 @@
 										<div class="form-group">
 											<label class="bmd-label">Imagen</label>
 										</div>
-										
+
 										<div class="invoiceBox">
 											<label for="id_imagenModificar" id="boxFileModificar"
 												class="boxFile" data-text="Seleccionar Imagen">
 												Seleccionar Imagen </label> <input id="id_imagenModificar"
 												name="imagenMascotaModificar" size="6000" type="file"
 												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
-												<input
-												type="hidden" id="id_imagenModificar_01"
+											<input type="hidden" id="id_imagenModificar_01"
 												class="form-control" name="imagen">
 										</div>
 									</div>
@@ -279,7 +279,8 @@
 			$('#idModalRegistraMascota').modal("show");
 		}
 
-		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo,imagen) {
+		function verModalMascotaModifica(id, nombre, tipo, raza, fecha, sexo,
+				imagen) {
 			$("#id_codigoMascotaModificar").val(id);
 			$("#id_nombreMascotaModificar").val(nombre);
 			$("#id_tipoMascotaModificar").val(tipo);
