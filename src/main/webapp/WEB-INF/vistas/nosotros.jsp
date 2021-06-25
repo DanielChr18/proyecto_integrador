@@ -38,7 +38,7 @@
 						<div class="card-header"
 													style="border-bottom: #9c27b0 1px solid;">
 													<h2 class="card-title" style="color: #9c27b0">
-														<strong>ï¿½Quiï¿½nes somos?</strong>
+														<strong>¿Quiénes somos?</strong>
 													</h2>
 												</div>
 						<div class="card-body" style="padding: 20px 10px;">
@@ -46,7 +46,7 @@
 														<div class="col-md-7">
 															<div class="form-group" >
 																<h3 class="card-title">
-																	<strong>La Veterinaria ZOOTOPï¿½A es una empresa dedicada al cuidado de las mascotas, que lleva en el mercado desde el aï¿½o 2021, trabajando en el bienestar de cada mascota. Desde entonces, sus primordiales objetivos estuvieron encaminados a mejorar en todos sus servicios, y muchos de estos objetivos se han logrado, dando como resultado el poder ofrecer a todos nuestros clientes un servicio integral atendidos por profesionales de altï¿½sima calidad, todo ï¿½sto con el fin de tratar nuestros pacientes como seres que merecen la mejor atenciï¿½n y especial cuidado.</strong>
+																	<strong>La Veterinaria ZOOTOPIA es una empresa dedicada al cuidado de las mascotas, que lleva en el mercado desde el año 2021, trabajando en el bienestar de cada mascota. Desde entonces, sus primordiales objetivos estuvieron encaminados a mejorar en todos sus servicios, y muchos de estos objetivos se han logrado, dando como resultado el poder ofrecer a todos nuestros clientes un servicio integral atendidos por profesionales de altísima calidad, todo esto con el fin de tratar nuestros pacientes como seres que merecen la mejor atención y especial cuidado.</strong>
 																</h3>
 															</div>
 														</div>
@@ -60,7 +60,7 @@
 										<div class="card-header"
 													style="border-bottom: #9c27b0 1px solid;">
 													<h2 class="card-title" style="color: #9c27b0;text-align: right">
-														<strong>Misiï¿½n</strong>
+														<strong>Misión</strong>
 													</h2>
 												</div>
 						<div class="card-body" style="padding: 20px 10px;">
@@ -73,7 +73,7 @@
 														<div class="col-md-6">
 															<div class="form-group" >
 																<h3 class="card-title">
-																	<strong>La veterinaria ZOOTOPï¿½A tiene como misiï¿½n ofrecer bienestar a cada una de nuestras mascotas, que sus familias entiendan los deberes y los derechos que tienen las mascotas desde el instante que entran a formar parte de sus vidas. Nuestro grupo de trabajo comparte valores y principios ï¿½ticos de respeto, responsabilidad y compromiso, superï¿½ndolas expectativas de nuestros clientes y entregando calidad y satisfacciï¿½n en nuestros servicios.</strong>
+																	<strong>La veterinaria ZOOTOPIA tiene como misión ofrecer bienestar a cada una de nuestras mascotas, que sus familias entiendan los deberes y los derechos que tienen las mascotas desde el instante que entran a formar parte de sus vidas. Nuestro grupo de trabajo comparte valores y principios éticos de respeto, responsabilidad y compromiso, superándolas expectativas de nuestros clientes y entregando calidad y satisfacción en nuestros servicios.</strong>
 																</h3>
 															</div>
 														</div>
@@ -84,7 +84,7 @@
 										<div class="card-header"
 													style="border-bottom: #9c27b0 1px solid;">
 													<h2 class="card-title" style="color: #9c27b0">
-														<strong>Visiï¿½n</strong>
+														<strong>Visión</strong>
 													</h2>
 												</div>
 						<div class="card-body" style="padding: 20px 10px;">
@@ -92,7 +92,7 @@
 														<div class="col-md-6">
 															<div class="form-group" >
 																<h3 class="card-title">
-																	<strong>La veterinaria ZOOTOPï¿½A tiene como visiï¿½n ser una  de las veterinarias lï¿½deres en prestaciï¿½n de servicios mï¿½dicos veterinarios de la mejor calidad y profesionalismo, con ï¿½nfasis en animales de compaï¿½ï¿½a. Nuestro compromiso social es mejorar la calidad de vida de las familias a travï¿½s del cuidado de la salud de nuestros pacientes contando con excelente tecnologï¿½a, un equipo mï¿½dico altamente calificado con educaciï¿½n y capacidad continua.</strong>
+																	<strong>La veterinaria ZOOTOPIA tiene como visión ser una  de las veterinarias líderes en prestación de servicios médicos veterinarios de la mejor calidad y profesionalismo, con énfasis en animales de compañía. Nuestro compromiso social es mejorar la calidad de vida de las familias a través del cuidado de la salud de nuestros pacientes contando con excelente tecnología, un equipo médico altamente calificado con educación y capacidad continua.</strong>
 																</h3>
 															</div>
 														</div>
