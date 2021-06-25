@@ -140,24 +140,39 @@
 																					<th>Cliente</th>
 																				</c:if>
 																				<c:if test="${objCargo == 'Veterinario'}">
-																				
+
 																					<div class="row">
-																						<div class="col-md-6">
-																							<div class="form-group">
-																								<select id="id_cliente3" name="idCliente"
-																									class='form-control'>
-																									<option value="-1">[Todes]</option>
-																								</select>
+																						<div class="col-md-9">
+																							<div class="form-group"
+																								style="padding-left: 10px;">
+																								<label class="bmd-label-floating">Nombre
+																									del Cliente</label> <input type="text"
+																									class="form-control" id="id_nombreClienten">
 																							</div>
 																						</div>
-																						<div class="col-md-3">
-																							<div class="form-group">
-																								<button id="idCliente3" type="button"
-																									class="btn btn-primary">Filtrar</button>
-																							</div>
+																						<div class="col-md-1 offset-1">
+																							<button onclick="buscarReserva();" type="button"
+																								id="id_btnBuscar"
+																								class="btn btn-primary pull-right">Buscar</button>
 																						</div>
 																					</div>
-																					
+																					<div class="row">
+																						<div class="col-md-12" id="id_listadoReservas">
+																							<c:forEach var="reserva" items="${reservas}">
+																								<form accept-charset="UTF-8">
+																									<div class="cart-grid" id="cart-8">
+																										
+																										<ul class="info">
+																											<li>${reserva.idReserva}</li>
+																											<li>${reserva.idCliente}</li>
+																										</ul>
+																										
+																									</div>
+																								</form>
+																							</c:forEach>
+																						</div>
+																					</div>
+
 																				</c:if>
 
 																				<th>Mascota</th>
@@ -220,9 +235,9 @@
 
 																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
-																							<button type="button" 
-																							onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
-																							class="btn btn-primary">
+																							<button type="button"
+																								onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																								class="btn btn-primary">
 																								<img src="images/edit.gif" width="auto"
 																									height="auto" />
 																							</button>
@@ -421,7 +436,6 @@
 
 			<!-- Modal de Pago de Reserva -->
 			<div class="modal fade" id="idModalMetodoPago" data-backdrop="static"
-			
 				tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 50%;">
 					<!-- Modal content-->
@@ -475,7 +489,7 @@
 					</div>
 				</div>
 			</div>
-		
+
 			<!-- Modal de Veterinario-->
 			<div class="modal fade" id="idModalVeterinario"
 				data-backdrop="static" tabindex="-1" role="dialog">
@@ -502,8 +516,8 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Fecha</label> <input
-													class="form-control" type="text" id="id_fechaReservaEditar2"
-													readonly="readonly">
+													class="form-control" type="text"
+													id="id_fechaReservaEditar2" readonly="readonly">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -513,12 +527,13 @@
 													id="id_horarioReservaEditar2" readonly="readonly">
 											</div>
 										</div>
-									<div class="col-md-12">
-										<label class="bmd-label-floating">Observacion</label>
-										<textarea id="editor3" name="descripcionLarga"></textarea>
-										<small id="id_mensajeDescripcionLargaConsVeterinario"
-											style="color: #cc0000;">El campo no puede estar vacio</small>
-									</div>
+										<div class="col-md-12">
+											<label class="bmd-label-floating">Observacion</label>
+											<textarea id="editor3" name="descripcionLarga"></textarea>
+											<small id="id_mensajeDescripcionLargaConsVeterinario"
+												style="color: #cc0000;">El campo no puede estar
+												vacio</small>
+										</div>
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label">Estado</label>
@@ -544,12 +559,12 @@
 					</div>
 				</div>
 			</div>
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		</div>
 	</c:if>
 
@@ -559,7 +574,7 @@
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
 
-	
+
 
 
 	<script type="text/javascript">
@@ -646,7 +661,7 @@
 			});
 		}
 	</script>
-	
+
 	<script type="text/javascript">
 		function VeterinarioReserva() {
 			$.ajax({
@@ -673,6 +688,46 @@
 			});
 		}
 	</script>
+
+	<script type="text/javascript">
+		
+
+		$("#id_nombreClienten").on("keypress", function(event) {
+			if (event.which == 13) {
+				buscarReserva();
+			}
+		});
+
+		function buscarReserva() {
+			var nom = $("#id_nombreClienten").val();
+			$("#id_listadoReservas").html("");
+
+			$
+					.getJSON(
+							'listarReservasCliente',
+							{
+								"nombreClienten" : nom
+							},
+							function(data) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													$("#id_listadoReservas")
+															.append(
+																	"<tr>" + "<td>" + item.idDetalleBoleta + "</td>"
+																	+ "<td>" + item.idReserva + "</td>"
+																	+ "<td>" + item.idCliente + "</td>"
+																	+ "<td>" + item.idProducto.nombre + "</td>"
+																	+ "<td>" + item.cantidad + "</td>"
+																	+ "<td> S/. " + item.costo + "</td>"
+																	+ +"</tr>");
+												});
+							});
+		}
+	</script>
+
+
 
 	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
@@ -740,7 +795,6 @@
 
 		$('#id_menuTrackingClientes').addClass('active');
 		$('#id_menuCrudTracking').addClass('active');
-		
 
 		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
 				horario, estado) {
@@ -749,7 +803,7 @@
 			$("#id_nombreMascotaClienteReservaEditar2").val(nomMascota);
 			$("#id_fechaReservaEditar2").val(fecha);
 			$("#id_horarioReservaEditar2").val(horario);
-		
+
 			$("#id_estadoReservaEditar2").val(estado);
 			$("#id_formEditarReserva2 .col-md-12 .form-group").addClass(
 					"is-filled");
@@ -758,20 +812,19 @@
 
 		function cerrarModalVeterinario() {
 			$("#idModalVeterinario").modal("hide");
-	
-		}
 
+		}
 	</script>
-	
+
 	<!-- Script de TextArea  -->
-		<script type="text/javascript">
-			$(document).ready(function() {
-				modificarTextArea('editor1', 'Registrar');
-				modificarTextArea('editor2', 'Modificar');
-				modificarTextArea('editor3', 'ConsVeterinario');
-			});
-		</script>
-	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			modificarTextArea('editor1', 'Registrar');
+			modificarTextArea('editor2', 'Modificar');
+			modificarTextArea('editor3', 'ConsVeterinario');
+		});
+	</script>
+
 
 	<!-- Validación de Modal Detalle Pedido -->
 	<script type="text/javascript">

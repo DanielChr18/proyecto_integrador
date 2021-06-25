@@ -9,11 +9,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.entity.HorariosServicios;
+import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.FechasServiciosService;
@@ -159,4 +161,32 @@ public class reservaController {
 		salida.put("MENSAJE", "Reserva realizada con éxito.");
 		return salida;
 	}
+	
+
+	@RequestMapping("/listarReservas")
+	public String listarReservas(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(true);
+		if (session.getAttribute("objCargo") != null) {
+			if (session.getAttribute("objCargo").equals("Veterinario")) {
+				return "redirect:error403";
+			}
+		}
+		System.out.println("Listar Todos las Reservas");
+		List<Reserva> lista = service.listarReservas();
+		model.addAttribute("reservas", lista);
+		return "listarReservas";
+	}
+
+	@RequestMapping("/listarReservasCliente")
+	@ResponseBody
+	public List<Reserva> listarReservasCliente(int idCliente) {
+		System.out.println("Listar Clientes por Nombre : Filtro -----> " + idCliente);
+		List<Reserva> lista = service.listarReservasCliente(idCliente);
+		return lista;
+	}
+	
+
+	
+	
+	
 }
