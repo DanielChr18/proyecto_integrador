@@ -54,9 +54,14 @@ public class historialMascotaController {
 				
 				int idTrabajador=Integer.parseInt(session.getAttribute("objIdTrabajador").toString());
 				
+				
 				Trabajador trabajador = new Trabajador();
 				
 				trabajador.setIdTrabajador(idTrabajador);
+				
+				
+				Reserva reser = new Reserva();
+				reser.setIdReserva(Integer.parseInt(idReserva));
 				
 				
 				
@@ -65,6 +70,7 @@ public class historialMascotaController {
 				obj.setHora(LocalDateTime.now().toString());
 				obj.setDescripcion(descripcionLarga);
 				obj.setIdTrabajador(trabajador);
+				obj.setIdReserva(reser);
 				
 				
 			
