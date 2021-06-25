@@ -60,6 +60,8 @@
 																			<th>Precio</th>
 																			<th>Stock</th>
 																			<th>Serie</th>
+																			<th>Categoria</th>
+																			<th>Mascota</th>
 																			<th>Marca</th>
 																			<th>Proveedor</th>
 																			<th>DescripciÛn</th>
@@ -75,15 +77,16 @@
 																				<td>${producto.precio}</td>
 																				<td>${producto.stock}</td>
 																				<td>${producto.serie}</td>
+																				<td>${producto.idCategoria.nombre}</td>
+																				<td>${producto.idTipoMascota.nombre}</td>
 																				<td>${producto.idMarca.nombre}</td>
 																				<td>${producto.idProveedor.razonSocial}</td>
 																				<td>${producto.descripcion}</td>
-																				<td><img
-																					src="images/productos/${producto.imagen1}"
-																					alt="img" width="50px" height="50px"></td>
+																				<td><img src="${producto.imagen1}" alt="img"
+																					width="50px" height="50px"></td>
 																				<td>
 																					<button type="button"
-																						onclick="verModalProductoModifica('${producto.idProducto}','${producto.nombre}','${producto.precio}','${producto.stock}','${producto.serie}','${producto.idMarca.idMarca}','${producto.idProveedor.idProveedor}','${producto.descripcion}');">
+																						onclick="verModalProductoModifica('${producto.idProducto}');">
 																						<span class="material-icons"> edit </span>
 																					</button>
 																					<button type="button"
@@ -177,6 +180,32 @@
 												<option value="">[ SELECCIONAR PROVEEDOR ]</option>
 												<c:forEach var="proveedor" items="${proveedores}">
 													<option value="${proveedor.idProveedor}">${proveedor.razonSocial}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<label class="bmd-label">Mascota</label>
+										<div class="caja">
+											<select id="id_tipoMascotaRegistrar" class="estilo-select"
+												name="idTipoMascota.idTipoMascota">
+												<option value="">[ SELECCIONAR MASCOTA ]</option>
+												<c:forEach var="tipo" items="${tipos}">
+													<option value="${tipo.idTipoMascota}">${tipo.nombre}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label class="bmd-label">Categoria</label>
+										<div class="caja">
+											<select id="id_categoriaRegistrar" class="estilo-select"
+												name="idCategoria.idCategoria">
+												<option value="">[ SELECCIONAR CATEGORIA ]</option>
+												<c:forEach var="categoria" items="${categorias}">
+													<option value="${categoria.idCategoria}">${categoria.nombre}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -337,6 +366,32 @@
 										</div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<label class="bmd-label">Mascota</label>
+										<div class="caja">
+											<select id="id_tipoMascotaModificar" class="estilo-select"
+												name="idTipoMascota.idTipoMascota">
+												<option value="">[ SELECCIONAR MASCOTA ]</option>
+												<c:forEach var="tipo" items="${tipos}">
+													<option value="${tipo.idTipoMascota}">${tipo.nombre}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label class="bmd-label">Categoria</label>
+										<div class="caja">
+											<select id="id_categoriaModificar" class="estilo-select"
+												name="idCategoria.idCategoria">
+												<option value="">[ SELECCIONAR CATEGORIA ]</option>
+												<c:forEach var="categoria" items="${categorias}">
+													<option value="${categoria.idCategoria}">${categoria.nombre}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+								</div>
 								<div class="row" style="margin-top: 15px;">
 									<div class="col-md-12">
 										<div class="form-group">
@@ -356,7 +411,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label class="bmd-label">Imagen 1</label>
 										</div>
@@ -369,9 +424,7 @@
 												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label class="bmd-label">Imagen 2</label>
 										</div>
@@ -384,9 +437,7 @@
 												accept="image/x-png,image/jpeg,image/jpg,image/tiff">
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label class="bmd-label">Imagen 3</label>
 										</div>
@@ -498,16 +549,7 @@
 					.resetForm();
 		}
 
-		function verModalProductoModifica(id, nombre, precio, stock, serie,
-				marca, proveedor, descripcion) {
-			$("#id_codigoModificar").val(id);
-			$("#id_nombreModificar").val(nombre);
-			$("#id_precioModificar").val(precio);
-			$("#id_stockModificar").val(stock);
-			$("#id_serieModificar").val(serie);
-			$("#id_marcaModificar").val(marca);
-			$("#id_proveedorModificar").val(proveedor);
-			$("#id_descripcionModificar").val(descripcion);
+		function verModalProductoModifica(id) {
 			$
 					.getJSON(
 							'obtenerHtmlProducto',
@@ -519,13 +561,28 @@
 										.setData(data.descripcionLarga);
 								$("#imagen1")
 										.html(
-												"<img src='images/productos/" + data.imagen1 +"' alt='img'>");
+												"<img style='width:200px; height: 200px;' src='" + data.imagen1 +"' alt='img'>");
 								$("#imagen2")
 										.html(
-												"<img src='images/productos/" + data.imagen2 +"' alt='img'>");
+												"<img style='width:200px; height: 200px;' src='" + data.imagen2 +"' alt='img'>");
 								$("#imagen3")
 										.html(
-												"<img src='images/productos/" + data.imagen3 +"' alt='img'>");
+												"<img style='width:200px; height: 200px;' src='" + data.imagen3 +"' alt='img'>");
+								$("#id_codigoModificar").val(data.idProducto);
+								$("#id_nombreModificar").val(data.nombre);
+								$("#id_precioModificar").val(data.precio);
+								$("#id_stockModificar").val(data.stock);
+								$("#id_serieModificar").val(data.serie);
+								$("#id_marcaModificar").val(
+										data.idMarca.idMarca);
+								$("#id_proveedorModificar").val(
+										data.idProveedor.idProveedor);
+								$("#id_descripcionModificar").val(
+										data.descripcion);
+								$("#id_categoriaModificar").val(
+										data.idCategoria.idCategoria);
+								$("#id_tipoMascotaModificar").val(
+										data.idTipoMascota.idTipoMascota);
 							});
 			$("#id_formModificarProducto .col-md-12 .form-group").addClass(
 					"is-filled");
@@ -595,7 +652,7 @@
 																message : 'El nombre debe ser m·s de 3 caracteres'
 															},
 															regexp : {
-																regexp : /^[a-zA-Z0-9-¡…Õ”⁄·ÈÌÛ˙()\s?]+$/,
+																regexp : /^[a-zA-Z0-9-Ò—¡…Õ”⁄·ÈÌÛ˙(),.;\s?]+$/,
 																message : 'Solo se aceptan letras y n˙meros'
 															}
 														}
@@ -640,6 +697,22 @@
 															},
 														}
 													},
+													categoria : {
+														selector : "#id_categoriaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'La categoria es obligatoria'
+															},
+														}
+													},
+													tipoMascota : {
+														selector : "#id_tipoMascotaRegistrar",
+														validators : {
+															notEmpty : {
+																message : 'La Mascota es obligatoria'
+															},
+														}
+													},
 													proveedor : {
 														selector : "#id_proveedorRegistrar",
 														validators : {
@@ -659,7 +732,7 @@
 																message : 'La descripciÛn debe ser m·s de 10 caracteres'
 															},
 															regexp : {
-																regexp : /^[a-zA-Z0-9-¡…Õ”⁄·ÈÌÛ˙().,;\s?]+$/,
+																regexp : /^[a-zA-Z0-9-Ò—¡…Õ”⁄·ÈÌÛ˙(),.;\s?]+$/,
 																message : 'Solo se aceptan letras y n˙meros'
 															}
 														}
@@ -696,7 +769,7 @@
 																message : 'El nombre debe ser m·s de 3 caracteres'
 															},
 															regexp : {
-																regexp : /^[a-zA-Z0-9-¡…Õ”⁄·ÈÌÛ˙()\s?]+$/,
+																regexp : /^[a-zA-Z0-9-Ò—¡…Õ”⁄·ÈÌÛ˙(),.;\s?]+$/,
 																message : 'Solo se aceptan letras y n˙meros'
 															}
 														}
@@ -737,6 +810,22 @@
 															},
 														}
 													},
+													categoria : {
+														selector : "#id_categoriaModificar",
+														validators : {
+															notEmpty : {
+																message : 'La categoria es obligatoria'
+															},
+														}
+													},
+													tipoMascota : {
+														selector : "#id_tipoMascotaModificar",
+														validators : {
+															notEmpty : {
+																message : 'La Mascota es obligatoria'
+															},
+														}
+													},
 													proveedor : {
 														selector : "#id_proveedorModificar",
 														validators : {
@@ -756,7 +845,7 @@
 																message : 'La descripciÛn debe ser m·s de 10 caracteres'
 															},
 															regexp : {
-																regexp : /^[a-zA-Z0-9-¡…Õ”⁄·ÈÌÛ˙().,;\s?]+$/,
+																regexp : /^[a-zA-Z0-9-Ò—¡…Õ”⁄·ÈÌÛ˙(),.;\s?]+$/,
 																message : 'Solo se aceptan letras y n˙meros'
 															}
 														}

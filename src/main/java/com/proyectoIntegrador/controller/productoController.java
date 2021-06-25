@@ -1,8 +1,5 @@
 package com.proyectoIntegrador.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +17,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.proyectoIntegrador.entity.Categoria;
 import com.proyectoIntegrador.entity.Marca;
 import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Proveedor;
+import com.proyectoIntegrador.entity.TipoMascota;
+import com.proyectoIntegrador.service.CategoriaService;
 import com.proyectoIntegrador.service.MarcaService;
 import com.proyectoIntegrador.service.ProductoService;
 import com.proyectoIntegrador.service.ProveedorService;
+import com.proyectoIntegrador.service.TipoMascotaService;
 
 @Controller
 public class productoController {
 
-	private Path directorioImagenes = Paths.get("src//main//resources//static//images//productos");
-	private String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+	@Value("${resourcesDir}")
+	private String uploadFolder;
+
+	@Value("${awsAccess}")
+	private String ACCESS_KEY;
+
+	@Value("${awsSecret}")
+	private String SECRET_KEY;
+
+	@Value("${awsRegion}")
+	private String REGION_NAME;
+
+	@Value("${awsBucket}")
+	private String BUCKET_NAME;
+
+	@Value("${awsEndpoint}")
+	private String ENDPOINT_URL;
+
+	private AmazonS3 s3Cliente;
 
 	@Autowired
 	private ProductoService service;
@@ -40,6 +65,12 @@ public class productoController {
 
 	@Autowired
 	private ProveedorService serviceProv;
+
+	@Autowired
+	private TipoMascotaService serviceTipoMas;
+
+	@Autowired
+	private CategoriaService serviceCat;
 
 	@RequestMapping("/listaProductos")
 	public String listaProductos(HttpServletRequest request, Model model) {
@@ -132,9 +163,13 @@ public class productoController {
 			List<Producto> listaProductos = service.listaProductos();
 			List<Marca> listaMarcas = serviceMar.listaMarcas();
 			List<Proveedor> listaProveedores = serviceProv.listaProveedores();
+			List<TipoMascota> listaTipoMascotas = serviceTipoMas.listarMascotas();
+			List<Categoria> listaCategorias = serviceCat.listarCategorias();
 			model.addAttribute("productos", listaProductos);
 			model.addAttribute("marcas", listaMarcas);
 			model.addAttribute("proveedores", listaProveedores);
+			model.addAttribute("tipos", listaTipoMascotas);
+			model.addAttribute("categorias", listaCategorias);
 			return "crudProductos";
 		}
 	}
@@ -144,9 +179,14 @@ public class productoController {
 	public Map<String, Object> registrarProducto(
 			@RequestParam(value = "imagen1ProductoRegistrar", required = false) MultipartFile imagen1,
 			@RequestParam(value = "imagen2ProductoRegistrar", required = false) MultipartFile imagen2,
-			@RequestParam(value = "imagen3ProductoRegistrar", required = false) MultipartFile imagen3, Producto obj) {
+			@RequestParam(value = "imagen3ProductoRegistrar", required = false) MultipartFile imagen3,
+			@RequestParam(value = "descripcionLargaProducto", required = false) String descripcionLargaProducto,
+			Producto obj) {
 		Map<String, Object> salida = new HashMap<>();
 		try {
+			BasicAWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+			s3Cliente = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+					.withRegion(REGION_NAME).build();
 			if (obj.getNombre() != null) {
 				List<Producto> listaProductosNombres = service.listaProductosNombre(obj.getNombre());
 				if (listaProductosNombres.size() == 0) {
@@ -156,16 +196,21 @@ public class productoController {
 						idProducto = 1;
 					else
 						idProducto = lista.get(lista.size() - 1).getIdProducto() + 1;
-					Path rutaCompleta1 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-1.jpeg");
-					Files.write(rutaCompleta1, imagen1.getBytes());
-					Path rutaCompleta2 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-2.jpeg");
-					Files.write(rutaCompleta2, imagen2.getBytes());
-					Path rutaCompleta3 = Paths.get(rutaAbsoluta + "//" + "PRODUCTO" + idProducto + "-3.jpeg");
-					Files.write(rutaCompleta3, imagen3.getBytes());
+					ObjectMetadata metadata = new ObjectMetadata();
+					metadata.setContentLength(imagen1.getSize());
+					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, "PRODUCTO" + idProducto + "-1.jpeg",
+							imagen1.getInputStream(), metadata));
+					metadata.setContentLength(imagen2.getSize());
+					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, "PRODUCTO" + idProducto + "-2.jpeg",
+							imagen2.getInputStream(), metadata));
+					metadata.setContentLength(imagen3.getSize());
+					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, "PRODUCTO" + idProducto + "-3.jpeg",
+							imagen3.getInputStream(), metadata));
+					obj.setDescripcionLarga(descripcionLargaProducto);
 					obj.setEstado("activado");
-					obj.setImagen1("PRODUCTO" + idProducto + "-1.jpeg");
-					obj.setImagen2("PRODUCTO" + idProducto + "-2.jpeg");
-					obj.setImagen3("PRODUCTO" + idProducto + "-3.jpeg");
+					obj.setImagen1(ENDPOINT_URL + "PRODUCTO" + idProducto + "-1.jpeg");
+					obj.setImagen2(ENDPOINT_URL + "PRODUCTO" + idProducto + "-2.jpeg");
+					obj.setImagen3(ENDPOINT_URL + "PRODUCTO" + idProducto + "-3.jpeg");
 					service.agregarModificarProducto(obj);
 					salida.put("CONFIRMACION", "SI");
 					salida.put("MENSAJE", "Producto registrado correctamente.");
@@ -188,26 +233,36 @@ public class productoController {
 	public Map<String, Object> modificarProducto(
 			@RequestParam(value = "imagen1ProductoModificar", required = false) MultipartFile imagen1,
 			@RequestParam(value = "imagen2ProductoModificar", required = false) MultipartFile imagen2,
-			@RequestParam(value = "imagen3ProductoModificar", required = false) MultipartFile imagen3, Producto obj) {
+			@RequestParam(value = "imagen3ProductoModificar", required = false) MultipartFile imagen3,
+			@RequestParam(value = "descripcionLargaProducto", required = false) String descripcionLargaProducto,
+			Producto obj) {
 		Map<String, Object> salida = new HashMap<>();
 		try {
+			BasicAWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+			s3Cliente = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+					.withRegion(REGION_NAME).build();
 			if (obj.getNombre() != null) {
 				List<Producto> listaProductosNombres = service.listaProductosNombreDiferenteId(obj.getIdProducto(),
 						obj.getNombre());
 				if (listaProductosNombres.size() == 0) {
 					Producto producto = service.listaProductosId(obj.getIdProducto());
+					ObjectMetadata metadata = new ObjectMetadata();
 					if (!imagen1.isEmpty()) {
-						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen1());
-						Files.write(rutaCompleta, imagen1.getBytes());
+						metadata.setContentLength(imagen1.getSize());
+						s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, producto.getImagen1().split(".com/")[1],
+								imagen1.getInputStream(), metadata));
 					}
 					if (!imagen2.isEmpty()) {
-						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen2());
-						Files.write(rutaCompleta, imagen2.getBytes());
+						metadata.setContentLength(imagen2.getSize());
+						s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, producto.getImagen2().split(".com/")[1],
+								imagen2.getInputStream(), metadata));
 					}
 					if (!imagen3.isEmpty()) {
-						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + producto.getImagen3());
-						Files.write(rutaCompleta, imagen3.getBytes());
+						metadata.setContentLength(imagen3.getSize());
+						s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, producto.getImagen3().split(".com/")[1],
+								imagen3.getInputStream(), metadata));
 					}
+					obj.setDescripcionLarga(descripcionLargaProducto);
 					obj.setEstado("activado");
 					obj.setImagen1(producto.getImagen1());
 					obj.setImagen2(producto.getImagen2());

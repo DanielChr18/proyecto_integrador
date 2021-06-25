@@ -11,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoIntegrador.entity.Boleta;
+import com.proyectoIntegrador.entity.Cliente;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.BoletaService;
+import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.ReservaService;
 
 @Controller
@@ -23,6 +25,9 @@ public class redireccionesController {
 
 	@Autowired
 	private ReservaService serviceReserva;
+
+	@Autowired
+	private ClienteService serviceCliente;
 
 	@RequestMapping("/error403")
 	public String error403() {
@@ -60,7 +65,7 @@ public class redireccionesController {
 				else if (!listaServicios.isEmpty())
 					model.addAttribute("servicios", listaServicios);
 				return "trackingCliente";
-				
+
 			} else if (session.getAttribute("objCargo").equals("Cliente")) {
 				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 				List<Boleta> listaPedidos = serviceBoleta.listarBoletasCliente(idCliente);
@@ -74,20 +79,25 @@ public class redireccionesController {
 				else if (!listaServicios.isEmpty())
 					model.addAttribute("servicios", listaServicios);
 				return "trackingCliente";
-				
-			}else if (session.getAttribute("objCargo").equals("Veterinario")) {
+
+			} else if (session.getAttribute("objCargo").equals("Veterinario")) {
 				List<Boleta> listaPedidos = serviceBoleta.listarBoletas();
 				if (listaPedidos.isEmpty())
 					model.addAttribute("pedidos", null);
 				else if (!listaPedidos.isEmpty())
 					model.addAttribute("pedidos", listaPedidos);
+				List<Cliente> listaClientes = serviceCliente.listaClientes();
+				if (listaClientes.isEmpty())
+					model.addAttribute("clientes", null);
+				else if (!listaClientes.isEmpty())
+					model.addAttribute("clientes", listaClientes);
 				List<Reserva> listaServicios = serviceReserva.listarReservas();
 				if (listaServicios.isEmpty())
 					model.addAttribute("servicios", null);
 				else if (!listaServicios.isEmpty())
 					model.addAttribute("servicios", listaServicios);
 				return "trackingCliente";
-			}  else {
+			} else {
 				return "redirect:error403";
 			}
 		}

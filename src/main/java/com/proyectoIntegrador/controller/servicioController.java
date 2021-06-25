@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.entity.HorariosServicios;
 import com.proyectoIntegrador.entity.Servicio;
@@ -35,8 +42,25 @@ import com.proyectoIntegrador.service.ServicioService;
 @Controller
 public class servicioController {
 
-	private Path directorioImagenes = Paths.get("src//main//resources//static//images//servicios");
-	private String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+	@Value("${resourcesDir}")
+	private String uploadFolder;
+
+	@Value("${awsAccess}")
+	private String ACCESS_KEY;
+
+	@Value("${awsSecret}")
+	private String SECRET_KEY;
+
+	@Value("${awsRegion}")
+	private String REGION_NAME;
+
+	@Value("${awsBucket}")
+	private String BUCKET_NAME;
+
+	@Value("${awsEndpoint}")
+	private String ENDPOINT_URL;
+
+	private AmazonS3 s3Cliente;
 
 	@Autowired
 	private ServicioService service;
@@ -116,14 +140,26 @@ public class servicioController {
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
 		Map<String, Object> salida = new HashMap<>();
 		try {
+			BasicAWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+			s3Cliente = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+					.withRegion(REGION_NAME).build();
 			if (obj.getNombre() != null) {
 				List<Servicio> listaServiciosNombres = service.listaServiciosNombre(obj.getNombre());
 				if (listaServiciosNombres.size() == 0) {
 					List<Servicio> lista = service.listaServicios();
-					Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + "SERVICIO"
-							+ (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
-					Files.write(rutaCompleta, imagen.getBytes());
-					obj.setImagen("SERVICIO" + (lista.get(lista.size() - 1).getIdServicio() + 1) + ".jpeg");
+					ObjectMetadata metadata = new ObjectMetadata();
+
+					int idServicio = 0;
+					if (lista == null)
+						idServicio = 1;
+					else
+						idServicio = lista.get(lista.size() - 1).getIdServicio() + 1;
+
+					metadata.setContentLength(imagen.getSize());
+					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, "SERVICIO" + idServicio + ".jpeg",
+							imagen.getInputStream(), metadata));
+
+					obj.setImagen(ENDPOINT_URL + "SERVICIO" + idServicio + ".jpeg");
 					obj.setEstado("activado");
 					service.agregarModificarServicio(obj);
 					for (int i = 10; i < 21; i++) {
@@ -162,14 +198,19 @@ public class servicioController {
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
 		Map<String, Object> salida = new HashMap<>();
 		try {
+			BasicAWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+			s3Cliente = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+					.withRegion(REGION_NAME).build();
 			if (obj.getNombre() != null) {
 				List<Servicio> listaServiciosNombres = service.listaNombreDiferenteId(obj.getIdServicio(),
 						obj.getNombre());
 				if (listaServiciosNombres.size() == 0) {
 					Servicio servicio = service.listaServiciosId(obj.getIdServicio());
+					ObjectMetadata metadata = new ObjectMetadata();
 					if (!imagen.isEmpty()) {
-						Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + servicio.getImagen());
-						Files.write(rutaCompleta, imagen.getBytes());
+						metadata.setContentLength(imagen.getSize());
+						s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, servicio.getImagen().split(".com/")[1],
+								imagen.getInputStream(), metadata));
 					}
 					List<String> horasAgregar = new ArrayList<String>();
 					List<String> horasEliminar = new ArrayList<String>();

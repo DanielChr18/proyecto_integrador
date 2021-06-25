@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.entity.HorariosServicios;
-import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.FechasServiciosService;
@@ -24,8 +23,6 @@ import com.proyectoIntegrador.service.ReservaService;
 
 @Controller
 public class reservaController {
-
-
 
 	@Autowired
 	private ReservaService service;
@@ -94,8 +91,7 @@ public class reservaController {
 		salida.put("MENSAJE", "Error al editar la Reserva.");
 		return salida;
 	}
-	
-	
+
 	@RequestMapping("/veterinarioReserva")
 	@ResponseBody
 	public Map<String, Object> veterinarioReserva(HttpServletRequest request, String idReserva, String estado) {
@@ -115,9 +111,7 @@ public class reservaController {
 		salida.put("MENSAJE", "Error al editar la Reserva.");
 		return salida;
 	}
-	
-	
-	
+
 	@RequestMapping("/pagarReserva")
 	@ResponseBody
 	public Map<String, Object> pagarReserva(HttpServletRequest request, String idReserva) {
@@ -161,7 +155,6 @@ public class reservaController {
 		salida.put("MENSAJE", "Reserva realizada con éxito.");
 		return salida;
 	}
-	
 
 	@RequestMapping("/listarReservas")
 	public String listarReservas(HttpServletRequest request, Model model) {
@@ -179,14 +172,10 @@ public class reservaController {
 
 	@RequestMapping("/listarReservasCliente")
 	@ResponseBody
-	public List<Reserva> listarReservasCliente(int idCliente) {
-		System.out.println("Listar Clientes por Nombre : Filtro -----> " + idCliente);
-		List<Reserva> lista = service.listarReservasCliente(idCliente);
+	public List<Reserva> listarReservasCliente(String nombreClienten) {
+		System.out.println("Listar Clientes por Nombre : Filtro -----> " + nombreClienten);
+		List<Reserva> lista = service.listarReservasClienteNombre("%" + nombreClienten + "%");
 		return lista;
 	}
-	
 
-	
-	
-	
 }

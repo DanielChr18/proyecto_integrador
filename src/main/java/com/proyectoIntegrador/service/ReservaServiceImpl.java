@@ -30,6 +30,11 @@ public class ReservaServiceImpl implements ReservaService {
 	}
 
 	@Override
+	public List<Reserva> listarReservasClienteNombre(String clienteNombre) {
+		return repository.listarReservasClienteNombre(clienteNombre);
+	}
+
+	@Override
 	public List<Reserva> listarReservasMascota(int idMascota) {
 		return repository.listarReservasMascota(idMascota);
 	}
@@ -43,7 +48,5 @@ public class ReservaServiceImpl implements ReservaService {
 	public Reserva actualizaReserva(Reserva obj) {
 		return repository.save(obj);
 	}
-
-	
 
 }

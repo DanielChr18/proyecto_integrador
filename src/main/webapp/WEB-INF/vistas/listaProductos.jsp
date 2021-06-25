@@ -57,13 +57,11 @@
 															onmouseout="cancelarImagen('${producto.idProducto}');">
 															<img
 																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
-																src="images/productos/${producto.imagen1}" alt="">
-															<img
+																src="${producto.imagen1}" alt=""> <img
 																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
-																src="images/productos/${producto.imagen2}" alt="">
-															<img
+																src="${producto.imagen2}" alt=""> <img
 																class="slideProducto fadeProducto imagenesProducto${producto.idProducto} imagenProductos"
-																src="images/productos/${producto.imagen3}" alt="">
+																src="${producto.imagen3}" alt="">
 														</div>
 														<ul class="info">
 															<li style="font-size: 14px; height: 100px; width: 100%;">${producto.nombre}</li>

@@ -616,6 +616,8 @@ function registrarProducto() {
 			'#id_imagen2Registrar').val());
 		formData.append('imagen3ProductoRegistrar', $(
 			'#id_imagen3Registrar').val());
+		formData.append('descripcionLargaProducto', CKEDITOR.instances['editor1']
+			.getData());
 		$.ajax({
 			type: 'POST',
 			data: formData,
@@ -661,6 +663,8 @@ function modificarProducto() {
 			'#id_imagen2Modificar').val());
 		formData.append('imagen3ProductoModificar', $(
 			'#id_imagen3Modificar').val());
+		formData.append('descripcionLargaProducto', CKEDITOR.instances['editor2']
+			.getData());
 		$.ajax({
 			type: 'POST',
 			data: formData,

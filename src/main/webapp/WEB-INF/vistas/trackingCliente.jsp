@@ -23,8 +23,7 @@
 
 </head>
 <body class="">
-	<c:if
-		test="${objCargo == 'Cliente' || objCargo == 'Personal de Ventas'||objCargo == 'Veterinario'}">
+	<c:if test="${objCargo != null}">
 		<div class="wrapper ">
 			<jsp:include page="menuLateral.jsp" />
 			<div class="main-panel">
@@ -131,50 +130,31 @@
 																</c:if>
 															</div>
 															<div class="tab-pane" id="servicios">
+																<c:if test="${objCargo == 'Veterinario'}">
+
+																	<div class="row">
+																		<div class="col-md-9">
+																			<div class="form-group" style="padding-left: 10px;">
+																				<label class="bmd-label-floating">Nombre del
+																					Cliente</label> <input type="text" class="form-control"
+																					id="id_nombreClienten">
+																			</div>
+																		</div>
+																		<div class="col-md-1 offset-1">
+																			<button onclick="buscarReserva();" type="button"
+																				id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																		</div>
+																	</div>
+																</c:if>
 																<c:if test="${servicios != null}">
 																	<table id="tablaServicios" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
 																				<th style="width: 40px;">ID</th>
-																				<c:if test="${objCargo == 'Personal de Ventas'}">
+																				<c:if
+																					test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
 																					<th>Cliente</th>
 																				</c:if>
-																				<c:if test="${objCargo == 'Veterinario'}">
-
-																					<div class="row">
-																						<div class="col-md-9">
-																							<div class="form-group"
-																								style="padding-left: 10px;">
-																								<label class="bmd-label-floating">Nombre
-																									del Cliente</label> <input type="text"
-																									class="form-control" id="id_nombreClienten">
-																							</div>
-																						</div>
-																						<div class="col-md-1 offset-1">
-																							<button onclick="buscarReserva();" type="button"
-																								id="id_btnBuscar"
-																								class="btn btn-primary pull-right">Buscar</button>
-																						</div>
-																					</div>
-																					<div class="row">
-																						<div class="col-md-12" id="id_listadoReservas">
-																							<c:forEach var="reserva" items="${reservas}">
-																								<form accept-charset="UTF-8">
-																									<div class="cart-grid" id="cart-8">
-																										
-																										<ul class="info">
-																											<li>${reserva.idReserva}</li>
-																											<li>${reserva.idCliente}</li>
-																										</ul>
-																										
-																									</div>
-																								</form>
-																							</c:forEach>
-																						</div>
-																					</div>
-
-																				</c:if>
-
 																				<th>Mascota</th>
 																				<th>Fecha</th>
 																				<th>Horario</th>
@@ -195,7 +175,8 @@
 																			<c:forEach items="${servicios}" var="s">
 																				<tr>
 																					<td>${s.idReserva}</td>
-																					<c:if test="${objCargo == 'Personal de Ventas'}">
+																					<c:if
+																						test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
 																						<td>${s.idCliente.nombre}</td>
 																					</c:if>
 																					<td>${s.idMascota.nombre}</td>
@@ -559,23 +540,14 @@
 					</div>
 				</div>
 			</div>
-
-
-
-
-
-
 		</div>
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo == null || objCargo == 'Veterinario'}">
+	<c:if test="${objCargo == null}">
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
-
-
-
 
 	<script type="text/javascript">
 		function pagarReserva() {
@@ -690,8 +662,6 @@
 	</script>
 
 	<script type="text/javascript">
-		
-
 		$("#id_nombreClienten").on("keypress", function(event) {
 			if (event.which == 13) {
 				buscarReserva();
@@ -700,30 +670,22 @@
 
 		function buscarReserva() {
 			var nom = $("#id_nombreClienten").val();
-			$("#id_listadoReservas").html("");
+			$("#tablaServicios tbody tr").remove();
 
-			$
-					.getJSON(
-							'listarReservasCliente',
-							{
-								"nombreClienten" : nom
-							},
-							function(data) {
-								$
-										.each(
-												data,
-												function(index, item) {
-													$("#id_listadoReservas")
-															.append(
-																	"<tr>" + "<td>" + item.idDetalleBoleta + "</td>"
-																	+ "<td>" + item.idReserva + "</td>"
-																	+ "<td>" + item.idCliente + "</td>"
-																	+ "<td>" + item.idProducto.nombre + "</td>"
-																	+ "<td>" + item.cantidad + "</td>"
-																	+ "<td> S/. " + item.costo + "</td>"
-																	+ +"</tr>");
-												});
-							});
+			$.getJSON('listarReservasCliente', {
+				"nombreClienten" : nom
+			}, function(data) {
+				$.each(data, function(index, item) {
+					$("#tablaServicios").append(
+							"<tr><td>" + item.idReserva + "</td>" + "<td>"
+									+ item.idCliente.nombre + "</td>" + "<td>"
+									+ item.idMascota.nombre + "</td>" + "<td>"
+									+ item.fecha + "</td>" + "<td>"
+									+ item.horario + "</td>" + "<td>"
+									+ item.estado + "</td>" + "<td>"
+									+ item.estado + "</td>" + +"</tr>");
+				});
+			});
 		}
 	</script>
 
@@ -795,6 +757,7 @@
 
 		$('#id_menuTrackingClientes').addClass('active');
 		$('#id_menuCrudTracking').addClass('active');
+		$('#id_menuTrackingVeterinario').addClass('active');
 
 		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
 				horario, estado) {

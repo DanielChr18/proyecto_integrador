@@ -93,21 +93,18 @@ public class mascotaController {
 			s3Cliente = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
 					.withRegion(REGION_NAME).build();
 			if (obj.getNombre() != null) {
-
 				HttpSession session = request.getSession(true);
 				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
-
-				String fileUrl = "";
-
-				String fileName = new Date().getTime() + "-" + imagen.getOriginalFilename().replace(" ", "_");
+				List<Mascota> lista = service.listarMascotas();
 				ObjectMetadata metadata = new ObjectMetadata();
 
 				if (imagen.getSize() > 0) {
 					metadata.setContentLength(imagen.getSize());
-					fileUrl = ENDPOINT_URL + fileName;
-
-					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, fileName, imagen.getInputStream(), metadata));
-					obj.setImagen(fileUrl);
+					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME,
+							"MASCOTA" + idCliente + "-" + (lista.get(lista.size() - 1).getIdMascota() + 1) + ".jpeg",
+							imagen.getInputStream(), metadata));
+					obj.setImagen(ENDPOINT_URL + "MASCOTA" + idCliente + "-"
+							+ (lista.get(lista.size() - 1).getIdMascota() + 1) + ".jpeg");
 				}
 
 				Cliente cliente = new Cliente();
