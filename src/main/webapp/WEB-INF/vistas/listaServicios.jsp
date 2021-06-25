@@ -44,7 +44,7 @@
 													<input hidden="hidden" class="form-control" type="text"
 														name="dia" value="${servicio.dia}"> <i><img
 														class="servicioImagen"
-														src="images/servicios/${servicio.imagen}" /></i>
+														src="${servicio.imagen}" /></i>
 													<h3>
 														<button type="submit"
 															style="background: none; border-width: 0; border-color: transparent;">${servicio.nombre}</button>

@@ -68,9 +68,16 @@
 															<li>S/ ${producto.precio}</li>
 														</ul>
 														<div class="snipcart-details">
-															<button type="button"
-																onclick="agregarProductos('${producto.idProducto}');"
-																class="button w3l-cart" data-id="cart-8">Añadir</button>
+															<c:if test="${producto.stock > 0}">
+																<button type="button"
+																	onclick="agregarProductos('${producto.idProducto}');"
+																	class="button w3l-cart" data-id="cart-8">Añadir</button>
+															</c:if>
+															<c:if test="${producto.stock <= 0}">
+																<button
+																	style="background: gray; padding: 10px 20px; text-transform: uppercase; width: 100%; border: none; color: white;"
+																	type="button" data-id="cart-8" disabled="disabled">Agotado</button>
+															</c:if>
 														</div>
 													</div>
 												</form>
@@ -146,60 +153,79 @@
 										.each(
 												data,
 												function(index, item) {
-													$("#id_listadoProductos")
-															.append(
-																	"<form accept-charset='UTF-8'>"
-																			+ "<div class='cart-grid' id='cart-8'>"
-																			+ "<div class='img' onmouseover=\"cambiarImagen('"
-																			+ item.idProducto
-																			+ "');\" onmouseout=\"cancelarImagen('"
-																			+ item.idProducto
-																			+ "');\">"
-																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto + " imagenProductos' src='" + item.imagen1 + "'>"
-																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto + " imagenProductos' src='" + item.imagen2 + "'>"
-																			+ "<img class='slideProducto fadeProducto imagenesProducto"
-																			+ item.idProducto + " imagenProductos' src='" + item.imagen3+ "'>"
-																			+ "</div>"
-																			+ "<ul class='info'>"
-																			+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
-																			+ item.nombre
-																			+ "</li>"
-																			+ "<li>S/"
-																			+ item.precio
-																			+ "</li>"
-																			+ "</ul>"
-																			+ "<div class='snipcart-details'>"
-																			+ "<button type='button' onclick=\"agregarProductos('"
-																			+ item.idProducto
-																			+ "');\" class='button w3l-cart' data-id='cart-8'> Añadir </button>"
-																			+ "</div>"
-																			+ "</div>"
-																			+ "</form>");
+													if (item.stock > 0) {
+														$(
+																"#id_listadoProductos")
+																.append(
+																		"<form accept-charset='UTF-8'>"
+																				+ "<div class='cart-grid' id='cart-8'>"
+																				+ "<div class='img' onmouseover=\"cambiarImagen('"
+																				+ item.idProducto
+																				+ "');\" onmouseout=\"cancelarImagen('"
+																				+ item.idProducto
+																				+ "');\">"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen1 + "'>"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen2 + "'>"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen3+ "'>"
+																				+ "</div>"
+																				+ "<ul class='info'>"
+																				+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
+																				+ item.nombre
+																				+ "</li>"
+																				+ "<li>S/"
+																				+ item.precio
+																				+ "</li>"
+																				+ "</ul>"
+																				+ "<div class='snipcart-details'>"
+																				+ "<button type='button' onclick=\"agregarProductos('"
+																				+ item.idProducto
+																				+ "');\" class='button w3l-cart' data-id='cart-8'> Añadir </button>"
+																				+ "</div>"
+																				+ "</div>"
+																				+ "</form>");
+													} else {
+														$(
+																"#id_listadoProductos")
+																.append(
+																		"<form accept-charset='UTF-8'>"
+																				+ "<div class='cart-grid' id='cart-8'>"
+																				+ "<div class='img' onmouseover=\"cambiarImagen('"
+																				+ item.idProducto
+																				+ "');\" onmouseout=\"cancelarImagen('"
+																				+ item.idProducto
+																				+ "');\">"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen1 + "'>"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen2 + "'>"
+																				+ "<img class='slideProducto fadeProducto imagenesProducto"
+																		+ item.idProducto + " imagenProductos' src='" + item.imagen3+ "'>"
+																				+ "</div>"
+																				+ "<ul class='info'>"
+																				+ "<li style='font-size: 14px; height: 100px; width: 100%;'>"
+																				+ item.nombre
+																				+ "</li>"
+																				+ "<li>S/"
+																				+ item.precio
+																				+ "</li>"
+																				+ "</ul>"
+																				+ "<div class='snipcart-details'>"
+																				+ "<button style='background: gray; padding: 10px 20px;"
+																				+ " text-transform: uppercase; width: 100%; border: none;"
+																				+ " color: white; type='button' data-id='cart-8'"
+																				+ " disabled='disabled'>Agotado</button>"
+																				+ "</div>"
+																				+ "</div>"
+																				+ "</form>");
+													}
+
 												});
 							});
 		}
 	</script>
-	<script>
-		window.watsonAssistantChatOptions = {
-			integrationID : "2ae54d50-9997-4037-a47b-7fcb4d754555", // The ID of this integration.
-			region : "us-south", // The region your integration is hosted in.
-			serviceInstanceID : "a63311e9-0778-4d60-acfa-582bc5229c3a", // The ID of your service instance.
-			onLoad : function(instance) {
-				instance.render();
-			}
-		};
-		setTimeout(function() {
-			const t = document.createElement('script');
-			t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js";
-			document.head.appendChild(t);
-		});
-	</script>
-
 
 </body>
 </html>
-
-
-

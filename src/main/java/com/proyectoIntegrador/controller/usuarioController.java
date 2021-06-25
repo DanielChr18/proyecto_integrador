@@ -101,7 +101,7 @@ public class usuarioController {
 				if (usu.getCargo().equals("Personal de Ventas"))
 					return "redirect:crudProductos";
 				else if (usu.getCargo().equals("Veterinario"))
-					return "redirect:listaProductos";
+					return "redirect:trackingCliente";
 			}
 		} else {
 			return "redirect:error404";

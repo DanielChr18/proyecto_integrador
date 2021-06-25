@@ -62,8 +62,8 @@
 															</div>
 														</div>
 														<div class="col-md-4">
-															<img src="images/servicios/${servicio.imagen}"
-																width="300px" height="300px" />
+															<img src="${servicio.imagen}" width="300px"
+																height="300px" />
 														</div>
 													</div>
 													<c:if test="${objIdCliente != null}">

@@ -19,219 +19,202 @@
 <link rel="stylesheet" type="text/css" href="vendor/main.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
 
-
-
 </head>
 <body class="">
-	<c:if
-		test="${objCargo == 'Cliente' || objCargo == 'Personal de Ventas'||objCargo == 'Veterinario'}">
-		<div class="wrapper ">
-			<jsp:include page="menuLateral.jsp" />
-			<div class="main-panel">
-				<jsp:include page="menuSuperior.jsp" />
-				<div class="content">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="card">
-									<div class="card-header card-header-primary">
-										<h3 class="card-title">
-											<i class="material-icons">leaderboard</i> Transacciones
-										</h3>
-									</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="card" style="margin-top: 20px;">
-													<div
-														class="card-header card-header-tabs card-header-primary">
-														<div class="nav-tabs-navigation">
-															<div class="nav-tabs-wrapper">
-																<ul class="nav nav-tabs" data-tabs="tabs">
+	<div class="wrapper ">
+		<jsp:include page="menuLateral.jsp" />
+		<div class="main-panel">
+			<jsp:include page="menuSuperior.jsp" />
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h3 class="card-title">
+										<i class="material-icons">leaderboard</i> Transacciones
+									</h3>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="card" style="margin-top: 20px;">
+												<div
+													class="card-header card-header-tabs card-header-primary">
+													<div class="nav-tabs-navigation">
+														<div class="nav-tabs-wrapper">
+															<ul class="nav nav-tabs" data-tabs="tabs">
+																<c:if test="${objCargo == 'Personal de Ventas'}">
 																	<li class="nav-item"><a class="nav-link active"
 																		href="#productos" data-toggle="tab"> <i
-																			class="material-icons">inventory_2</i> <c:if
-																				test="${objCargo == 'Cliente'}">Productos</c:if> <c:if
-																				test="${objCargo == 'Personal de Ventas'}">Boletas</c:if>
-																			<div class="ripple-container"></div>
+																			class="material-icons">inventory_2</i>Boletas
 																	</a></li>
+																	<li class="ripple-container"></li>
 																	<li class="nav-item"><a class="nav-link"
 																		href="#servicios" data-toggle="tab"> <i
-																			class="material-icons">medical_services</i> <c:if
-																				test="${objCargo == 'Cliente'}">Servicios</c:if> <c:if
-																				test="${objCargo == 'Personal de Ventas'|| objCargo == 'Veterinario'}">Reservas</c:if>
-																			<div class="ripple-container"></div>
+																			class="material-icons">medical_services</i>Reservas
 																	</a></li>
-																</ul>
-															</div>
+																</c:if>
+																<c:if test="${objCargo == 'Cliente'}">
+																	<li class="nav-item"><a class="nav-link active"
+																		href="#productos" data-toggle="tab"> <i
+																			class="material-icons">inventory_2</i>Productos
+																	</a></li>
+																	<li class="ripple-container"></li>
+																	<li class="nav-item"><a class="nav-link"
+																		href="#servicios" data-toggle="tab"> <i
+																			class="material-icons">medical_services</i>Servicios
+																	</a></li>
+																</c:if>
+																<li class="ripple-container"></li>
+															</ul>
 														</div>
 													</div>
-													<div class="card-body">
-														<div class="tab-content">
-															<div class="tab-pane active" id="productos">
-																<c:if test="${pedidos != null}">
-																	<table id="tablaPedidos" class="table table-hover">
-																		<thead class="text-primary">
+												</div>
+												<div class="card-body">
+													<div class="tab-content">
+														<!-- TAB DE PRODUCTOS -->
+														<div class="tab-pane active" id="productos">
+															<c:if test="${pedidos != null}">
+																<table id="tablaPedidos" class="table table-hover">
+																	<thead class="text-primary">
+																		<tr>
+																			<th style="width: 40px;">ID</th>
+																			<th>Número</th>
+																			<th>Nombre</th>
+																			<th>DNI</th>
+																			<th>Monto</th>
+																			<th>Fecha</th>
+																			<th>Estado</th>
+																			<c:if test="${objCargo == 'Cliente'}">
+																				<th style="width: 102.4px;">Detalle</th>
+																			</c:if>
+																			<c:if test="${objCargo == 'Personal de Ventas'}">
+																				<th style="width: 102.4px;">Editar</th>
+																			</c:if>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${pedidos}" var="p">
 																			<tr>
-																				<th style="width: 40px;">ID</th>
-																				<th>Número</th>
-																				<th>Nombre</th>
-																				<th>DNI</th>
-																				<th>Monto</th>
-																				<th>Fecha</th>
-																				<th>Estado</th>
+																				<td>${p.idBoleta}</td>
+																				<td>${p.numero}</td>
+																				<td>${p.nombre}</td>
+																				<td>${p.dni}</td>
+																				<td>${p.monto}</td>
+																				<td>${p.fecha}</td>
+																				<td>${p.estado}</td>
 																				<c:if test="${objCargo == 'Cliente'}">
-																					<th style="width: 102.4px;">Detalle</th>
+																					<td>
+																						<button type="button"
+																							onclick="verModalDetalleBoleta('${p.idBoleta}');"
+																							class="btn btn-primary">
+																							<span class="material-icons"> receipt_long
+																							</span>
+																						</button>
+																					</td>
 																				</c:if>
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
-																					<th style="width: 102.4px;">Editar</th>
+																					<td>
+																						<button type="button"
+																							onclick="verModalEditarBoleta('${p.idBoleta}','${p.numero}','${p.nombre}','${p.dni}','${p.monto}','${p.estado}');"
+																							class="btn btn-primary">
+																							<img src="images/edit.gif" width="auto"
+																								height="auto" />
+																						</button>
+																					</td>
 																				</c:if>
-
-
-
 																			</tr>
-																		</thead>
-																		<tbody>
-																			<c:forEach items="${pedidos}" var="p">
-																				<tr>
-																					<td>${p.idBoleta}</td>
-																					<td>${p.numero}</td>
-																					<td>${p.nombre}</td>
-																					<td>${p.dni}</td>
-																					<td>${p.monto}</td>
-																					<td>${p.fecha}</td>
-																					<td>${p.estado}</td>
-																					<c:if test="${objCargo == 'Cliente'}">
-																						<td>
-																							<button type="button"
-																								onclick="verModalDetalleBoleta('${p.idBoleta}');"
-																								class="btn btn-primary">
-																								<span class="material-icons">
-																									receipt_long </span>
-																							</button>
-																						</td>
-																					</c:if>
-																					<c:if test="${objCargo == 'Personal de Ventas'}">
-																						<td>
-																							<button type="button"
-																								onclick="verModalEditarBoleta('${p.idBoleta}','${p.numero}','${p.nombre}','${p.dni}','${p.monto}','${p.estado}');"
-																								class="btn btn-primary">
-																								<img src="images/edit.gif" width="auto"
-																									height="auto" />
-																							</button>
-																						</td>
-																					</c:if>
-																				</tr>
-																			</c:forEach>
-																		</tbody>
-																	</table>
-																</c:if>
-																<c:if test="${pedidos == null}">
+																		</c:forEach>
+																	</tbody>
+																</table>
+															</c:if>
+															<c:if test="${pedidos == null}">
+																<c:if test="${objCargo == 'Cliente'}">
 																	<h4>No tienes pedidos realizados.</h4>
 																</c:if>
-															</div>
-															<div class="tab-pane" id="servicios">
-																<c:if test="${objCargo == 'Veterinario'}">
-
-																	<div class="row">
-																		<div class="col-md-9">
-																			<div class="form-group" style="padding-left: 10px;">
-																				<label class="bmd-label-floating">Nombre del
-																					Cliente</label> <input type="text" class="form-control"
-																					id="id_nombreClienten">
-																			</div>
-																		</div>
-																		<div class="col-md-1 offset-1">
-																			<button onclick="buscarReserva();" type="button"
-																				id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
-																		</div>
-																	</div>
+																<c:if test="${objCargo == 'Personal de Ventas'}">
+																	<h4>No hay pedidos para atender.</h4>
 																</c:if>
-																<c:if test="${servicios != null}">
-																	<table id="tablaServicios" class="table table-hover">
-																		<thead class="text-primary">
-																			<tr>
-																				<th style="width: 40px;">ID</th>
-																				<c:if test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
-																					<th>Cliente</th>
-																				</c:if>
-																				
+															</c:if>
+														</div>
 
-																				<th>Mascota</th>
-																				<th>Fecha</th>
-																				<th>Horario</th>
-																				<th>Estado</th>
-																				<c:if test="${objCargo == 'Cliente'}">
-																					<th style="width: 102.4px;">Pagar</th>
+														<!-- TAB DE SERVICIOS -->
+														<div class="tab-pane" id="servicios">
+															<c:if test="${servicios != null}">
+																<table id="tablaServicios" class="table table-hover">
+																	<thead class="text-primary">
+																		<tr>
+																			<th style="width: 40px;">ID</th>
+																			<c:if test="${objCargo == 'Personal de Ventas'}">
+																				<th>Cliente</th>
+																			</c:if>
+																			<th>Mascota</th>
+																			<th>Fecha</th>
+																			<th>Horario</th>
+																			<th>Estado</th>
+																			<c:if test="${objCargo == 'Cliente'}">
+																				<th style="width: 102.4px;">Pagar</th>
+																			</c:if>
+																			<c:if test="${objCargo == 'Personal de Ventas'}">
+																				<th style="width: 102.4px;">Editar</th>
+																			</c:if>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${servicios}" var="s">
+																			<tr>
+																				<td>${s.idReserva}</td>
+																				<c:if test="${objCargo == 'Personal de Ventas'}">
+																					<td>${s.idCliente.nombre}</td>
+																				</c:if>
+																				<td>${s.idMascota.nombre}</td>
+																				<td>${s.fecha}</td>
+																				<td>${s.horario}</td>
+																				<td>${s.estado}</td>
+																				<c:if
+																					test="${objCargo == 'Cliente' && s.estado == 'pendiente de pago'}">
+																					<td>
+																						<button type="button"
+																							onclick="verModalMetodoPago('${s.idReserva}');"
+																							class="btn btn-primary">
+																							<span class="material-icons"> paid </span>
+																						</button>
+																					</td>
+																				</c:if>
+																				<c:if
+																					test="${objCargo == 'Cliente' && s.estado != 'pendiente de pago'}">
+																					<td>
+																						<button type="button" disabled="disabled"
+																							onclick="verModalMetodoPago('${s.idReserva}');"
+																							class="btn btn-primary">
+																							<span class="material-icons"> paid </span>
+																						</button>
+																					</td>
 																				</c:if>
 																				<c:if test="${objCargo == 'Personal de Ventas'}">
-																					<th style="width: 102.4px;">Editar</th>
-																				</c:if>
-																				<c:if test="${objCargo == 'Veterinario'}">
-																					<th style="width: 102.4px;">Atender</th>
-																				</c:if>
-
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<c:forEach items="${servicios}" var="s">
-																				<tr>
-																					<td>${s.idReserva}</td>
-																					<c:if test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
-																						<td>${s.idCliente.nombre}</td>
-																					</c:if>
-																					<td>${s.idMascota.nombre}</td>
-																					<td>${s.fecha}</td>
-																					<td>${s.horario}</td>
-																					<td>${s.estado}</td>
-																					<c:if
-																						test="${objCargo == 'Cliente' && s.estado == 'pendiente de pago'}">
-																						<td>
-																							<button type="button"
-																								onclick="verModalMetodoPago('${s.idReserva}');"
-																								class="btn btn-primary">
-																								<span class="material-icons"> paid </span>
-																							</button>
-																						</td>
-																					</c:if>
-																					<c:if
-																						test="${objCargo == 'Cliente' && s.estado != 'pendiente de pago'}">
-																						<td>
-																							<button type="button" disabled="disabled"
-																								onclick="verModalMetodoPago('${s.idReserva}');"
-																								class="btn btn-primary">
-																								<span class="material-icons"> paid </span>
-																							</button>
-																						</td>
-																					</c:if>
-																					<c:if test="${objCargo == 'Personal de Ventas'}">
-																						<td>
-																							<button type="button"
-																								onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
-																								class="btn btn-primary">
-																								<img src="images/edit.gif" width="auto"
-																									height="auto" />
-																							</button>
-																						</td>
-																					</c:if>
-
-																					<c:if test="${objCargo == 'Veterinario'}">
-																						<td>
-																							<button type="button" 
-																							onclick="verModalVeterinario('${s.idReserva}','${s.idMascota.nombre}','${s.fecha}','${s.horario}');"
+																					<td>
+																						<button type="button"
+																							onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
 																							class="btn btn-primary">
-																							Ver</button>
-																						</td>
-																					</c:if>
-																				</tr>
-																			</c:forEach>
-																		</tbody>
-																	</table>
-																</c:if>
-																<c:if test="${servicios == null}">
+																							<img src="images/edit.gif" width="auto"
+																								height="auto" />
+																						</button>
+																					</td>
+																				</c:if>
+																			</tr>
+																		</c:forEach>
+																	</tbody>
+																</table>
+															</c:if>
+															<c:if test="${servicios == null}">
+																<c:if test="${objCargo == 'Cliente'}">
 																	<h4>No tienes reservas realizadas.</h4>
 																</c:if>
-															</div>
+																<c:if test="${objCargo == 'Personal de Ventas'}">
+																	<h4>No hay reservas para atender.</h4>
+																</c:if>
+															</c:if>
 														</div>
 													</div>
 												</div>
@@ -244,316 +227,233 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- Modal de Editar Boleta -->
-			<div class="modal fade" id="idModalEditarBoleta"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 50%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Editar Boleta</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formEditarBoleta">
-									<div class="row">
-										<input class="form-control" type="text" id="id_idBoletaEditar"
-											hidden="hidden" name="idBoleta">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Número</label> <input
-													class="form-control" type="text" id="id_numeroBoletaEditar"
-													name="numero" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre</label> <input
-													class="form-control" type="text" id="id_nombreBoletaEditar"
-													name="nombre" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">DNI</label> <input
-													class="form-control" type="text" id="id_dniBoletaEditar"
-													name="dni" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Monto</label> <input
-													class="form-control" type="text" id="id_montoBoletaEditar"
-													name="monto" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Estado</label>
-												<div class="caja">
-													<select class="estilo-select" id="id_estadoBoletaEditar"
-														name="estado">
-														<option value="En Proceso">En Proceso</option>
-														<option value="Enviado">Enviado</option>
-														<option value="Entregado">Entregado</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalEditarBoleta();"
-										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnEditarBoleta" onclick="editarBoleta();"
-										type="button" class="btn btn-primary pull-right">Editar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Editar Reserva-->
-			<div class="modal fade" id="idModalEditarReserva"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 50%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Editar Reserva</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formEditarReserva">
-									<div class="row">
-										<input class="form-control" type="text"
-											id="id_idReservaEditar" hidden="hidden" name="idReserva">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre Cliente</label> <input
-													class="form-control" type="text"
-													id="id_nombreClienteReservaEditar" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre Mascota</label> <input
-													class="form-control" type="text"
-													id="id_nombreMascotaClienteReservaEditar"
-													readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Fecha</label> <input
-													class="form-control" type="text" id="id_fechaReservaEditar"
-													readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Horario</label> <input
-													class="form-control" type="text"
-													id="id_horarioReservaEditar" readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Estado</label>
-												<div class="caja">
-													<select class="estilo-select" id="id_estadoReservaEditar"
-														name="estado">
-														<option value="pendiente de pago">pendiente de
-															pago</option>
-														<option value="pagado">pagado</option>
-														<option value="realizado">realizado</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalEditarReserva();"
-										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnEditarBoleta" onclick="editarReserva();"
-										type="button" class="btn btn-primary pull-right">Editar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Detalle de Pedido -->
-			<div class="modal fade" id="idModalDetalleBoleta"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 50%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Detalle Pedido</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<table id="tablaDetallePedido" class="table table-hover">
-									<thead class="text-primary">
-										<tr>
-											<th style="width: 40px;">ID</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Costo</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<button type="button" onclick="cerrarModalDetalleBoleta();"
-									class="btn btn-primary pull-right">Cerrar</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal de Pago de Reserva -->
-			<div class="modal fade" id="idModalMetodoPago" data-backdrop="static"
-			
-				tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 50%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Realizar Pago</h3>
-							</div>
-							<input class="form-control" type="text" id="id_idReservaPagar"
-								hidden="hidden">
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formRealizarPago">
-
-									<div class="dropdown-divider"></div>
-									<div class="row">
-										<div class="col-md-12" style="margin-top: 5px;">
-											<div class="form-group">
-												<label>Número de Tarjeta</label> <input
-													class="form-control number" type="text" ng-model="ncard"
-													maxlength="19" id="id_numTarjetaPagoServicio"
-													placeholder="XXXX-XXXX-XXXX-XXXX"
-													onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
-											</div>
-										</div>
-										<div class="col-md-12" style="margin-top: 5px;">
-											<div class="form-group">
-												<label>Fecha de Vencimiento</label> <input
-													class="form-control expire"
-													id="id_fechaVencimientoPagoServicio" type="text"
-													placeholder="MM / YYYY" maxlength="9" />
-											</div>
-										</div>
-										<div class="col-md-12" style="margin-top: 5px;">
-											<div class="form-group">
-												<label>Número de Seguridad</label> <input
-													class="form-control ccv" type="text" placeholder="CVC"
-													maxlength="3" id="id_numSeguridadPagoServicio"
-													onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
-											</div>
-										</div>
-									</div>
-									<div class="snipcart-details" style="margin-top: 12px">
-										<button id="btn_aceptar" type="button" class="button w3l-cart"
-											data-id="cart-8" onclick="pagarReserva();">ACEPTAR</button>
-									</div>
-								</form>
-								<button type="button" onclick="cerrarModalMetodoPago();"
-									class="btn btn-primary pull-right">Cerrar</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<!-- Modal de Veterinario-->
-			<div class="modal fade" id="idModalVeterinario"
-				data-backdrop="static" tabindex="-1" role="dialog">
-				<div class="modal-dialog" style="width: 55%;">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="card">
-							<div class="card-header card-header-primary">
-								<h3 class="card-title">Veterinario</h3>
-							</div>
-							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formEditarReserva2">
-									<div class="row">
-										<input class="form-control" type="text"
-											id="id_idReservaEditar2" hidden="hidden" name="idReserva">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Nombre Mascota</label> <input
-													class="form-control" type="text"
-													id="id_nombreMascotaClienteReservaEditar2"
-													readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Fecha</label> <input
-													class="form-control" type="text" id="id_fechaReservaEditar2"
-													readonly="readonly">
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label-floating">Horario</label> <input
-													class="form-control" type="text"
-													id="id_horarioReservaEditar2" readonly="readonly">
-											</div>
-										</div>
-									<div class="col-md-12">
-										<label class="bmd-label-floating">Observacion</label>
-										<textarea id="editor3" name="descripcionLarga"></textarea>
-										<small id="id_mensajeDescripcionLargaConsVeterinario"
-											style="color: #cc0000;">El campo no puede estar vacio</small>
-									</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label class="bmd-label">Estado</label>
-												<div class="caja">
-													<select class="estilo-select" id="id_estadoReservaEditar2"
-														name="estado" disabled="disabled">
-														<option value="pendiente de pago">pendiente de
-															pago</option>
-														<option value="pagado">pagado</option>
-														<option value="realizado">realizado</option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<button type="button" onclick="cerrarModalVeterinario();"
-										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnRegistrarCita" onclick="registrarHistorialMascota();"
-										type="button" class="btn btn-primary pull-right">Registrar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-		
-		
-		
-		
-		
 		</div>
-	</c:if>
 
-	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo == null || objCargo == 'Veterinario'}">
-		<div class="container-login100"
-			style="background-image: url('images/error403.jpg');"></div>
-	</c:if>
+		<!-- Modal de Editar Boleta -->
+		<div class="modal fade" id="idModalEditarBoleta"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Editar Boleta</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formEditarBoleta">
+								<div class="row">
+									<input class="form-control" type="text" id="id_idBoletaEditar"
+										hidden="hidden" name="idBoleta">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Número</label> <input
+												class="form-control" type="text" id="id_numeroBoletaEditar"
+												name="numero" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Nombre</label> <input
+												class="form-control" type="text" id="id_nombreBoletaEditar"
+												name="nombre" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">DNI</label> <input
+												class="form-control" type="text" id="id_dniBoletaEditar"
+												name="dni" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Monto</label> <input
+												class="form-control" type="text" id="id_montoBoletaEditar"
+												name="monto" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Estado</label>
+											<div class="caja">
+												<select class="estilo-select" id="id_estadoBoletaEditar"
+													name="estado">
+													<option value="En Proceso">En Proceso</option>
+													<option value="Enviado">Enviado</option>
+													<option value="Entregado">Entregado</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalEditarBoleta();"
+									class="btn btn-primary pull-right">Cerrar</button>
+								<button id="id_btnEditarBoleta" onclick="editarBoleta();"
+									type="button" class="btn btn-primary pull-right">Editar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<!-- Modal de Editar Reserva-->
+		<div class="modal fade" id="idModalEditarReserva"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Editar Reserva</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formEditarReserva">
+								<div class="row">
+									<input class="form-control" type="text" id="id_idReservaEditar"
+										hidden="hidden" name="idReserva">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Nombre Cliente</label> <input
+												class="form-control" type="text"
+												id="id_nombreClienteReservaEditar" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Nombre Mascota</label> <input
+												class="form-control" type="text"
+												id="id_nombreMascotaClienteReservaEditar"
+												readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Fecha</label> <input
+												class="form-control" type="text" id="id_fechaReservaEditar"
+												readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Horario</label> <input
+												class="form-control" type="text"
+												id="id_horarioReservaEditar" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label">Estado</label>
+											<div class="caja">
+												<select class="estilo-select" id="id_estadoReservaEditar"
+													name="estado">
+													<option value="pendiente de pago">pendiente de
+														pago</option>
+													<option value="pagado">pagado</option>
+													<option value="realizado">realizado</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<button type="button" onclick="cerrarModalEditarReserva();"
+									class="btn btn-primary pull-right">Cerrar</button>
+								<button id="id_btnEditarReserva" onclick="editarReserva();"
+									type="button" class="btn btn-primary pull-right">Editar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal de Detalle de Pedido -->
+		<div class="modal fade" id="idModalDetalleBoleta"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Detalle Pedido</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<table id="tablaDetallePedido" class="table table-hover">
+								<thead class="text-primary">
+									<tr>
+										<th style="width: 40px;">ID</th>
+										<th>Producto</th>
+										<th>Cantidad</th>
+										<th>Costo</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<button type="button" onclick="cerrarModalDetalleBoleta();"
+								class="btn btn-primary pull-right">Cerrar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal de Pago de Reserva -->
+		<div class="modal fade" id="idModalMetodoPago" data-backdrop="static"
+			tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Realizar Pago</h3>
+						</div>
+						<input class="form-control" type="text" id="id_idReservaPagar"
+							hidden="hidden">
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formRealizarPago">
+								<div class="dropdown-divider"></div>
+								<div class="row">
+									<div class="col-md-12" style="margin-top: 5px;">
+										<div class="form-group">
+											<label>Número de Tarjeta</label> <input
+												class="form-control number" type="text" ng-model="ncard"
+												maxlength="19" id="id_numTarjetaPagoServicio"
+												placeholder="XXXX-XXXX-XXXX-XXXX"
+												onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+										</div>
+									</div>
+									<div class="col-md-12" style="margin-top: 5px;">
+										<div class="form-group">
+											<label>Fecha de Vencimiento</label> <input
+												class="form-control expire"
+												id="id_fechaVencimientoPagoServicio" type="text"
+												placeholder="MM / YYYY" maxlength="9" />
+										</div>
+									</div>
+									<div class="col-md-12" style="margin-top: 5px;">
+										<div class="form-group">
+											<label>Número de Seguridad</label> <input
+												class="form-control ccv" type="text" placeholder="CVC"
+												maxlength="3" id="id_numSeguridadPagoServicio"
+												onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+										</div>
+									</div>
+								</div>
+								<div class="snipcart-details" style="margin-top: 12px">
+									<button id="btn_aceptar" type="button" class="button w3l-cart"
+										data-id="cart-8" onclick="pagarReserva();">ACEPTAR</button>
+								</div>
+							</form>
+							<button type="button" onclick="cerrarModalMetodoPago();"
+								class="btn btn-primary pull-right">Cerrar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 	<script type="text/javascript">
 		function pagarReserva() {
@@ -583,9 +483,9 @@
 					}
 				});
 			}
-
 		}
 	</script>
+
 	<script type="text/javascript">
 		function editarBoleta() {
 			$.ajax({
@@ -615,8 +515,6 @@
 
 	<script type="text/javascript">
 		function editarReserva() {
-			
-			
 			$.ajax({
 				type : 'POST',
 				data : {
@@ -641,70 +539,6 @@
 			});
 		}
 	</script>
-	
-	<script type="text/javascript">
-		function registrarHistorialMascota() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					'idReserva' : $("#id_idReservaEditar2").val(),
-					'descripcionLarga' : CKEDITOR.instances['editor3'].getData()
-					
-					
-				},
-				url : 'registrarHistorialMascota',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Éxito!", data.MENSAJE, "success");
-						setTimeout(function() {
-							window.location = 'trackingCliente';
-						}, 1500);
-					} else {
-						swal("¡Error!", data.MENSAJE, "error");
-					}
-				},
-				error : function() {
-					swal("¡Error!", "¡Comunicate con el administrador!",
-							"error");
-				}
-			});
-		}
-	</script>
-
-
-	<script type="text/javascript">
-		$("#id_nombreClienten").on("keypress", function(event) {
-			if (event.which == 13) {
-				buscarReserva();
-			}
-		});
-		function buscarReserva() {
-			var nom = $("#id_nombreClienten").val();
-			$("#tablaServicios tbody tr").remove();
-			$.getJSON('listarReservasCliente', {
-				"nombreClienten" : nom
-			}, function(data) {
-				$.each(data, function(index, item) {
-					$("#tablaServicios").append(
-							"<tr><td>" + item.idReserva + "</td>" + "<td>"
-									+ item.idCliente.nombre + "</td>" + "<td>"
-									+ item.idMascota.nombre + "</td>" + "<td>"
-									+ item.fecha + "</td>" + "<td>"
-									+ item.horario + "</td>" + "<td>"
-									+ item.estado + "</td>" + "<td>"
-									+ "<button type='button' onclick=\"verModalVeterinario('"
-									+ item.idReserva
-									+ "','" + item.idMascota.nombre
-									+ "','" + item.fecha
-									+ "','" + item.horario
-									+ "');\" class='btn btn-primary'> Ver </button>" + "</td></tr>");
-				});
-			});
-		}
-	</script>
-
-
-
 
 	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
@@ -771,38 +605,7 @@
 		}
 
 		$('#id_menuTrackingClientes').addClass('active');
-		$('#id_menuCrudTracking').addClass('active');
-		
-
-		function verModalVeterinario(id,  nomMascota, fecha,
-				horario) {
-			$("#id_idReservaEditar2").val(id);
-			
-			$("#id_nombreMascotaClienteReservaEditar2").val(nomMascota);
-			$("#id_fechaReservaEditar2").val(fecha);
-			$("#id_horarioReservaEditar2").val(horario);
-		
-		
-			$("#id_formEditarReserva2 .col-md-12 .form-group").addClass(
-					"is-filled");
-			$("#idModalVeterinario").modal("show");
-		}
-
-		function cerrarModalVeterinario() {
-			$("#idModalVeterinario").modal("hide");
-	
-		}
-
 	</script>
-	
-	<!-- Script de TextArea  -->
-		<script type="text/javascript">
-			$(document).ready(function() {
-				
-				modificarTextArea('editor3', 'ConsVeterinario');
-			});
-		</script>
-	
 
 	<!-- Validación de Modal Detalle Pedido -->
 	<script type="text/javascript">

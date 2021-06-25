@@ -84,8 +84,7 @@
 																							${horario.horario}
 																						</c:if>
 																					</c:forEach></td>
-																				<td><img
-																					src="images/servicios/${servicio.imagen}" alt="#"
+																				<td><img src="${servicio.imagen}" alt="#"
 																					width="50px" height="50px"></td>
 																				<td>
 																					<button type="button"

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,6 +67,7 @@ public class boletaController {
 	}
 
 	@RequestMapping("/agregarQuitarCantidad")
+	@Transactional
 	@ResponseBody
 	public Map<String, Object> agregarCantidad(HttpServletRequest request, String idProducto, String cantidad) {
 		HttpSession session = request.getSession(true);
@@ -101,6 +103,7 @@ public class boletaController {
 	}
 
 	@RequestMapping("/eliminarProductoBoleta")
+	@Transactional
 	@ResponseBody
 	public Map<String, Object> eliminarProductoBoleta(HttpServletRequest request, String idProducto) {
 		HttpSession session = request.getSession(true);
@@ -142,54 +145,88 @@ public class boletaController {
 	}
 
 	@RequestMapping("/agregarBoleta")
-	public String agregarBoleta(HttpServletRequest request, Boleta obj) {
-		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objCargo") != null) {
-			if (session.getAttribute("objCargo").equals("Cliente")) {
-				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
-				Cliente c = serviceCli.listaClientesId(idCliente);
-				obj.setNumero("111111111");
-				obj.setNombre(c.getNombre() + " " + c.getApellido());
-				obj.setDni(c.getDni());
-				obj.setFecha(LocalDateTime.now().toString().split("T")[0]);
-				obj.setEstado("En Proceso");
-				obj.setIdCliente(c);
-				service.agregarBoleta(obj);
-				String[] listaProductosCarrito = session.getAttribute("objListaProductosTexto").toString().split(",");
-				String[] listaProductos = session.getAttribute("objListaProductosBoletaTexto").toString().split(",");
-				for (int i = 0; i < listaProductosCarrito.length; i++) {
-					int contador = 0;
-					double costo = 0;
-					for (int j = 0; j < listaProductos.length; j++) {
-						if (listaProductosCarrito[i].equals(listaProductos[j])) {
-							contador++;
-							costo += servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]))
-									.getPrecio();
+	@Transactional
+	@ResponseBody
+	public Map<String, Object> agregarBoleta(HttpServletRequest request, Boleta obj) {
+		Map<String, Object> salida = new HashMap<>();
+		try {
+			HttpSession session = request.getSession(true);
+			if (session.getAttribute("objCargo") != null) {
+				if (session.getAttribute("objCargo").equals("Cliente")) {
+					String confirmacion = "SI";
+					// Se obtienen los productos del carrito
+					String[] listaProductosCarrito = session.getAttribute("objListaProductosTexto").toString()
+							.split(",");
+					String[] listaProductos = session.getAttribute("objListaProductosBoletaTexto").toString()
+							.split(",");
+
+					for (int i = 0; i < listaProductosCarrito.length; i++) {
+						int contador = 0;
+						for (int j = 0; j < listaProductos.length; j++) {
+							if (listaProductosCarrito[i].equals(listaProductos[j])) {
+								contador++;
+							}
+						}
+						Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
+						if (producto.getStock() < contador) {
+							confirmacion = "NO";
+							salida.put("MENSAJE",
+									"El producto " + producto.getNombre()
+											+ " no tiene el stock suficiente.El stock actual es de "
+											+ producto.getStock() + ".");
+							break;
 						}
 					}
-					Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
-					producto.setStock(producto.getStock() - contador);
-					servicePro.agregarModificarProducto(producto);
-					DetalleBoleta detalleBoleta = new DetalleBoleta();
-					detalleBoleta.setCantidad(contador);
-					detalleBoleta.setCosto(costo);
-					detalleBoleta
-							.setIdProducto(servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i])));
-					detalleBoleta.setIdBoleta(obj);
-					serviceDetBol.agregarDetalleBoleta(detalleBoleta);
+					if (!confirmacion.equals("NO")) {
+						int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
+						Cliente c = serviceCli.listaClientesId(idCliente);
+						obj.setNumero("111111111");
+						obj.setNombre(c.getNombre() + " " + c.getApellido());
+						obj.setDni(c.getDni());
+						obj.setFecha(LocalDateTime.now().toString().split("T")[0]);
+						obj.setEstado("En Proceso");
+						obj.setIdCliente(c);
+						service.agregarBoleta(obj);
+						for (int i = 0; i < listaProductosCarrito.length; i++) {
+							int contador = 0;
+							double costo = 0;
+							for (int j = 0; j < listaProductos.length; j++) {
+								if (listaProductosCarrito[i].equals(listaProductos[j])) {
+									contador++;
+									costo += servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]))
+											.getPrecio();
+								}
+							}
+							Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
+							producto.setStock(producto.getStock() - contador);
+							servicePro.agregarModificarProducto(producto);
+							DetalleBoleta detalleBoleta = new DetalleBoleta();
+							detalleBoleta.setCantidad(contador);
+							detalleBoleta.setCosto(costo);
+							detalleBoleta.setIdProducto(
+									servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i])));
+							detalleBoleta.setIdBoleta(obj);
+							serviceDetBol.agregarDetalleBoleta(detalleBoleta);
+						}
+						session.removeAttribute("objListaProductosTexto");
+						session.removeAttribute("objListaProductosBoletaTexto");
+						session.removeAttribute("objContadorProductos");
+						session.removeAttribute("objUltimoProducto");
+						session.removeAttribute("objListaProductosEntidad");
+						salida.put("CONFIRMACION", "SI");
+						salida.put("MENSAJE", "La Boleta fue registrada correctamente");
+					}
+					return salida;
+				} else {
+					salida.put("MENSAJE", "Error al registrar la boleta.");
+					return salida;
 				}
-				System.out.println(obj);
-				session.removeAttribute("objListaProductosTexto");
-				session.removeAttribute("objListaProductosBoletaTexto");
-				session.removeAttribute("objContadorProductos");
-				session.removeAttribute("objUltimoProducto");
-				session.removeAttribute("objListaProductosEntidad");
-				return "redirect:listaProductos";
-			} else {
-				return "redirect:login";
 			}
-		} else {
-			return "redirect:login";
+			return salida;
+		} catch (Exception e) {
+			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar la boleta.");
+			return salida;
 		}
 	}
 
@@ -212,34 +249,4 @@ public class boletaController {
 		salida.put("MENSAJE", "Error al editar la Boleta.");
 		return salida;
 	}
-
-	@RequestMapping("/validacionProductos")
-	@ResponseBody
-	public Map<String, Object> validacionProductos(HttpServletRequest request) {
-		HttpSession session = request.getSession(true);
-		Map<String, Object> salida = new HashMap<>();
-		String confirmacion = "SI";
-		String mensaje = "La boleta se registró con éxito.";
-		String[] listaProductosCarrito = session.getAttribute("objListaProductosTexto").toString().split(",");
-		String[] listaProductos = session.getAttribute("objListaProductosBoletaTexto").toString().split(",");
-		for (int i = 0; i < listaProductosCarrito.length; i++) {
-			int contador = 0;
-			for (int j = 0; j < listaProductos.length; j++) {
-				if (listaProductosCarrito[i].equals(listaProductos[j])) {
-					contador++;
-				}
-			}
-			Producto producto = servicePro.listaProductosId(Integer.parseInt(listaProductosCarrito[i]));
-			if (producto.getStock() < contador) {
-				confirmacion = "NO";
-				mensaje = "El producto " + producto.getNombre()
-						+ " no tiene el stock suficiente.\nEl stock actual es de " + producto.getStock() + ".";
-				break;
-			}
-		}
-		salida.put("CONFIRMACION", confirmacion);
-		salida.put("MENSAJE", mensaje);
-		return salida;
-	}
-
 }

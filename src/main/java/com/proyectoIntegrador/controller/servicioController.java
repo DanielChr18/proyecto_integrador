@@ -1,8 +1,5 @@
 package com.proyectoIntegrador.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,6 +133,7 @@ public class servicioController {
 
 	@RequestMapping("/registrarServicio")
 	@ResponseBody
+	@Transactional
 	public Map<String, Object> registrarServicio(
 			@RequestParam(value = "imagenServicioRegistrar", required = false) MultipartFile imagen,
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
@@ -148,17 +147,14 @@ public class servicioController {
 				if (listaServiciosNombres.size() == 0) {
 					List<Servicio> lista = service.listaServicios();
 					ObjectMetadata metadata = new ObjectMetadata();
-
 					int idServicio = 0;
 					if (lista == null)
 						idServicio = 1;
 					else
 						idServicio = lista.get(lista.size() - 1).getIdServicio() + 1;
-
 					metadata.setContentLength(imagen.getSize());
 					s3Cliente.putObject(new PutObjectRequest(BUCKET_NAME, "SERVICIO" + idServicio + ".jpeg",
 							imagen.getInputStream(), metadata));
-
 					obj.setImagen(ENDPOINT_URL + "SERVICIO" + idServicio + ".jpeg");
 					obj.setEstado("activado");
 					service.agregarModificarServicio(obj);
@@ -193,6 +189,7 @@ public class servicioController {
 
 	@RequestMapping("/modificarServicio")
 	@ResponseBody
+	@Transactional
 	public Map<String, Object> modificarServicio(
 			@RequestParam(value = "imagenServicioModificar", required = false) MultipartFile imagen,
 			@RequestParam(value = "horarios", required = false) String horarios, Servicio obj) {
@@ -314,6 +311,7 @@ public class servicioController {
 
 	@RequestMapping("/eliminarServicio")
 	@ResponseBody
+	@Transactional
 	public Map<String, Object> eliminarServicio(Servicio obj) {
 		Map<String, Object> salida = new HashMap<>();
 		try {
@@ -323,20 +321,12 @@ public class servicioController {
 				service.agregarModificarServicio(ser);
 				List<HorariosServicios> listaHorarios = serviceHorSer.listarHorariosServicios(obj.getIdServicio());
 				for (HorariosServicios h : listaHorarios) {
-					if (!h.getEstado().equals("ocupado")) {
-						h.setEstado("desactivado");
-						serviceHorSer.agregarHorario(h);
+					List<FechasServicios> listaFechasHorarios = serviceFecSer.findByHoraServicio(h.getHorario(),
+							obj.getIdServicio());
+					for (FechasServicios f : listaFechasHorarios) {
+						serviceFecSer.eliminarFechaServicio(f.getIdFechasServicios());
 					}
-					if (!h.getEstado().equals("desactivado")) {
-						List<FechasServicios> listaFechasHorarios = serviceFecSer.findByHoraServicio(h.getHorario(),
-								obj.getIdServicio());
-						for (FechasServicios f : listaFechasHorarios) {
-							if (f.getEstado().equals("reservado")) {
-								f.setEstado("desactivado");
-								serviceFecSer.agregarFechaServicio(f);
-							}
-						}
-					}
+					serviceHorSer.eliminarHorario(h.getIdHorariosServicios());
 				}
 				salida.put("CONFIRMACION", "SI");
 				salida.put("MENSAJE", "Servicio eliminado correctamente.");

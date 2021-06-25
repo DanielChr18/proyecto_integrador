@@ -158,8 +158,7 @@
 							</div>
 						</div>
 						<div class="col-md-3">
-							<form action="agregarBoleta" id="form_boletaCompra"
-								accept-charset="UTF-8">
+							<form id="form_boletaCompra" accept-charset="UTF-8">
 								<div class="row">
 									<input id="id_montoBoleta" hidden="hidden" class="form-control"
 										type="text" name="monto">
@@ -211,8 +210,9 @@
 											</div>
 										</div>
 										<div class="snipcart-details" style="margin-top: 12px">
-											<button id="btn_aceptar" type="submit"
-												class="button w3l-cart" data-id="cart-8">ACEPTAR</button>
+											<button id="btn_aceptar" type="button"
+												class="button w3l-cart" onclick="registrarBoleta();"
+												data-id="cart-8">ACEPTAR</button>
 										</div>
 									</div>
 								</c:if>
@@ -226,33 +226,32 @@
 </div>
 
 <script type="text/javascript">
-	$("#btn_aceptar").on('click', function(evt) {
-		evt.preventDefault();
+	function registrarBoleta() {
 		var validator = $('#form_boletaCompra').data('bootstrapValidator');
+		validator.validate();
 		if (validator.isValid()) {
 			$.ajax({
 				type : 'POST',
-				data : {},
-				url : 'validacionProductos',
+				data : $("#form_boletaCompra").serialize(),
+				url : 'agregarBoleta',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Pago exitoso!", data.MENSAJE, "success");
 						setTimeout(function() {
-							$("#form_boletaCompra").submit();
-						}, 1000);
+							location.reload(true);
+						}, 1500);
 					} else {
 						swal("¡Aviso!", data.MENSAJE, "warning");
 					}
 				},
 				error : function() {
-					swal("¡Error!", "", "error");
+					swal("¡Error!", "¡Comunicate con el administrador!",
+							"error");
 				}
 			});
 		}
-	});
+	}
 </script>
-
-
 
 <script type="text/javascript">
 	function verModalDetallePedido() {
