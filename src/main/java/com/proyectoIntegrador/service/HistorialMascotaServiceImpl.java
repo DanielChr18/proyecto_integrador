@@ -2,6 +2,8 @@ package com.proyectoIntegrador.service;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,17 @@ public class HistorialMascotaServiceImpl implements HistorialMascotaService {
 		return repository.save(obj);
 	}
 
+	@Override
+	public List<HistorialMascota> listarHistorialMascotaNombre(String mascotaNombre) {
+		return repository.listarHistorialMascotaNombre(mascotaNombre);
+	}
+
+	@Override
+	public HistorialMascota listarHistorialMascotaId(int idHistorialMascota) {
+		return repository.findById(idHistorialMascota).get();
+	}
+
+	
 
 
 }

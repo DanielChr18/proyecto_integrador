@@ -61,6 +61,9 @@
 				<li class="nav-item" id="id_menuTrackingClientes"><a class="nav-link"
 					href="trackingCliente"><i class="material-icons">leaderboard</i>
 						<p>Transacciones</p></a></li>
+				<li class="nav-item" id="id_menuHistorialMascotas"><a class="nav-link"
+					href="historialMascotas"><i class="material-icons">leaderboard</i>
+						<p>Historial de Mascota</p></a></li>
 			</c:if>
 			
 			<c:if test="${objCargo == 'Veterinario'}">

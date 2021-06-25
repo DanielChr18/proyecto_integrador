@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/bootstrapValidator.js"></script>
+<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 
 <link rel="stylesheet" href="css/estilo1.1.css" />
 <link rel="stylesheet" href="css/bootstrapValidator.css" />
@@ -45,7 +46,7 @@
 												</div>
 												<div class="card-body" style="padding: 20px 10px;">
 													<div class="row">
-														<button type="button" onclick="verModalMascotaRegistra()"
+														<button  style="margin-right: 10px;"     type="button" onclick="verModalMascotaRegistra()"
 															class="btn btn-primary pull-left">Registrar
 															Mascota</button>
 													</div>
@@ -54,7 +55,7 @@
 														<table id="tablaMascotas" class="table table-hover">
 															<thead class="text-primary">
 																<tr>
-																	<th>ID</th>
+																
 																	<th>Nombre</th>
 																	<th>Tipo</th>
 																	<th>Raza</th>
@@ -63,12 +64,13 @@
 																	<th>Foto</th>
 																	<th style="width: 8%">Editar</th>
 																	<th style="width: 8%">Eliminar</th>
+																	
 																</tr>
 															</thead>
 															<tbody>
 																<c:forEach var="mascota" items="${mascotas}">
 																	<tr>
-																		<td>${mascota.idMascota}</td>
+																		
 																		<td>${mascota.nombre}</td>
 																		<td>${mascota.idTipoMascota.nombre}</td>
 																		<td>${mascota.raza}</td>
@@ -318,9 +320,9 @@
 		}
 	</script>
 
-	<script type="text/javascript">
-		
-	</script>
+	
+
+
 
 	<!-- Validaciones de Registrar -->
 	<script type="text/javascript">

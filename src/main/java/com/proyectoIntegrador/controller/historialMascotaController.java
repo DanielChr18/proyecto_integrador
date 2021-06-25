@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.proyectoIntegrador.entity.HistorialMascota;
+import com.proyectoIntegrador.entity.Producto;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.entity.Trabajador;
 import com.proyectoIntegrador.service.HistorialMascotaService;
@@ -72,8 +73,6 @@ public class historialMascotaController {
 				obj.setIdTrabajador(trabajador);
 				obj.setIdReserva(reser);
 				
-				
-			
 			
 				
 				service.registrarHistorialMas(obj);
@@ -82,16 +81,7 @@ public class historialMascotaController {
 				reserva.setEstado("realizado");
 				serviceReser.actualizaReserva(reserva);
 				
-				
-				
-				
-				
-		
-	
-		
 			
-		
-				
 				salida.put("CONFIRMACION", "SI");
 				salida.put("MENSAJE", "Éxito al registrar la cita para historial de mascota.");
 				return salida;
@@ -102,8 +92,20 @@ public class historialMascotaController {
 		return salida;
 	}
 	
-
+	@RequestMapping("/obtenerHtmlHistorialMascota")
+	@ResponseBody
+	public HistorialMascota obtenerHtmlHistorialMascota(String idHistorialMascota) {
+		int id = Integer.parseInt(idHistorialMascota);
+		return service.listarHistorialMascotaId(id);
+	}
 	
 	
+	@RequestMapping("/listarHistorialMascotaNombre")
+	@ResponseBody
+	public List<HistorialMascota> listarHistorialMascotaNombre(String nombreMascotaP) {
+		System.out.println("Listar Mascotas por Nombre : Filtro -----> " + nombreMascotaP);
+		List<HistorialMascota> lista = service.listarHistorialMascotaNombre("%" + nombreMascotaP + "%");
+		return lista;
+	}
 	
 }

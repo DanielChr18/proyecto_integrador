@@ -218,11 +218,9 @@
 																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
 																							<button type="button" 
-																							onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																							onclick="verModalVeterinario('${s.idReserva}','${s.idMascota.nombre}','${s.fecha}','${s.horario}');"
 																							class="btn btn-primary">
-																								<img src="images/edit.gif" width="auto"
-																									height="auto" />
-																							</button>
+																							Ver</button>
 																						</td>
 																					</c:if>
 																				</tr>
@@ -694,7 +692,12 @@
 									+ item.fecha + "</td>" + "<td>"
 									+ item.horario + "</td>" + "<td>"
 									+ item.estado + "</td>" + "<td>"
-									+ item.estado + "</td>" + +"</tr>");
+									+ "<button type='button' onclick=\"verModalVeterinario('"
+									+ item.idReserva
+									+ "','" + item.idMascota.nombre
+									+ "','" + item.fecha
+									+ "','" + item.horario
+									+ "');\" class='btn btn-primary'> Ver </button>" + "</td></tr>");
 				});
 			});
 		}
@@ -771,15 +774,15 @@
 		$('#id_menuCrudTracking').addClass('active');
 		
 
-		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
-				horario, estado) {
+		function verModalVeterinario(id,  nomMascota, fecha,
+				horario) {
 			$("#id_idReservaEditar2").val(id);
-			$("#id_nombreClienteReservaEditar2").val(nomCliente);
+			
 			$("#id_nombreMascotaClienteReservaEditar2").val(nomMascota);
 			$("#id_fechaReservaEditar2").val(fecha);
 			$("#id_horarioReservaEditar2").val(horario);
 		
-			$("#id_estadoReservaEditar2").val(estado);
+		
 			$("#id_formEditarReserva2 .col-md-12 .form-group").addClass(
 					"is-filled");
 			$("#idModalVeterinario").modal("show");

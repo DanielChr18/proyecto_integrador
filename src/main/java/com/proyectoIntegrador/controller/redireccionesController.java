@@ -48,6 +48,11 @@ public class redireccionesController {
 	public String nosotros() {
 		return "nosotros";
 	}
+	
+	@RequestMapping("/historialMascotas")
+	public String historialMascotas() {
+		return "historialMascotas";
+	}
 
 	@RequestMapping("/trackingCliente")
 	public String trackingCliente(HttpServletRequest request, Model model) {
