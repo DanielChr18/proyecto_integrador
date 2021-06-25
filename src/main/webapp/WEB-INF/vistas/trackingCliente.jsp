@@ -140,18 +140,19 @@
 																					<th>Cliente</th>
 																				</c:if>
 																				<c:if test="${objCargo == 'Veterinario'}">
+																				
 																					<div class="row">
 																						<div class="col-md-6">
 																							<div class="form-group">
-																								<select id="id_cliente" name="idCliente"
+																								<select id="id_cliente3" name="idCliente"
 																									class='form-control'>
-																									<option value="-1">[Todos]</option>
+																									<option value="-1">[Todes]</option>
 																								</select>
 																							</div>
 																						</div>
 																						<div class="col-md-3">
 																							<div class="form-group">
-																								<button id="id_filtrar" type="button"
+																								<button id="idCliente3" type="button"
 																									class="btn btn-primary">Filtrar</button>
 																							</div>
 																						</div>
@@ -358,7 +359,7 @@
 											<div class="form-group">
 												<label class="bmd-label-floating">Horario</label> <input
 													class="form-control" type="text"
-													id="id_horarioReservaEditar" readonly="readonly">
+													id="id_horarioReservaEditar1" readonly="readonly">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -486,22 +487,22 @@
 								<h3 class="card-title">Veterinario</h3>
 							</div>
 							<div class="card-body" style="padding: 20px 18px;">
-								<form accept-charset="UTF-8" id="id_formEditarReserva">
+								<form accept-charset="UTF-8" id="id_formEditarReserva2">
 									<div class="row">
 										<input class="form-control" type="text"
-											id="id_idReservaEditar" hidden="hidden" name="idReserva">
+											id="id_idReservaEditar2" hidden="hidden" name="idReserva">
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Nombre Mascota</label> <input
 													class="form-control" type="text"
-													id="id_nombreMascotaClienteReservaEditar"
+													id="id_nombreMascotaClienteReservaEditar2"
 													readonly="readonly">
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Fecha</label> <input
-													class="form-control" type="text" id="id_fechaReservaEditar"
+													class="form-control" type="text" id="id_fechaReservaEditar2"
 													readonly="readonly">
 											</div>
 										</div>
@@ -509,7 +510,7 @@
 											<div class="form-group">
 												<label class="bmd-label-floating">Horario</label> <input
 													class="form-control" type="text"
-													id="id_horarioReservaEditar" readonly="readonly">
+													id="id_horarioReservaEditar2" readonly="readonly">
 											</div>
 										</div>
 									<div class="col-md-12">
@@ -522,7 +523,7 @@
 											<div class="form-group">
 												<label class="bmd-label">Estado</label>
 												<div class="caja">
-													<select class="estilo-select" id="id_estadoReservaEditar"
+													<select class="estilo-select" id="id_estadoReservaEditar2"
 														name="estado">
 														<option value="pendiente de pago">pendiente de
 															pago</option>
@@ -535,7 +536,7 @@
 									</div>
 									<button type="button" onclick="cerrarModalVeterinario();"
 										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnEditarBoleta" onclick="editarReserva();"
+									<button id="id_btnEditarBoleta" onclick="veterinarioReserva();"
 										type="button" class="btn btn-primary pull-right">Registrar</button>
 								</form>
 							</div>
@@ -557,6 +558,8 @@
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
+
+	
 
 
 	<script type="text/javascript">
@@ -741,14 +744,14 @@
 
 		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
 				horario, estado) {
-			$("#id_idReservaEditar").val(id);
-			$("#id_nombreClienteReservaEditar").val(nomCliente);
-			$("#id_nombreMascotaClienteReservaEditar").val(nomMascota);
-			$("#id_fechaReservaEditar").val(fecha);
-			$("#id_horarioReservaEditar").val(horario);
+			$("#id_idReservaEditar2").val(id);
+			$("#id_nombreClienteReservaEditar2").val(nomCliente);
+			$("#id_nombreMascotaClienteReservaEditar2").val(nomMascota);
+			$("#id_fechaReservaEditar2").val(fecha);
+			$("#id_horarioReservaEditar2").val(horario);
 		
-			$("#id_estadoReservaEditar").val(estado);
-			$("#id_formEditarReserva .col-md-12 .form-group").addClass(
+			$("#id_estadoReservaEditar2").val(estado);
+			$("#id_formEditarReserva2 .col-md-12 .form-group").addClass(
 					"is-filled");
 			$("#idModalVeterinario").modal("show");
 		}
