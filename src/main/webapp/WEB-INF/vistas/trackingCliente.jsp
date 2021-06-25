@@ -131,33 +131,31 @@
 																</c:if>
 															</div>
 															<div class="tab-pane" id="servicios">
+																<c:if test="${objCargo == 'Veterinario'}">
+
+																	<div class="row">
+																		<div class="col-md-9">
+																			<div class="form-group" style="padding-left: 10px;">
+																				<label class="bmd-label-floating">Nombre del
+																					Cliente</label> <input type="text" class="form-control"
+																					id="id_nombreClienten">
+																			</div>
+																		</div>
+																		<div class="col-md-1 offset-1">
+																			<button onclick="buscarReserva();" type="button"
+																				id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																		</div>
+																	</div>
+																</c:if>
 																<c:if test="${servicios != null}">
 																	<table id="tablaServicios" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
 																				<th style="width: 40px;">ID</th>
-																				<c:if test="${objCargo == 'Personal de Ventas'}">
+																				<c:if test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
 																					<th>Cliente</th>
 																				</c:if>
-																				<c:if test="${objCargo == 'Veterinario'}">
-																					<div class="row">
-																						<div class="col-md-6">
-																							<div class="form-group">
-																								<select id="id_cliente" name="idCliente"
-																									class='form-control'>
-																									<option value="-1">[Todos]</option>
-																								</select>
-																							</div>
-																						</div>
-																						<div class="col-md-3">
-																							<div class="form-group">
-																								<button id="id_filtrar" type="button"
-																									class="btn btn-primary">Filtrar</button>
-																							</div>
-																						</div>
-																					</div>
-																					
-																				</c:if>
+																				
 
 																				<th>Mascota</th>
 																				<th>Fecha</th>
@@ -179,7 +177,7 @@
 																			<c:forEach items="${servicios}" var="s">
 																				<tr>
 																					<td>${s.idReserva}</td>
-																					<c:if test="${objCargo == 'Personal de Ventas'}">
+																					<c:if test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
 																						<td>${s.idCliente.nombre}</td>
 																					</c:if>
 																					<td>${s.idMascota.nombre}</td>
@@ -674,6 +672,36 @@
 			});
 		}
 	</script>
+
+
+	<script type="text/javascript">
+		$("#id_nombreClienten").on("keypress", function(event) {
+			if (event.which == 13) {
+				buscarReserva();
+			}
+		});
+		function buscarReserva() {
+			var nom = $("#id_nombreClienten").val();
+			$("#tablaServicios tbody tr").remove();
+			$.getJSON('listarReservasCliente', {
+				"nombreClienten" : nom
+			}, function(data) {
+				$.each(data, function(index, item) {
+					$("#tablaServicios").append(
+							"<tr><td>" + item.idReserva + "</td>" + "<td>"
+									+ item.idCliente.nombre + "</td>" + "<td>"
+									+ item.idMascota.nombre + "</td>" + "<td>"
+									+ item.fecha + "</td>" + "<td>"
+									+ item.horario + "</td>" + "<td>"
+									+ item.estado + "</td>" + "<td>"
+									+ item.estado + "</td>" + +"</tr>");
+				});
+			});
+		}
+	</script>
+
+
+
 
 	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
