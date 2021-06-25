@@ -37,7 +37,7 @@ public class Reserva {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idcliente")
 	private Cliente idCliente;
-
+	
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idmascota")

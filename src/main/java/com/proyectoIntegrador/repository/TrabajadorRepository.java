@@ -10,4 +10,8 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, Integer>
 
 	@Query("select t from Trabajador t where t.idUsuario.idUsuario like :param_usuario")
 	public abstract Trabajador buscarTrabajadorUsuario(@Param("param_usuario") int usuario);
+	
+	
+	@Query("select t from Trabajador t where t.idTrabajador.idTrabajador like :param_trabajador")
+	public abstract Trabajador buscarTrabajadorId(@Param("param_trabajador") int trabajador);
 }

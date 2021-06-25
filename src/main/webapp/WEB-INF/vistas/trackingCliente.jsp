@@ -23,7 +23,8 @@
 
 </head>
 <body class="">
-	<c:if test="${objCargo != null}">
+	<c:if
+		test="${objCargo == 'Cliente' || objCargo == 'Personal de Ventas'||objCargo == 'Veterinario'}">
 		<div class="wrapper ">
 			<jsp:include page="menuLateral.jsp" />
 			<div class="main-panel">
@@ -130,31 +131,34 @@
 																</c:if>
 															</div>
 															<div class="tab-pane" id="servicios">
-																<c:if test="${objCargo == 'Veterinario'}">
-
-																	<div class="row">
-																		<div class="col-md-9">
-																			<div class="form-group" style="padding-left: 10px;">
-																				<label class="bmd-label-floating">Nombre del
-																					Cliente</label> <input type="text" class="form-control"
-																					id="id_nombreClienten">
-																			</div>
-																		</div>
-																		<div class="col-md-1 offset-1">
-																			<button onclick="buscarReserva();" type="button"
-																				id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
-																		</div>
-																	</div>
-																</c:if>
 																<c:if test="${servicios != null}">
 																	<table id="tablaServicios" class="table table-hover">
 																		<thead class="text-primary">
 																			<tr>
 																				<th style="width: 40px;">ID</th>
-																				<c:if
-																					test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
+																				<c:if test="${objCargo == 'Personal de Ventas'}">
 																					<th>Cliente</th>
 																				</c:if>
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<div class="row">
+																						<div class="col-md-6">
+																							<div class="form-group">
+																								<select id="id_cliente" name="idCliente"
+																									class='form-control'>
+																									<option value="-1">[Todos]</option>
+																								</select>
+																							</div>
+																						</div>
+																						<div class="col-md-3">
+																							<div class="form-group">
+																								<button id="id_filtrar" type="button"
+																									class="btn btn-primary">Filtrar</button>
+																							</div>
+																						</div>
+																					</div>
+																					
+																				</c:if>
+
 																				<th>Mascota</th>
 																				<th>Fecha</th>
 																				<th>Horario</th>
@@ -175,8 +179,7 @@
 																			<c:forEach items="${servicios}" var="s">
 																				<tr>
 																					<td>${s.idReserva}</td>
-																					<c:if
-																						test="${objCargo == 'Personal de Ventas' || objCargo == 'Veterinario'}">
+																					<c:if test="${objCargo == 'Personal de Ventas'}">
 																						<td>${s.idCliente.nombre}</td>
 																					</c:if>
 																					<td>${s.idMascota.nombre}</td>
@@ -216,9 +219,9 @@
 
 																					<c:if test="${objCargo == 'Veterinario'}">
 																						<td>
-																							<button type="button"
-																								onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
-																								class="btn btn-primary">
+																							<button type="button" 
+																							onclick="verModalVeterinario('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
+																							class="btn btn-primary">
 																								<img src="images/edit.gif" width="auto"
 																									height="auto" />
 																							</button>
@@ -355,7 +358,7 @@
 											<div class="form-group">
 												<label class="bmd-label-floating">Horario</label> <input
 													class="form-control" type="text"
-													id="id_horarioReservaEditar1" readonly="readonly">
+													id="id_horarioReservaEditar" readonly="readonly">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -417,6 +420,7 @@
 
 			<!-- Modal de Pago de Reserva -->
 			<div class="modal fade" id="idModalMetodoPago" data-backdrop="static"
+			
 				tabindex="-1" role="dialog">
 				<div class="modal-dialog" style="width: 50%;">
 					<!-- Modal content-->
@@ -470,7 +474,7 @@
 					</div>
 				</div>
 			</div>
-
+		
 			<!-- Modal de Veterinario-->
 			<div class="modal fade" id="idModalVeterinario"
 				data-backdrop="static" tabindex="-1" role="dialog">
@@ -497,8 +501,8 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label-floating">Fecha</label> <input
-													class="form-control" type="text"
-													id="id_fechaReservaEditar2" readonly="readonly">
+													class="form-control" type="text" id="id_fechaReservaEditar2"
+													readonly="readonly">
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -508,19 +512,18 @@
 													id="id_horarioReservaEditar2" readonly="readonly">
 											</div>
 										</div>
-										<div class="col-md-12">
-											<label class="bmd-label-floating">Observacion</label>
-											<textarea id="editor3" name="descripcionLarga"></textarea>
-											<small id="id_mensajeDescripcionLargaConsVeterinario"
-												style="color: #cc0000;">El campo no puede estar
-												vacio</small>
-										</div>
+									<div class="col-md-12">
+										<label class="bmd-label-floating">Observacion</label>
+										<textarea id="editor3" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaConsVeterinario"
+											style="color: #cc0000;">El campo no puede estar vacio</small>
+									</div>
 										<div class="col-md-12">
 											<div class="form-group">
 												<label class="bmd-label">Estado</label>
 												<div class="caja">
 													<select class="estilo-select" id="id_estadoReservaEditar2"
-														name="estado">
+														name="estado" disabled="disabled">
 														<option value="pendiente de pago">pendiente de
 															pago</option>
 														<option value="pagado">pagado</option>
@@ -532,7 +535,7 @@
 									</div>
 									<button type="button" onclick="cerrarModalVeterinario();"
 										class="btn btn-primary pull-right">Cerrar</button>
-									<button id="id_btnEditarBoleta" onclick="veterinarioReserva();"
+									<button id="id_btnRegistrarCita" onclick="registrarHistorialMascota();"
 										type="button" class="btn btn-primary pull-right">Registrar</button>
 								</form>
 							</div>
@@ -540,14 +543,21 @@
 					</div>
 				</div>
 			</div>
+		
+		
+		
+		
+		
+		
 		</div>
 	</c:if>
 
 	<!-- Restricción de Acceso -->
-	<c:if test="${objCargo == null}">
+	<c:if test="${objCargo == null || objCargo == 'Veterinario'}">
 		<div class="container-login100"
 			style="background-image: url('images/error403.jpg');"></div>
 	</c:if>
+
 
 	<script type="text/javascript">
 		function pagarReserva() {
@@ -609,6 +619,8 @@
 
 	<script type="text/javascript">
 		function editarReserva() {
+			
+			
 			$.ajax({
 				type : 'POST',
 				data : {
@@ -633,16 +645,18 @@
 			});
 		}
 	</script>
-
+	
 	<script type="text/javascript">
-		function VeterinarioReserva() {
+		function registrarHistorialMascota() {
 			$.ajax({
 				type : 'POST',
 				data : {
-					'idReserva' : $("#id_idReservaEditar").val(),
-					'estado' : $("#id_estadoReservaEditar").val()
+					'idReserva' : $("#id_idReservaEditar2").val(),
+					'descripcionLarga' : CKEDITOR.instances['editor3'].getData()
+					
+					
 				},
-				url : 'veterinarioReserva',
+				url : 'registrarHistorialMascota',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Éxito!", data.MENSAJE, "success");
@@ -660,36 +674,6 @@
 			});
 		}
 	</script>
-
-	<script type="text/javascript">
-		$("#id_nombreClienten").on("keypress", function(event) {
-			if (event.which == 13) {
-				buscarReserva();
-			}
-		});
-
-		function buscarReserva() {
-			var nom = $("#id_nombreClienten").val();
-			$("#tablaServicios tbody tr").remove();
-
-			$.getJSON('listarReservasCliente', {
-				"nombreClienten" : nom
-			}, function(data) {
-				$.each(data, function(index, item) {
-					$("#tablaServicios").append(
-							"<tr><td>" + item.idReserva + "</td>" + "<td>"
-									+ item.idCliente.nombre + "</td>" + "<td>"
-									+ item.idMascota.nombre + "</td>" + "<td>"
-									+ item.fecha + "</td>" + "<td>"
-									+ item.horario + "</td>" + "<td>"
-									+ item.estado + "</td>" + "<td>"
-									+ item.estado + "</td>" + +"</tr>");
-				});
-			});
-		}
-	</script>
-
-
 
 	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
@@ -757,7 +741,7 @@
 
 		$('#id_menuTrackingClientes').addClass('active');
 		$('#id_menuCrudTracking').addClass('active');
-		$('#id_menuTrackingVeterinario').addClass('active');
+		
 
 		function verModalVeterinario(id, nomCliente, nomMascota, fecha,
 				horario, estado) {
@@ -766,7 +750,7 @@
 			$("#id_nombreMascotaClienteReservaEditar2").val(nomMascota);
 			$("#id_fechaReservaEditar2").val(fecha);
 			$("#id_horarioReservaEditar2").val(horario);
-
+		
 			$("#id_estadoReservaEditar2").val(estado);
 			$("#id_formEditarReserva2 .col-md-12 .form-group").addClass(
 					"is-filled");
@@ -775,19 +759,19 @@
 
 		function cerrarModalVeterinario() {
 			$("#idModalVeterinario").modal("hide");
-
+	
 		}
-	</script>
 
+	</script>
+	
 	<!-- Script de TextArea  -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			modificarTextArea('editor1', 'Registrar');
-			modificarTextArea('editor2', 'Modificar');
-			modificarTextArea('editor3', 'ConsVeterinario');
-		});
-	</script>
-
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				modificarTextArea('editor3', 'ConsVeterinario');
+			});
+		</script>
+	
 
 	<!-- Validación de Modal Detalle Pedido -->
 	<script type="text/javascript">

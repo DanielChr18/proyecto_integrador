@@ -17,4 +17,9 @@ public class TrabajadorServiceImpl implements TrabajadorService {
 		return repository.buscarTrabajadorUsuario(idUsuario);
 	}
 
+	@Override
+	public Trabajador listarTrabajadorId(int idTrabajador) {
+		return repository.buscarTrabajadorId(idTrabajador);
+	}
+
 }
