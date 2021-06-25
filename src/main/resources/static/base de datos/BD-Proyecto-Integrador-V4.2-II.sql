@@ -30,11 +30,13 @@ CREATE TABLE `boleta` (
   `nombre` varchar(45) DEFAULT NULL,
   `dni` char(8) DEFAULT NULL,
   `monto` double DEFAULT NULL,
+  `fecha` varchar(45) DEFAULT NULL,
+  `estado` varchar(45) DEFAULT NULL,
   `idcliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`idboleta`),
   KEY `fk_idxBolCli_idx` (`idcliente`),
   CONSTRAINT `fk_idxBolCli` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,32 @@ CREATE TABLE `boleta` (
 
 LOCK TABLES `boleta` WRITE;
 /*!40000 ALTER TABLE `boleta` DISABLE KEYS */;
+INSERT INTO `boleta` VALUES (1,'111111111','Carlos Daniel Chinchay Rimac','95451852',259.5,'2021-05-29','En Proceso',1),(2,'111111111','Carlos Daniel Chinchay Rimac','95451852',508.5,'2021-05-29','En Proceso',1),(3,'111111111','Carlos Daniel Chinchay Rimac','95451852',259.5,'2021-05-29','En Proceso',1);
 /*!40000 ALTER TABLE `boleta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categoria`
+--
+
+DROP TABLE IF EXISTS `categoria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `categoria` (
+  `idcategoria` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idcategoria`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categoria`
+--
+
+LOCK TABLES `categoria` WRITE;
+/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+INSERT INTO `categoria` VALUES (1,'Comida'),(2,'Juguete'),(3,'Camas'),(4,'Accesorios'),(5,'Ropa'),(6,'Fármacos'),(7,'Suplementos'),(8,'Platos'),(9,'Rascadores');
+/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -100,7 +127,7 @@ CREATE TABLE `detalleboleta` (
   KEY `fk_idxBoleta_idx` (`idboleta`),
   CONSTRAINT `fk_idxDetBolPro` FOREIGN KEY (`idboleta`) REFERENCES `boleta` (`idboleta`),
   CONSTRAINT `fk_idxDetPro` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +136,7 @@ CREATE TABLE `detalleboleta` (
 
 LOCK TABLES `detalleboleta` WRITE;
 /*!40000 ALTER TABLE `detalleboleta` DISABLE KEYS */;
+INSERT INTO `detalleboleta` VALUES (1,1,90,2,1),(2,1,79.5,1,1),(3,1,90,3,1),(4,3,238.5,1,2),(5,2,180,2,2),(6,1,90,3,2),(7,1,79.5,1,3),(8,2,180,2,3);
 /*!40000 ALTER TABLE `detalleboleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +180,7 @@ CREATE TABLE `fechasservicios` (
   PRIMARY KEY (`idfechasservicios`),
   KEY `fk_idxCitHorSer_idx` (`idhorariosservicios`),
   CONSTRAINT `fk_idxCitHorSer` FOREIGN KEY (`idhorariosservicios`) REFERENCES `horariosservicios` (`idhorariosservicios`)
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +189,7 @@ CREATE TABLE `fechasservicios` (
 
 LOCK TABLES `fechasservicios` WRITE;
 /*!40000 ALTER TABLE `fechasservicios` DISABLE KEYS */;
-INSERT INTO `fechasservicios` VALUES (3,'2021-04-21','reservado',7),(5,'2021-04-28','reservado',5),(7,'2021-05-05','libre',3),(8,'2021-05-05','libre',5),(9,'2021-05-05','libre',7),(10,'2021-05-12','libre',3),(11,'2021-05-12','reservado',5),(12,'2021-05-12','libre',7),(13,'2021-05-19','libre',3),(14,'2021-05-19','libre',5),(15,'2021-05-19','libre',7),(20,'2021-04-29','reservado',17),(22,'2021-05-06','libre',16),(23,'2021-05-06','libre',17),(24,'2021-05-06','libre',19),(25,'2021-05-13','reservado',16),(26,'2021-05-13','reservado',17),(27,'2021-05-13','libre',19),(28,'2021-05-20','libre',16),(29,'2021-05-20','libre',17),(30,'2021-05-20','libre',19),(32,'2021-04-20','reservado',26),(34,'2021-04-27','reservado',25),(35,'2021-04-27','reservado',26),(40,'2021-05-11','libre',25),(41,'2021-05-11','libre',26),(42,'2021-05-11','libre',31),(43,'2021-05-18','libre',25),(44,'2021-05-18','reservado',26),(45,'2021-05-18','libre',31),(50,'2021-04-28','reservado',38),(52,'2021-05-05','libre',35),(53,'2021-05-05','libre',38),(54,'2021-05-05','reservado',41),(55,'2021-05-12','reservado',35),(56,'2021-05-12','libre',38),(57,'2021-05-12','libre',41),(58,'2021-05-19','libre',35),(59,'2021-05-19','libre',38),(60,'2021-05-19','libre',41),(67,'2021-05-07','libre',45),(68,'2021-05-07','libre',48),(69,'2021-05-07','libre',51),(70,'2021-05-14','libre',45),(71,'2021-05-14','libre',48),(72,'2021-05-14','reservado',51),(73,'2021-05-21','reservado',45),(74,'2021-05-21','libre',48),(75,'2021-05-21','libre',51),(91,'2021-05-26','libre',3),(92,'2021-06-02','libre',3),(93,'2021-05-26','libre',5),(94,'2021-06-02','libre',5),(95,'2021-05-26','libre',7),(96,'2021-06-02','libre',7),(97,'2021-05-27','libre',16),(98,'2021-06-03','libre',16),(99,'2021-05-27','libre',17),(100,'2021-06-03','libre',17),(101,'2021-05-27','libre',19),(102,'2021-06-03','libre',19),(103,'2021-05-25','libre',25),(104,'2021-06-01','libre',25),(105,'2021-05-25','libre',26),(106,'2021-06-01','libre',26),(107,'2021-05-25','libre',31),(108,'2021-06-01','libre',31),(109,'2021-05-26','libre',35),(110,'2021-06-02','libre',35),(111,'2021-05-26','libre',38),(112,'2021-06-02','libre',38),(113,'2021-05-26','libre',41),(114,'2021-06-02','libre',41),(115,'2021-05-28','libre',45),(116,'2021-05-28','libre',48),(117,'2021-05-28','libre',51),(125,'2021-05-11','libre',57),(126,'2021-05-18','libre',57),(127,'2021-05-25','libre',57),(128,'2021-06-01','libre',57),(130,'2021-05-11','libre',58),(131,'2021-05-18','libre',58),(132,'2021-05-25','libre',58),(133,'2021-06-01','libre',58),(135,'2021-05-11','libre',59),(136,'2021-05-18','libre',59),(137,'2021-05-25','libre',59),(138,'2021-06-01','libre',59),(139,'2021-06-09','libre',3),(140,'2021-06-09','libre',5),(141,'2021-06-09','libre',7),(142,'2021-06-08','libre',25),(143,'2021-06-08','libre',26),(144,'2021-06-08','libre',31),(145,'2021-06-09','libre',35),(146,'2021-06-09','libre',38),(147,'2021-06-09','libre',41),(148,'2021-06-04','libre',45),(149,'2021-06-04','libre',48),(150,'2021-06-04','libre',51),(151,'2021-06-08','libre',57),(152,'2021-06-08','libre',58),(153,'2021-06-08','libre',59),(154,'2021-06-10','libre',16),(155,'2021-06-10','libre',17),(156,'2021-06-10','libre',19),(157,'2021-06-15','libre',25),(158,'2021-06-15','libre',26),(159,'2021-06-15','libre',31),(160,'2021-06-11','libre',45),(161,'2021-06-11','libre',48),(162,'2021-06-11','libre',51),(163,'2021-06-15','libre',57),(164,'2021-06-15','libre',58),(165,'2021-06-15','libre',59);
+INSERT INTO `fechasservicios` VALUES (3,'2021-04-21','reservado',7),(5,'2021-04-28','reservado',5),(11,'2021-05-12','reservado',5),(20,'2021-04-29','reservado',17),(25,'2021-05-13','reservado',16),(26,'2021-05-13','reservado',17),(32,'2021-04-20','reservado',26),(34,'2021-04-27','reservado',25),(35,'2021-04-27','reservado',26),(44,'2021-05-18','reservado',26),(50,'2021-04-28','reservado',38),(54,'2021-05-05','reservado',41),(55,'2021-05-12','reservado',35),(72,'2021-05-14','reservado',51),(73,'2021-05-21','reservado',45),(128,'2021-06-01','reservado',57),(152,'2021-06-08','reservado',58),(157,'2021-06-15','libre',25),(158,'2021-06-15','libre',26),(159,'2021-06-15','libre',31),(161,'2021-06-11','reservado',48),(163,'2021-06-15','libre',57),(164,'2021-06-15','libre',58),(165,'2021-06-15','libre',59),(166,'2021-06-16','libre',3),(167,'2021-06-23','libre',3),(168,'2021-06-30','libre',3),(169,'2021-06-16','reservado',5),(170,'2021-06-23','libre',5),(171,'2021-06-30','libre',5),(172,'2021-06-16','libre',7),(173,'2021-06-23','libre',7),(174,'2021-06-30','libre',7),(175,'2021-06-17','libre',16),(176,'2021-06-24','libre',16),(177,'2021-07-01','libre',16),(178,'2021-06-17','libre',17),(179,'2021-06-24','libre',17),(180,'2021-07-01','libre',17),(181,'2021-06-17','libre',19),(182,'2021-06-24','libre',19),(183,'2021-07-01','libre',19),(184,'2021-06-22','libre',25),(185,'2021-06-29','libre',25),(186,'2021-06-22','libre',26),(187,'2021-06-29','libre',26),(188,'2021-06-22','libre',31),(189,'2021-06-29','libre',31),(190,'2021-06-16','libre',35),(191,'2021-06-23','libre',35),(192,'2021-06-30','libre',35),(193,'2021-06-16','libre',38),(194,'2021-06-23','libre',38),(195,'2021-06-30','libre',38),(196,'2021-06-16','libre',41),(197,'2021-06-23','libre',41),(198,'2021-06-30','libre',41),(199,'2021-06-18','libre',45),(200,'2021-06-25','libre',45),(201,'2021-07-02','libre',45),(202,'2021-06-18','libre',48),(203,'2021-06-25','libre',48),(204,'2021-07-02','libre',48),(205,'2021-06-18','libre',51),(206,'2021-06-25','libre',51),(207,'2021-07-02','libre',51),(208,'2021-06-22','libre',57),(209,'2021-06-29','libre',57),(210,'2021-06-22','libre',58),(211,'2021-06-29','libre',58),(212,'2021-06-22','libre',59),(213,'2021-06-29','libre',59),(214,'2021-07-07','libre',3),(215,'2021-07-07','libre',5),(216,'2021-07-07','libre',7),(217,'2021-07-08','libre',16),(218,'2021-07-08','libre',17),(219,'2021-07-08','libre',19),(220,'2021-07-06','libre',25),(221,'2021-07-06','libre',26),(222,'2021-07-06','libre',31),(223,'2021-07-07','libre',35),(224,'2021-07-07','libre',38),(225,'2021-07-07','libre',41),(226,'2021-07-09','libre',45),(227,'2021-07-09','libre',48),(228,'2021-07-09','libre',51),(229,'2021-07-06','libre',57),(230,'2021-07-06','libre',58),(231,'2021-07-06','libre',59),(232,'2021-07-14','libre',3),(233,'2021-07-21','libre',3),(234,'2021-07-14','libre',5),(235,'2021-07-21','libre',5),(236,'2021-07-14','libre',7),(237,'2021-07-21','libre',7),(238,'2021-07-15','libre',16),(239,'2021-07-22','libre',16),(240,'2021-07-15','libre',17),(241,'2021-07-22','libre',17),(242,'2021-07-15','libre',19),(243,'2021-07-22','libre',19),(244,'2021-07-13','libre',25),(245,'2021-07-20','libre',25),(246,'2021-07-13','libre',26),(247,'2021-07-20','libre',26),(248,'2021-07-13','libre',31),(249,'2021-07-20','libre',31),(250,'2021-07-14','libre',35),(251,'2021-07-21','libre',35),(252,'2021-07-14','libre',38),(253,'2021-07-21','libre',38),(254,'2021-07-14','libre',41),(255,'2021-07-21','libre',41),(256,'2021-07-16','libre',45),(257,'2021-07-23','libre',45),(258,'2021-07-16','libre',48),(259,'2021-07-23','libre',48),(260,'2021-07-16','libre',51),(261,'2021-07-23','libre',51),(262,'2021-07-13','libre',57),(263,'2021-07-20','libre',57),(264,'2021-07-13','libre',58),(265,'2021-07-20','libre',58),(266,'2021-07-13','libre',59),(267,'2021-07-20','libre',59);
 /*!40000 ALTER TABLE `fechasservicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,13 +205,13 @@ CREATE TABLE `historialmascota` (
   `fecha` date DEFAULT NULL,
   `hora` datetime DEFAULT NULL,
   `descripcion` varchar(45) DEFAULT NULL,
-  `idveterinario` int(11) DEFAULT NULL,
-  `idmascota` int(11) DEFAULT NULL,
+  `idtrabajador` int(11) DEFAULT NULL,
+  `idreserva` int(11) DEFAULT NULL,
   PRIMARY KEY (`idhistorialmascota`),
-  KEY `fk_idxHisMas_idx` (`idmascota`),
-  KEY `fk_idxHisVet_idx` (`idveterinario`),
-  CONSTRAINT `fk_idxHisMas` FOREIGN KEY (`idmascota`) REFERENCES `mascota` (`idmascota`),
-  CONSTRAINT `fk_idxHisVet` FOREIGN KEY (`idveterinario`) REFERENCES `veterinario` (`idveterinario`)
+  KEY `fk_idxHisTra_idx` (`idtrabajador`),
+  KEY `fk_idxHisRes_idx` (`idreserva`),
+  CONSTRAINT `fk_idxHisRes` FOREIGN KEY (`idreserva`) REFERENCES `reserva` (`idreserva`),
+  CONSTRAINT `fk_idxHisTra` FOREIGN KEY (`idtrabajador`) REFERENCES `trabajador` (`idtrabajador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -220,7 +248,7 @@ CREATE TABLE `horariosservicios` (
 
 LOCK TABLES `horariosservicios` WRITE;
 /*!40000 ALTER TABLE `horariosservicios` DISABLE KEYS */;
-INSERT INTO `horariosservicios` VALUES (1,'10:00','desactivado',1),(2,'11:00','desactivado',1),(3,'12:00','activado',1),(4,'13:00','desactivado',1),(5,'14:00','ocupado',1),(6,'15:00','desactivado',1),(7,'16:00','ocupado',1),(8,'17:00','desactivado',1),(9,'18:00','desactivado',1),(10,'19:00','desactivado',1),(11,'20:00','desactivado',1),(12,'10:00','desactivado',2),(13,'11:00','desactivado',2),(14,'12:00','desactivado',2),(15,'13:00','desactivado',2),(16,'14:00','ocupado',2),(17,'15:00','ocupado',2),(18,'16:00','desactivado',2),(19,'17:00','activado',2),(20,'18:00','desactivado',2),(21,'19:00','desactivado',2),(22,'20:00','desactivado',2),(23,'10:00','desactivado',3),(24,'11:00','desactivado',3),(25,'12:00','ocupado',3),(26,'13:00','ocupado',3),(27,'14:00','desactivado',3),(28,'15:00','desactivado',3),(29,'16:00','desactivado',3),(30,'17:00','desactivado',3),(31,'18:00','activado',3),(32,'19:00','desactivado',3),(33,'20:00','desactivado',3),(34,'10:00','desactivado',4),(35,'11:00','ocupado',4),(36,'12:00','desactivado',4),(37,'13:00','desactivado',4),(38,'14:00','ocupado',4),(39,'15:00','desactivado',4),(40,'16:00','desactivado',4),(41,'17:00','ocupado',4),(42,'18:00','desactivado',4),(43,'19:00','desactivado',4),(44,'20:00','desactivado',4),(45,'10:00','ocupado',5),(46,'11:00','desactivado',5),(47,'12:00','desactivado',5),(48,'13:00','activado',5),(49,'14:00','desactivado',5),(50,'15:00','desactivado',5),(51,'16:00','ocupado',5),(52,'17:00','desactivado',5),(53,'18:00','desactivado',5),(54,'19:00','desactivado',5),(55,'20:00','desactivado',5),(56,'10:00','desactivado',6),(57,'11:00','activado',6),(58,'12:00','activado',6),(59,'13:00','activado',6),(60,'14:00','desactivado',6),(61,'15:00','desactivado',6),(62,'16:00','desactivado',6),(63,'17:00','desactivado',6),(64,'18:00','desactivado',6),(65,'19:00','desactivado',6),(66,'20:00','desactivado',6);
+INSERT INTO `horariosservicios` VALUES (1,'10:00','desactivado',1),(2,'11:00','desactivado',1),(3,'12:00','activado',1),(4,'13:00','desactivado',1),(5,'14:00','reservado',1),(6,'15:00','desactivado',1),(7,'16:00','ocupado',1),(8,'17:00','desactivado',1),(9,'18:00','desactivado',1),(10,'19:00','desactivado',1),(11,'20:00','desactivado',1),(12,'10:00','desactivado',2),(13,'11:00','desactivado',2),(14,'12:00','desactivado',2),(15,'13:00','desactivado',2),(16,'14:00','ocupado',2),(17,'15:00','ocupado',2),(18,'16:00','desactivado',2),(19,'17:00','activado',2),(20,'18:00','desactivado',2),(21,'19:00','desactivado',2),(22,'20:00','desactivado',2),(23,'10:00','desactivado',3),(24,'11:00','desactivado',3),(25,'12:00','ocupado',3),(26,'13:00','ocupado',3),(27,'14:00','desactivado',3),(28,'15:00','desactivado',3),(29,'16:00','desactivado',3),(30,'17:00','desactivado',3),(31,'18:00','activado',3),(32,'19:00','desactivado',3),(33,'20:00','desactivado',3),(34,'10:00','desactivado',4),(35,'11:00','ocupado',4),(36,'12:00','desactivado',4),(37,'13:00','desactivado',4),(38,'14:00','ocupado',4),(39,'15:00','desactivado',4),(40,'16:00','desactivado',4),(41,'17:00','ocupado',4),(42,'18:00','desactivado',4),(43,'19:00','desactivado',4),(44,'20:00','desactivado',4),(45,'10:00','ocupado',5),(46,'11:00','desactivado',5),(47,'12:00','desactivado',5),(48,'13:00','reservado',5),(49,'14:00','desactivado',5),(50,'15:00','desactivado',5),(51,'16:00','ocupado',5),(52,'17:00','desactivado',5),(53,'18:00','desactivado',5),(54,'19:00','desactivado',5),(55,'20:00','desactivado',5),(56,'10:00','desactivado',6),(57,'11:00','reservado',6),(58,'12:00','reservado',6),(59,'13:00','activado',6),(60,'14:00','desactivado',6),(61,'15:00','desactivado',6),(62,'16:00','desactivado',6),(63,'17:00','desactivado',6),(64,'18:00','desactivado',6),(65,'19:00','desactivado',6),(66,'20:00','desactivado',6);
 /*!40000 ALTER TABLE `horariosservicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,16 +286,18 @@ DROP TABLE IF EXISTS `mascota`;
 CREATE TABLE `mascota` (
   `idmascota` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
-  `tipo` varchar(45) DEFAULT NULL,
+  `idtipomascota` int(11) DEFAULT NULL,
   `raza` varchar(45) DEFAULT NULL,
   `fechaNacimiento` varchar(45) DEFAULT NULL,
   `sexo` varchar(45) DEFAULT NULL,
-  `imagen` varchar(45) DEFAULT NULL,
+  `imagen` varchar(150) DEFAULT NULL,
   `idcliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`idmascota`),
   KEY `fk_idxCliente_idx` (`idcliente`),
-  CONSTRAINT `fk_idxMasCli` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  KEY `fk_idxMasTipo_idx` (`idtipomascota`),
+  CONSTRAINT `fk_idxMasCli` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
+  CONSTRAINT `fk_idxMasTipo` FOREIGN KEY (`idtipomascota`) REFERENCES `tipomascota` (`idtipomascota`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,33 +306,8 @@ CREATE TABLE `mascota` (
 
 LOCK TABLES `mascota` WRITE;
 /*!40000 ALTER TABLE `mascota` DISABLE KEYS */;
-INSERT INTO `mascota` VALUES (1,'Copito','Perro','No sé','2021-04-10','Macho',NULL,1),(2,'Copito','Perro','No sé',NULL,'Macho',NULL,1),(4,'Copito','Perro','No sé','2021-04-11','Macho',NULL,10);
+INSERT INTO `mascota` VALUES (1,'Copito',1,'No sé','2021-04-10','Macho','https://miproyecto.s3.us-east-2.amazonaws.com/MASCOTA1-1.jpeg',1),(2,'Chester',1,'No sé','2021-05-07','Macho','https://miproyecto.s3.us-east-2.amazonaws.com/MASCOTA1-2.jpeg',1),(3,'Lazi',2,'No sé','2021-04-11','Hembra','https://miproyecto.s3.us-east-2.amazonaws.com/MASCOTA1-3.jpeg',1),(4,'Zazá',1,'No sé','2021-04-11','Macho','https://miproyecto.s3.us-east-2.amazonaws.com/MASCOTA10-4.jpeg',10),(6,'Zazá',1,'No sé','2021-04-15','Macho','https://miproyecto.s3.us-east-2.amazonaws.com/MASCOTA1-6.jpeg',1);
 /*!40000 ALTER TABLE `mascota` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `personalventa`
---
-
-DROP TABLE IF EXISTS `personalventa`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `personalventa` (
-  `idpersonalventa` int(11) NOT NULL AUTO_INCREMENT,
-  `idtrabajdor` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idpersonalventa`),
-  KEY `fk_idxPerVenTra_idx` (`idtrabajdor`),
-  CONSTRAINT `fk_idxPerVenTra` FOREIGN KEY (`idtrabajdor`) REFERENCES `trabajador` (`idtrabajador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `personalventa`
---
-
-LOCK TABLES `personalventa` WRITE;
-/*!40000 ALTER TABLE `personalventa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `personalventa` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -320,18 +325,24 @@ CREATE TABLE `producto` (
   `serie` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `idmarca` int(11) DEFAULT NULL,
   `idproveedor` int(11) DEFAULT NULL,
+  `idcategoria` int(11) DEFAULT NULL,
+  `idtipomascota` int(11) DEFAULT NULL,
   `descripcion` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `descripcionlarga` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `estado` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `imagen1` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `imagen2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `imagen3` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `imagen1` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `imagen2` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `imagen3` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idproducto`),
   KEY `fk_idxProMar_idx` (`idmarca`),
   KEY `fk_idxProProv_idx` (`idproveedor`),
+  KEY `fk_idxProCat_idx` (`idcategoria`),
+  KEY `fk_idxProTipoMas_idx` (`idtipomascota`),
+  CONSTRAINT `fk_idxProCat` FOREIGN KEY (`idcategoria`) REFERENCES `categoria` (`idcategoria`),
   CONSTRAINT `fk_idxProMar` FOREIGN KEY (`idmarca`) REFERENCES `marca` (`idmarca`),
-  CONSTRAINT `fk_idxProProv` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  CONSTRAINT `fk_idxProProv` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`),
+  CONSTRAINT `fk_idxProTipoMas` FOREIGN KEY (`idtipomascota`) REFERENCES `tipomascota` (`idtipomascota`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +351,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,'Ricocan Adultos Cordero y Cereales - 15 kg',79.5,120,'asdsad',1,1,'2','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO1-1.jpeg','PRODUCTO1-2.jpeg','PRODUCTO1-3.jpeg'),(2,'Ricocan Original - Adultos todas las razas - 15 kg',90,120,'asdsad',1,1,'Adultos todas las razas - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO2-1.jpeg','PRODUCTO2-2.jpeg','PRODUCTO2-3.jpeg'),(3,'Ricocan Cachorro Carne y Leche - Razas medianas y grandes - 15 kg',90,120,'asdsad',1,1,'Razas medianas y grandes - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO3-1.jpeg','PRODUCTO3-2.jpeg','PRODUCTO3-3.jpeg'),(4,'Purina Proplan Cordero y Arroz con Cachorro 15.4 Kg',295,120,'asdsad',1,1,'Cachorro 15.4 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO4-1.jpeg','PRODUCTO4-2.jpeg','PRODUCTO4-3.jpeg'),(5,'Purina Proplan Cordero y Arroz con Adulto 15.9 Kg',280,120,'asdsad',1,1,'Adulto 15.9 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO5-1.jpeg','PRODUCTO5-2.jpeg','PRODUCTO5-3.jpeg'),(6,'Mimaskot Cachorro - Todas las razas -15 Kg',78,120,'asdsad',1,1,'Todas las razas -15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO6-1.jpeg','PRODUCTO6-2.jpeg','PRODUCTO6-3.jpeg'),(7,'Mimaskot Adulto Pollo y Cereales - 15 Kg',78,120,'asdsad',1,1,'Adulto Pollo y Cereales - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>','activado','PRODUCTO7-1.jpeg','PRODUCTO7-2.jpeg','PRODUCTO7-3.jpeg'),(8,'Mimaskot Adulto Carne, Cereales y Vegetales - 15 Kg',78,120,'asdsad',1,1,'Adulto Carne, Cereales y Vegetales - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO8-1.jpeg','PRODUCTO8-2.jpeg','PRODUCTO8-3.jpeg'),(9,'Hueso de carnaza de 2 - 3 (pulgadas)',8,120,'asdsad',1,1,'Hueso de carnaza de 2 - 3 (pulgadas)','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO9-1.jpeg','PRODUCTO9-2.jpeg','PRODUCTO9-3.jpeg'),(10,'Canbo Cachorro razas pequeñas de Cordero y Arroz - Super Premium - 7 kg',99,120,'asdsad',1,1,'Super Premium - 7 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO10-1.jpeg','PRODUCTO10-2.jpeg','PRODUCTO10-3.jpeg'),(11,'Canbo Cachorro de Cordero y Arroz - Super Premium - 15 kg',190,120,'asdsad',1,1,'Super Premium - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO11-1.jpeg','PRODUCTO11-2.jpeg','PRODUCTO11-3.jpeg'),(12,'Canbo Adulto de Cordero y Arroz - Super Premium - 15 kg',185,120,'asdsad',1,1,'Super Premium - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\r\n','activado','PRODUCTO12-1.jpeg','PRODUCTO12-2.jpeg','PRODUCTO12-3.jpeg'),(14,'Ricocat Esterilizados - Adultos - 9kg',89,120,'AG000153',10,1,'Fortalece las defensas naturales: La acción conjunta de prebióticos, multivitaminas y antioxidantes refuerza su sistema inmunológico. ','<p><strong>Caracter&iacute;sticas del Producto:</strong></p>\r\n\r\n<ul>\r\n	<li>Etapa Comida para Gatos: &nbsp; Adulto.</li>\r\n	<li>Tipo Comida para Gatos: &nbsp; Seca.</li>\r\n	<li>Marca Producto: &nbsp; RICOCAT.</li>\r\n	<li>Tipo de Producto: &nbsp; Bien F&iacute;sico.</li>\r\n	<li>Largo del Producto: &nbsp; 57.</li>\r\n	<li>Alto del Producto: &nbsp; 11.</li>\r\n	<li>Ancho del Producto: &nbsp; 37.</li>\r\n	<li>Largo del Paquete: &nbsp; 57.</li>\r\n	<li>Alto del Paquete: &nbsp; 11.</li>\r\n	<li>Ancho del Paquete: &nbsp; 37.</li>\r\n	<li>Peso del Paquete: &nbsp; 9.</li>\r\n</ul>\r\n\r\n<p><strong>Caracter&iacute;sticas Destacadas :</strong></p>\r\n\r\n<ol>\r\n	<li>Ricocat Esterilizados es un alimento premium, 100% completo y balanceado y elaborado bajo los est&aacute;ndares exigidos por la AAFCO. Cubre las necesidades nutricionales de la mascota con una mezcla equilibrada de ingredientes.&nbsp;</li>\r\n	<li>Esta presentaci&oacute;n esta especialmente formulada para gatos adultos esterilizados de todas las razas.&nbsp;</li>\r\n	<li>Su f&oacute;rmula &quot;Balance ideal&quot; ofrece un equilibrio de fibras naturales y bajo contenido de grasa, para ayudar al mantenimiento de un peso ideal, adem&aacute;s de minerales org&aacute;nicos, antioxidantes, acidificantes, taurina, omega 3 y 6, prote&iacute;nas y multivitaminas.</li>\r\n</ol>\r\n','activado','PRODUCTO14-1.jpeg','PRODUCTO14-2.jpeg','PRODUCTO14-3.jpeg'),(15,'Ricocat de Carne, Pescado y Leche - Gatitos - 15kg',100,120,'asdsad',10,1,'123123123123123','<p>Holakjhasdkjhaksdhkaskdasd,asj<strong>dkhaksdasd</strong><br />\r\nasdlhjasjdkkajshdklakdjslkajdlasd,asd.adkahsdkjhadsa</p>\r\n\r\n<ol>\r\n	<li>asdjkhaskda</li>\r\n	<li>kjahsdkjahsd</li>\r\n	<li>adjhaksdjhkasd</li>\r\n	<li>ajahdkjahskdad</li>\r\n</ol>\r\n','activado','PRODUCTO15-1.jpeg','PRODUCTO15-2.jpeg','PRODUCTO15-3.jpeg'),(16,'Ricocat de Sardina y Trucha - Adultos - 15kg',100,120,'asdsad',10,1,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','<p>asdasdasd</p>\r\n\r\n<ol>\r\n	<li>asdasdasdasdasdjhaskdjhaskdjhkasdhkasdasd</li>\r\n	<li>a&ntilde;sdjlkasjdasd\r\n	<ul>\r\n		<li>akjshdkjkaksd</li>\r\n		<li>asdasdasd</li>\r\n	</ul>\r\n	</li>\r\n	<li>asdasdasd</li>\r\n</ol>\r\n\r\n<p>asdasdasd&nbsp;</p>\r\n','activado','PRODUCTO16-1.jpeg','PRODUCTO16-2.jpeg','PRODUCTO16-3.jpeg'),(17,'Ricocan Adultos Cordero y Cereales - 15 kg',100,120,'AG000152',1,1,'asdasdasdasdasdasdasdq3123','<p>asdas23123</p>\r\n','activado','PRODUCTO17-1.jpeg','PRODUCTO17-2.jpeg','PRODUCTO17-3.jpeg'),(18,'Ricocan Adultos Cordero y Cereales - 15 kg',100,120,'asdsad',1,1,'asdasdasdasdasdasdasdadsasdasd','<p>hjhkjhkh</p>\r\n','activado','PRODUCTO18-1.jpeg','PRODUCTO18-2.jpeg','PRODUCTO18-3.jpeg'),(19,'Ricocan Adultos Cordero y Cereales - 15 kg',100,120,'asdsad',1,1,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','<p>asdas23123</p>','activado','PRODUCTO19-1.jpeg','PRODUCTO19-2.jpeg','PRODUCTO19-3.jpeg');
+INSERT INTO `producto` VALUES (1,'Ricocan Adultos Cordero y Cereales - 154 kg',79.5,0,'asdsad',1,1,1,1,'lkajdslkajsdlkjaskd','<p>ljalksdjlaksjdlkasjdlkajsdlkjaslkdjalskdjlaksd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO1-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO1-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO1-3.jpeg'),(2,'Ricocan Original - Adultos todas las razas - 15 kg',90,115,'asdsad',1,1,1,1,'Adultos todas las razas - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO2-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO2-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO2-3.jpeg'),(3,'Ricocan Cachorro Carne y Leche - Razas medianas y grandes - 15 kg',90,118,'asdsad',1,1,1,1,'Razas medianas y grandes - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO3-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO3-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO3-3.jpeg'),(4,'Purina Proplan Cordero y Arroz con Cachorro 15 Kg',295,120,'asdsad',1,1,1,1,'Cachorro 15.4 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO4-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO4-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO4-3.jpeg'),(5,'Purina Proplan Cordero y Arroz con Adulto 15-9 Kg',280,120,'asdsad',1,1,1,1,'Adulto 15.9 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO5-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO5-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO5-3.jpeg'),(6,'Mimaskot Cachorro - Todas las razas -15 Kg',78,120,'asdsad',1,1,1,1,'Todas las razas -15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO6-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO6-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO6-3.jpeg'),(7,'Mimaskot Adulto Pollo y Cereales - 15 Kg',78,120,'asdsad',1,1,1,1,'Adulto Pollo y Cereales - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO7-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO7-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO7-3.jpeg'),(8,'Mimaskot Adulto Carne Cereales y Vegetales - 15 Kg',78,120,'asdsad',1,1,1,1,'Adulto Carne, Cereales y Vegetales - 15 Kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO8-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO8-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO8-3.jpeg'),(9,'Hueso de carnaza de 2 - 3 (pulgadas)',8,120,'asdsad',1,1,1,1,'Hueso de carnaza de 2 - 3 (pulgadas)','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO9-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO9-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO9-3.jpeg'),(10,'Canbo Cachorro razas pequenias de Cordero y Arroz - Super Premium - 7 kg',99,120,'asdsad',1,1,1,1,'Super Premium - 7 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO10-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO10-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO10-3.jpeg'),(11,'Canbo Cachorro de Cordero y Arroz - Super Premium - 15 kg',190,120,'asdsad',1,1,1,1,'Super Premium - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO11-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO11-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO11-3.jpeg'),(12,'Canbo Adulto de Cordero y Arroz - Super Premium - 15 kg',185,120,'asdsad',1,1,1,1,'Super Premium - 15 kg','<p>lasdlkajsdkjasjlkdjasldjlasjldasdasd,asdahsd</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO12-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO12-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO12-3.jpeg'),(14,'Ricocat Esterilizados - Adultos - 9kg',89,120,'AG000153',10,1,1,1,'Fortalece las defensas naturales La acción conjunta de prebióticos, multivitaminas y antioxidantes refuerza su sistema inmunológico','<p><strong>Caracter&iacute;sticas del Producto:</strong></p>\n\n<ul>\n	<li>Etapa Comida para Gatos: &nbsp; Adulto.</li>\n	<li>Tipo Comida para Gatos: &nbsp; Seca.</li>\n	<li>Marca Producto: &nbsp; RICOCAT.</li>\n	<li>Tipo de Producto: &nbsp; Bien F&iacute;sico.</li>\n	<li>Largo del Producto: &nbsp; 57.</li>\n	<li>Alto del Producto: &nbsp; 11.</li>\n	<li>Ancho del Producto: &nbsp; 37.</li>\n	<li>Largo del Paquete: &nbsp; 57.</li>\n	<li>Alto del Paquete: &nbsp; 11.</li>\n	<li>Ancho del Paquete: &nbsp; 37.</li>\n	<li>Peso del Paquete: &nbsp; 9.</li>\n</ul>\n\n<p><strong>Caracter&iacute;sticas Destacadas :</strong></p>\n\n<ol>\n	<li>Ricocat Esterilizados es un alimento premium, 100% completo y balanceado y elaborado bajo los est&aacute;ndares exigidos por la AAFCO. Cubre las necesidades nutricionales de la mascota con una mezcla equilibrada de ingredientes.&nbsp;</li>\n	<li>Esta presentaci&oacute;n esta especialmente formulada para gatos adultos esterilizados de todas las razas.&nbsp;</li>\n	<li>Su f&oacute;rmula &quot;Balance ideal&quot; ofrece un equilibrio de fibras naturales y bajo contenido de grasa, para ayudar al mantenimiento de un peso ideal, adem&aacute;s de minerales org&aacute;nicos, antioxidantes, acidificantes, taurina, omega 3 y 6, prote&iacute;nas y multivitaminas.</li>\n</ol>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO14-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO14-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO14-3.jpeg'),(15,'Ricocat de Carne, Pescado y Leche - Gatitos - 15kg',100,120,'asdsad',10,1,1,1,'123123123123123','<p>Holakjhasdkjhaksdhkaskdasd,asj<strong>dkhaksdasd</strong><br />\nasdlhjasjdkkajshdklakdjslkajdlasd,asd.adkahsdkjhadsa</p>\n\n<ol>\n	<li>asdjkhaskda</li>\n	<li>kjahsdkjahsd</li>\n	<li>adjhaksdjhkasd</li>\n	<li>ajahdkjahskdad</li>\n</ol>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO15-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO15-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO15-3.jpeg'),(16,'Ricocat de Sardina y Trucha - Adultos - 15kg',100,120,'asdsad',10,1,1,1,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','<p>asdasdasd</p>\n\n<ol>\n	<li>asdasdasdasdasdjhaskdjhaskdjhkasdhkasdasd</li>\n	<li>a&ntilde;sdjlkasjdasd\n	<ul>\n		<li>akjshdkjkaksd</li>\n		<li>asdasdasd</li>\n	</ul>\n	</li>\n	<li>asdasdasd</li>\n</ol>\n\n<p>asdasdasd&nbsp;</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO16-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO16-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO16-3.jpeg'),(17,'Cama Invierno Carnero - Manada Azul',56,20,'MD004718',5,1,3,1,'asdasdasdasdasdasdasdq3123','<ul>\n	<li>Cama abrigadora y&nbsp;resistente para perros de todas las razas.</li>\n	<li>Color&nbsp;azul.&nbsp;</li>\n</ul>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO17-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO17-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO17-3.jpeg'),(18,'Cama Invierno Carnero - Manada Celeste',56,25,'MD004719',5,1,3,1,'Cama abrigadora y resistente para perros de todas las razas.','<ul>\n	<li>\n	<p><strong>ZOOMBA MANADA CARNERO</strong>, ofrece un &oacute;ptimo espacio de relajo y descanso placentero &ldquo;Libre de pegamentos con solvente qu&iacute;mico&rdquo;. Cuenta con una estructurada con espuma Para&iacute;so de alta densidad, con extra-altos bordes laterales de apoyo y forma proporcionalmente ovalada, garantizan la indeformabilidad del producto y facilita la adaptaci&oacute;n del cuerpo de la mascota a la forma natural de anidaci&oacute;n.</p>\n\n	<p>La funda externa provee colores c&aacute;lidos y est&aacute; confeccionada con material de sint&eacute;tico de piel de carnero que evita el fr&iacute;o.</p>\n\n	<p><strong>Caracter&iacute;sticas y beneficios:</strong></p>\n	</li>\n	<li>Mantiene e cuerpo caliente, seco y confortable.</li>\n	<li>Cobertura sint&eacute;tica de piel de carnero.</li>\n	<li><strong>Bordes Extra-altos de apoyo:</strong>&nbsp;Necesario para soporte de cabeza. Alta memoria de retorno.</li>\n	<li><strong>Funda durable:</strong>&nbsp;Resistente y lavable.</li>\n	<li><strong>Material PVC inferior:</strong>&nbsp;Antideslizante y repelente de humedad.</li>\n	<li><strong>Cierre inferior:</strong>&nbsp;para desmontaje de funda y f&aacute;cil lavado.</li>\n	<li><strong>Temporada de uso:</strong>&nbsp;Perfecta para el invierno.</li>\n	<li>De f&aacute;cil mantenimiento.</li>\n	<li>\n	<p><strong>Las ventajas de este producto son:&nbsp;</strong></p>\n	</li>\n	<li><strong>Construcci&oacute;n ovalada:</strong>&nbsp;Ideal para mascotas que duerman enroscados.</li>\n	<li>\n	<p><strong>Medidas:</strong>&nbsp;</p>\n	</li>\n	<li>Talla 2, largo (48cm) x ancho (34cm) x alto (16cm).</li>\n	<li>Talla 3, largo (65cm) x ancho (50cm) x alto (20cm).</li>\n	<li>Talla 4, largo (75cm) x ancho (60cm) x alto (20cm).</li>\n	<li>Talla 5, largo (85cm) x ancho (70cm) x alto (20cm).</li>\n	<li>Talla 6, largo (100cm) x ancho (80cm) x alto (20cm).</li>\n</ul>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO18-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO18-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO18-3.jpeg'),(19,'Cama Invierno Carnero - Manada Rojo',56,24,'MD004721',1,1,3,1,'Cama abrigadora y resistente para perros de todas las razas.','<p><strong>ZOOMBA MANADA CARNERO</strong>, ofrece un &oacute;ptimo espacio de relajo y descanso placentero &ldquo;Libre de pegamentos con solvente qu&iacute;mico&rdquo;. Cuenta con una estructurada con espuma Para&iacute;so de alta densidad, con extra-altos bordes laterales de apoyo y forma proporcionalmente ovalada, garantizan la indeformabilidad del producto y facilita la adaptaci&oacute;n del cuerpo de la mascota a la forma natural de anidaci&oacute;n.</p>\n\n<p>La funda externa provee colores c&aacute;lidos y est&aacute; confeccionada con material de sint&eacute;tico de piel de carnero que evita el fr&iacute;o.</p>\n\n<p><strong>Caracter&iacute;sticas y beneficios:</strong></p>\n\n<ul>\n	<li>Mantiene e cuerpo caliente, seco y confortable.</li>\n	<li>Cobertura sint&eacute;tica de piel de carnero.</li>\n	<li><strong>Bordes Extra-altos de apoyo:</strong>&nbsp;Necesario para soporte de cabeza. Alta memoria de retorno.</li>\n	<li><strong>Funda durable:</strong>&nbsp;Resistente y lavable.</li>\n	<li><strong>Material PVC inferior:</strong>&nbsp;Antideslizante y repelente de humedad.</li>\n	<li><strong>Cierre inferior:</strong>&nbsp;para desmontaje de funda y f&aacute;cil lavado.</li>\n	<li><strong>Temporada de uso:</strong>&nbsp;Perfecta para el invierno.</li>\n	<li>De f&aacute;cil mantenimiento.</li>\n</ul>\n\n<p><strong>Las ventajas de este producto son:&nbsp;</strong></p>\n\n<ul>\n	<li><strong>Construcci&oacute;n ovalada:</strong>&nbsp;Ideal para mascotas que duerman enroscados.</li>\n</ul>\n\n<p><strong>Medidas:</strong>&nbsp;</p>\n\n<ul>\n	<li>Talla 2, largo (48cm) x ancho (34cm) x alto (16cm).</li>\n	<li>Talla 3, largo (65cm) x ancho (50cm) x alto (20cm).</li>\n	<li>Talla 4, largo (75cm) x ancho (60cm) x alto (20cm).</li>\n	<li>Talla 5, largo (85cm) x ancho (70cm) x alto (20cm).</li>\n	<li>Talla 6, largo (100cm) x ancho (80cm) x alto (20cm).</li>\n</ul>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO19-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO19-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO19-3.jpeg'),(20,'Chaleco Arcoiris de taslan acolchado',46.9,24,'MD004397',1,1,5,1,'Comida Nutritiva','<p>9182739812798371293871298379182739812793</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO20-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO20-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO20-3.jpeg'),(21,'Polo azul con diseño de estrellas - Talla 1',39.5,200,'MD004259',1,1,5,1,'peoqiwpoeiqwpoeipqowe','<p>172398719283718237981273982179387129837123</p>\n','activado','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO21-1.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO21-2.jpeg','https://miproyecto.s3.us-east-2.amazonaws.com/PRODUCTO21-3.jpeg');
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,17 +396,20 @@ DROP TABLE IF EXISTS `reserva`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `reserva` (
   `idreserva` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha` date DEFAULT NULL,
-  `horario` datetime DEFAULT NULL,
+  `fecha` varchar(45) DEFAULT NULL,
+  `horario` varchar(45) DEFAULT NULL,
   `estado` varchar(45) DEFAULT NULL,
   `idcliente` int(11) DEFAULT NULL,
   `idservicio` int(11) DEFAULT NULL,
+  `idmascota` int(11) DEFAULT NULL,
   PRIMARY KEY (`idreserva`),
   KEY `fk_idxResCli_idx` (`idcliente`),
   KEY `fk_idxResSer_idx` (`idservicio`),
+  KEY `fk_idxResMas_idx` (`idmascota`),
   CONSTRAINT `fk_idxResCli` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
+  CONSTRAINT `fk_idxResMas` FOREIGN KEY (`idmascota`) REFERENCES `mascota` (`idmascota`),
   CONSTRAINT `fk_idxResSer` FOREIGN KEY (`idservicio`) REFERENCES `servicio` (`idservicio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,6 +418,7 @@ CREATE TABLE `reserva` (
 
 LOCK TABLES `reserva` WRITE;
 /*!40000 ALTER TABLE `reserva` DISABLE KEYS */;
+INSERT INTO `reserva` VALUES (1,'2021-06-01','11:00','pendiente de pago',1,6,1),(2,'2021-06-08','12:00','pendiente de pago',1,6,2),(3,'2021-06-11','13:00','pendiente de pago',1,5,2),(4,'2021-06-16','14:00','pendiente de pago',1,1,1);
 /*!40000 ALTER TABLE `reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +436,7 @@ CREATE TABLE `servicio` (
   `descripcion` varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `dia` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `estado` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `imagen` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `imagen` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idservicio`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -434,6 +449,30 @@ LOCK TABLES `servicio` WRITE;
 /*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
 INSERT INTO `servicio` VALUES (1,'Acupuntura',150,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','Miércoles','activado','SERVICIO1.jpeg'),(2,'Oftalmología',80,'asdasdasdasdasdasdasd','Jueves','activado','SERVICIO2.jpeg'),(3,'Anestesia',100,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','Martes','activado','SERVICIO3.jpeg'),(4,'Neurología',100,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','Miércoles','activado','SERVICIO4.jpeg'),(5,'Odontología',100.5,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','Viernes','activado','SERVICIO5.jpeg'),(6,'Ortopedia',100.04,'La Acupuntura Veterinaria actúa complementando en conjunto a diversas especialidades de la profesión, viendo al individuo como un todo.','Martes','activado','SERVICIO6.jpeg');
 /*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipomascota`
+--
+
+DROP TABLE IF EXISTS `tipomascota`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tipomascota` (
+  `idtipomascota` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`idtipomascota`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipomascota`
+--
+
+LOCK TABLES `tipomascota` WRITE;
+/*!40000 ALTER TABLE `tipomascota` DISABLE KEYS */;
+INSERT INTO `tipomascota` VALUES (1,'Perro'),(2,'Gato');
+/*!40000 ALTER TABLE `tipomascota` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -453,7 +492,7 @@ CREATE TABLE `trabajador` (
   PRIMARY KEY (`idtrabajador`),
   KEY `fk_idxTraUsu_idx` (`idusuario`),
   CONSTRAINT `fk_idxTraUsu` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -462,6 +501,7 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
+INSERT INTO `trabajador` VALUES (1,'Alexis Manuel','Mondragon Perea','98765484','984658885',2),(2,'Kevin Robert Marshall','Medina Enriquez','12345648','969184185',3);
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,31 +558,6 @@ INSERT INTO `usuario` VALUES (1,'Daniel','$2y$12$yqVuPn6YFPFtO5dNqhXB0uJkLGMNXd5
 UNLOCK TABLES;
 
 --
--- Table structure for table `veterinario`
---
-
-DROP TABLE IF EXISTS `veterinario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `veterinario` (
-  `idveterinario` int(11) NOT NULL AUTO_INCREMENT,
-  `idtrabajador` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idveterinario`),
-  KEY `fk_idxVetTra_idx` (`idtrabajador`),
-  CONSTRAINT `fk_idxVetTra` FOREIGN KEY (`idtrabajador`) REFERENCES `trabajador` (`idtrabajador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `veterinario`
---
-
-LOCK TABLES `veterinario` WRITE;
-/*!40000 ALTER TABLE `veterinario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `veterinario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping events for database 'proyecto_integrador_v2'
 --
 
@@ -559,4 +574,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-05  7:09:51
+-- Dump completed on 2021-06-25  0:19:27
