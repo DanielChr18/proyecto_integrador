@@ -40,6 +40,6 @@ public class HistorialMascota {
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idmascota")
-	private Mascota idMascota;
+	@JoinColumn(name = "idreserva")
+	private Reserva idReserva;
 }
