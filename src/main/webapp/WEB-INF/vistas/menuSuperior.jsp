@@ -40,7 +40,7 @@
 									<c:forEach var="x" items="${objListaProductosEntidad}">
 										<div class="row">
 											<div class="col-md-4">
-												<img src="images/productos/${x.imagen1}" alt="img"
+												<img src="${x.imagen1}" alt="img"
 													style="width: 50px; height: 75px">
 											</div>
 											<div class="col-md-8">
@@ -108,7 +108,7 @@
 								<c:forEach var="x" items="${objListaProductosEntidad}">
 									<div class="row">
 										<div class="col-md-2">
-											<img src="images/productos/${x.imagen1}" alt="img"
+											<img src="${x.imagen1}" alt="img"
 												style="width: 115px; height: 150px">
 										</div>
 										<div class="col-md-10">
