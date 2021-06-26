@@ -84,11 +84,30 @@ public class historialMascotaController {
 		return service.listarHistorialMascotaId(id);
 	}
 
+	
 	@RequestMapping("/listarHistorialMascotaNombre")
 	@ResponseBody
 	public List<HistorialMascota> listarHistorialMascotaNombre(String nombreMascotaP) {
 		System.out.println("Listar Mascotas por Nombre : Filtro -----> " + nombreMascotaP);
 		List<HistorialMascota> lista = service.listarHistorialMascotaNombre("%" + nombreMascotaP + "%");
+		return lista;
+	}
+	
+	@RequestMapping("/listarHistorialClienteNombre")
+	@ResponseBody
+	public List<HistorialMascota> listarHistorialClienteNombre(String nombreClienteHistorial) {
+		System.out.println("Listar Cliente por Nombre : Filtro -----> " + nombreClienteHistorial);
+		List<HistorialMascota> lista = service.listarHistorialClienteNombre("%" + nombreClienteHistorial + "%");
+		return lista;
+	}
+	
+	
+	/*solo puse esto*/
+	@RequestMapping("/listarHistorialClienteNombreId")
+	@ResponseBody
+	public List<HistorialMascota> listarHistorialClienteNombreId(int nombreClienteHistorialId) {
+		System.out.println("Listar Cliente por Nombre : Filtro -----> " + nombreClienteHistorialId);
+		List<HistorialMascota> lista = service.listarHistorialClienteNombreId( nombreClienteHistorialId);
 		return lista;
 	}
 

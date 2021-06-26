@@ -34,6 +34,18 @@ public class HistorialMascotaServiceImpl implements HistorialMascotaService {
 		return repository.findById(idHistorialMascota).get();
 	}
 
+	@Override
+	public List<HistorialMascota> listarHistorialClienteNombre(String clienteNombre) {
+		return repository.listarHistorialClienteNombre(clienteNombre);
+	}
+
+	@Override
+	public List<HistorialMascota> listarHistorialClienteNombreId(int clienteNombreId) {
+		return repository.listarHistorialClienteNombreId(clienteNombreId);
+	}
+
+	
+
 	
 
 

@@ -8,6 +8,7 @@ import com.proyectoIntegrador.entity.HistorialMascota;
 
 
 
+
 public interface HistorialMascotaService {
 
 	
@@ -17,5 +18,8 @@ public interface HistorialMascotaService {
 	
 	public abstract HistorialMascota listarHistorialMascotaId(int idHistorialMascota);
 
-
+	public abstract List<HistorialMascota> listarHistorialClienteNombre(String clienteNombre);
+	
+	public abstract List<HistorialMascota> listarHistorialClienteNombreId(int clienteNombreId);
+	
 }

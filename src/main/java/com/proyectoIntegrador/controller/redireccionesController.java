@@ -68,7 +68,7 @@ public class redireccionesController {
 					return "historialMascotas";
 				} else if (session.getAttribute("objCargo").equals("Cliente")) {
 					List<HistorialMascota> listaHistorialMascota = serviceHistorialMascota
-							.listarHistorialMascotaNombre("%");
+							.listarHistorialClienteNombreId(Integer.parseInt(session.getAttribute("objIdCliente").toString()));
 					model.addAttribute("historiales", listaHistorialMascota == null ? null : listaHistorialMascota);
 					return "historialMascotas";
 				}

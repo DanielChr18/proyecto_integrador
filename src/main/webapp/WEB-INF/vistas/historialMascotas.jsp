@@ -47,13 +47,13 @@
 														<div class="nav-tabs-wrapper">
 															<ul class="nav nav-tabs" data-tabs="tabs">
 																<c:if test="${objCargo == 'Veterinario'}">
-																	<li class="nav-item"><a class="nav-link active"
+																	<li class="nav-item" style="margin-right: 10px;"><a class="nav-link active"
 																		href="#historiales" data-toggle="tab"> <i
 																			class="material-icons">history_edu</i>Historial de
 																			Mascotas
 																	</a></li>
 																	<li class="ripple-container"></li>
-																	<li class="nav-item"><a class="nav-link active"
+																	<li class="nav-item"><a class="nav-link"
 																		href="#reservas" data-toggle="tab"> <i
 																			class="material-icons">book_online</i>Reservas
 																	</a></li>
@@ -72,6 +72,7 @@
 												<div class="card-body">
 													<div class="tab-content">
 														<div class="tab-pane active" id="historiales">
+
 															<c:if test="${objCargo == 'Cliente'}">
 																<div class="row" style="margin: 10px 0px;">
 																	<div class="col-md-9">
@@ -87,36 +88,85 @@
 																	</div>
 																</div>
 															</c:if>
-															<table id="tablaHistoriales" class="table table-hover">
+														
+															<c:if test="${objCargo == 'Veterinario'}">
+																<div class="row" style="margin: 10px 0px;">
+																	<div class="col-md-9">
+																		<div class="form-group" style="padding-left: 10px;">
+																			<label class="bmd-label-floating">Nombre del Cliente
+																			</label> <input type="text" class="form-control"
+																				id="id_nombreClienteHistorial">
+																		</div>
+																	</div>
+																	<div class="col-md-1 offset-1">
+																		<button onclick="buscarClienteHistorial();" type="button"
+																			id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																	</div>
+																</div>
+															</c:if>
+															<c:if test="${historiales != null}">
+																<table id="tablaHistoriales" class="table table-hover">
 																<thead class="text-primary">
 																	<tr>
 																		<th style="width: 40px;">ID</th>
+																		<c:if test="${objCargo == 'Veterinario'}">
+																				<th>Cliente</th>
+																			</c:if>
 																		<th>Mascota</th>
 																		<th>Fecha</th>
 																		<th>Hora</th>
+																		<th>Observacion</th>
+																		
 																	</tr>
 																</thead>
 																<tbody>
 																	<c:forEach items="${historiales}" var="h">
 																		<tr>
 																			<td>${h.idHistorialMascota}</td>
+																			<c:if test="${objCargo == 'Veterinario'}">
+																			<td>${h.idReserva.idCliente.nombre}</td>
+																			</c:if>
 																			<td>${h.idReserva.idMascota.nombre}</td>
 																			<td>${h.fecha}</td>
 																			<td>${h.hora}</td>
+																	<c:if test="${objCargo == 'Cliente'}">
+																			<td><button onclick="verModalHistorialMascota('${h.idReserva.idReserva}','${h.idReserva.idServicio.nombre}','${h.idTrabajador.nombre}');" type="button"
+																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
+																	</c:if>		
+																	<c:if test="${objCargo == 'Veterinario'}">
+																			<td><button onclick="verModalHistorialVeterinario('${h.idReserva.idReserva}','${h.idReserva.idMascota.nombre}','${h.fecha}','${h.hora}');" type="button"
+																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
+																			
+																	</c:if>	
+																	
 																		</tr>
 																	</c:forEach>
 																</tbody>
 															</table>
-															<c:if test="${historiales == null}">
-																<h4>No hay historiales de tus mascotas.</h4>
 															</c:if>
 														</div>
-
 														<div class="tab-pane" id="reservas">
-															<table id="tablaReservas" class="table table-hover">
+														<c:if test="${objCargo == 'Veterinario'}">
+																<div class="row" style="margin: 10px 0px;">
+																	<div class="col-md-9">
+																		<div class="form-group" style="padding-left: 10px;">
+																			<label class="bmd-label-floating">Nombre del Cliente
+																			</label> <input type="text" class="form-control"
+																				id="id_nombreClienteHistorialReserva">
+																		</div>
+																	</div>
+																	<div class="col-md-1 offset-1">
+																		<button onclick="buscarClienteHistorialReserva();" type="button"
+																			id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																	</div>
+																</div>
+															</c:if>
+														<c:if test="${reservas != null}">
+																<table id="tablaReservas" class="table table-hover">
 																<thead class="text-primary">
 																	<tr>
 																		<th style="width: 40px;">ID</th>
+																		<th>Cliente</th>
 																		<th>Mascota</th>
 																		<th>Fecha</th>
 																		<th>Hora</th>
@@ -126,14 +176,21 @@
 																	<c:forEach items="${reservas}" var="h">
 																		<tr>
 																			<td>${h.idReserva}</td>
+																			<td>${h.idCliente.nombre}</td>
 																			<td>${h.idMascota.nombre}</td>
 																			<td>${h.fecha}</td>
 																			<td>${h.horario}</td>
+																			<c:if test="${objCargo == 'Veterinario'}">
+																			<td><button onclick="verModalHistorialReserva('${h.idReserva}','${h.idMascota.nombre}','${h.fecha}','${h.horario}');" type="button"
+																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
+																			
+																	</c:if>	
 																		</tr>
 																	</c:forEach>
 																</tbody>
 															</table>
-															<c:if test="${historiales == null}">
+															</c:if>
+															<c:if test="${reservas == null}">
 																<h4>No hay historiales de tus mascotas.</h4>
 															</c:if>
 														</div>
@@ -150,7 +207,7 @@
 			</div>
 		</div>
 
-		<!-- Modal de Historial Mascota-->
+		<!-- Modal de Filtro Historial Mascota-->
 		<div class="modal fade" id="idModalHistorialMascota"
 			data-backdrop="static" tabindex="-1" role="dialog">
 			<div class="modal-dialog" style="width: 55%;">
@@ -158,7 +215,7 @@
 				<div class="modal-content">
 					<div class="card">
 						<div class="card-header card-header-primary">
-							<h3 class="card-title">Historial</h3>
+							<h3 class="card-title">Observacion</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" id="id_formHistorialMascota">
@@ -167,33 +224,131 @@
 										id="id_idHistorialMascota" hidden="hidden" name="idReserva">
 									<div class="col-md-12">
 										<div class="form-group">
+											<label class="bmd-label-floating">Servicio</label> <input
+												class="form-control" type="text"
+												id="id_nombreServicioHistorialMascota" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Veterinario</label> <input
+												class="form-control" type="text"
+												id="id_nombreVeterinarioHistorialMascota" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<label class="bmd-label-floating"></label>
+										<textarea id="editor4" disabled="disabled" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaConsMascota"></small>
+									</div>
+
+								</div>
+								<button type="button" onclick="cerrarModalHistorialMascota();"
+									class="btn btn-primary pull-right">Cerrar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal de Historial Veterinario-->
+		<div class="modal fade" id="idModalHistorialVeterinario"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 55%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Historial Veterinario</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formHistorialVeterinario">
+								<div class="row">
+									<input class="form-control" type="text"
+										id="id_idHistorialVeterinario" hidden="hidden" name="idReserva">
+									<div class="col-md-12">
+										<div class="form-group">
 											<label class="bmd-label-floating">Mascota</label> <input
 												class="form-control" type="text"
-												id="id_nombreMascotaHistorialMascota" readonly="readonly">
+												id="id_nombreMascotaHistorialVeterinario" readonly="readonly">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<label class="bmd-label-floating">Fecha</label> <input
 												class="form-control" type="text"
-												id="id_fechaHistorialMascota" readonly="readonly">
+												id="id_fechaHistorialVeterinario" readonly="readonly">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<label class="bmd-label-floating">Horario</label> <input
 												class="form-control" type="text"
-												id="id_horarioHistorialMascota" readonly="readonly">
+												id="id_horarioHistorialVeterinario" readonly="readonly">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<label class="bmd-label-floating">Observacion</label>
-										<textarea id="editor4" name="descripcionLarga"></textarea>
-										<small id="id_mensajeDescripcionLargaConsMascota"></small>
+										<textarea id="editor5" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaConsCliente"></small>
 									</div>
 
 								</div>
-								<button type="button" onclick="cerrarModalHistorialMascota();"
+								<button type="button" onclick="cerrarModalHistorialVeterinario();"
+									class="btn btn-primary pull-right">Cerrar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal de Historial Reserva-->
+		<div class="modal fade" id="idModalHistorialReserva"
+			data-backdrop="static" tabindex="-1" role="dialog">
+			<div class="modal-dialog" style="width: 55%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h3 class="card-title">Historial Reserva</h3>
+						</div>
+						<div class="card-body" style="padding: 20px 18px;">
+							<form accept-charset="UTF-8" id="id_formHistorialReserva">
+								<div class="row">
+									<input class="form-control" type="text"
+										id="id_idHistorialReserva" hidden="hidden" name="idReserva">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Mascota</label> <input
+												class="form-control" type="text"
+												id="id_nombreMascotaHistorialReserva" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Fecha</label> <input
+												class="form-control" type="text"
+												id="id_fechaHistorialReserva" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="bmd-label-floating">Horario</label> <input
+												class="form-control" type="text"
+												id="id_horarioHistorialReserva" readonly="readonly">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<label class="bmd-label-floating">Observacion</label>
+										<textarea id="editor6" name="descripcionLarga"></textarea>
+										<small id="id_mensajeDescripcionLargaConsReserva"></small>
+									</div>
+
+								</div>
+								<button type="button" onclick="cerrarModalHistorialReserva();"
 									class="btn btn-primary pull-right">Cerrar</button>
 								<button id="id_btnRegistrarCita"
 									onclick="registrarHistorialMascota();" type="button"
@@ -205,16 +360,19 @@
 			</div>
 		</div>
 
+
+
 	</div>
 
 	<!-- Modal Historial Mascota -->
 	<script type="text/javascript">
 		$('#id_menuHistorialMascotas').addClass('active');
 
-		function verModalHistorialMascota(id, fecha, horario) {
+		function verModalHistorialMascota(id, nombreServicio, nombreVeterinario) {
 			$("#id_idHistorialMascota").val(id);
-			$("#id_fechaHistorialMascota").val(fecha);
-			$("#id_horarioHistorialMascota").val(horario);
+			$("#id_nombreServicioHistorialMascota").val(nombreServicio);
+			$("#id_nombreVeterinarioHistorialMascota").val(nombreVeterinario);
+			
 
 			$.getJSON('obtenerHtmlHistorialMascota', {
 				"idHistorialMascota" : id
@@ -231,11 +389,67 @@
 			$("#idModalHistorialMascota").modal("hide");
 		}
 	</script>
+	
+	
+	<!-- Modal Historial Veterinario -->
+	<script type="text/javascript">
+		$('#id_menuHistorialMascotas').addClass('active');
+
+		function verModalHistorialVeterinario(id, nombreMascota, fecha, horario) {
+			$("#id_idHistorialVeterinario").val(id);
+			$("#id_nombreMascotaHistorialVeterinario").val(nombreMascota);
+			$("#id_fechaHistorialVeterinario").val(fecha);
+			$("#id_horarioHistorialVeterinario").val(horario);
+
+			$.getJSON('obtenerHtmlHistorialMascota', {
+				"idHistorialMascota" : id
+			}, function(data) {
+				CKEDITOR.instances['editor5'].setData(data.descripcion);
+				$("#id_idHistorialVeterinario").val(data.idHistorialMascota);
+			});
+			$("#id_formHistorialVeterinario .col-md-12 .form-group").addClass(
+					"is-filled");
+			$("#idModalHistorialVeterinario").modal("show");
+		}
+
+		function cerrarModalHistorialVeterinario() {
+			$("#idModalHistorialVeterinario").modal("hide");
+		}
+	</script>
+
+	<!-- Modal Historial Reserva -->
+	<script type="text/javascript">
+		$('#id_menuHistorialMascotas').addClass('active');
+
+		function verModalHistorialReserva(id, nombreMascota, fecha, horario) {
+			$("#id_idHistorialReserva").val(id);
+			$("#id_nombreMascotaHistorialReserva").val(nombreMascota);
+			$("#id_fechaHistorialReserva").val(fecha);
+			$("#id_horarioHistorialReserva").val(horario);
+
+			$.getJSON('obtenerHtmlHistorialMascota', {
+				"idHistorialMascota" : id
+			}, function(data) {
+				CKEDITOR.instances['editor6'].setData(data.descripcion);
+				$("#id_idHistorialReserva").val(data.idHistorialMascota);
+			});
+			$("#id_formHistorialReserva .col-md-12 .form-group").addClass(
+					"is-filled");
+			$("#idModalHistorialReserva").modal("show");
+		}
+
+		function cerrarModalHistorialReserva() {
+			$("#idModalHistorialReserva").modal("hide");
+		}
+	</script>
+
 
 	<!-- Script de TextArea  -->
 	<script type="text/javascript">
 		$(document).ready(function() {
 			modificarTextArea('editor4', 'ConsMascota');
+			modificarTextArea('editor5', 'ConsCliente');
+			modificarTextArea('editor6', 'ConsReserva');
 		});
 	</script>
 
@@ -276,7 +490,7 @@
 
 		function buscarMascota() {
 			var nom = $("#id_nombreMascotaP").val();
-			$("#tablaServicios tbody tr").remove();
+			$("#tablaHistoriales tbody tr").remove();
 			$
 					.getJSON(
 							'listarHistorialMascotaNombre',
@@ -288,7 +502,7 @@
 										.each(
 												data,
 												function(index, item) {
-													$("#tablaServicios")
+													$("#tablaHistoriales")
 															.append(
 																	"<tr><td>"
 																			+ item.idReserva.idReserva
@@ -300,10 +514,62 @@
 																			+ item.fecha
 																			+ "</td>"
 																			+ "<td>"
-																			+ item.hora
+																			+ item.Hora
 																			+ "</td>"
 																			+ "<td>"
 																			+ "<button type='button' onclick=\"verModalHistorialMascota('"
+																			+ item.idReserva.idReserva
+																			+ "','"
+																			+ item.idReserva.idServicio.nombre
+																			+ "','"
+																			+ item.idTrabajador.nombre
+																			+ "');\" class='btn btn-primary'> Ver </button>"
+																			+ "</td></tr>");
+												});
+							});
+		}
+	</script>
+
+	<script type="text/javascript">
+		$("#id_nombreClienteHistorial").on("keypress", function(event) {
+			if (event.which == 13) {
+				buscarClienteHistorial();
+			}
+		});
+
+		function buscarClienteHistorial() {
+			var nom = $("#id_nombreClienteHistorial").val();
+			$("#tablaReservas tbody tr").remove();
+			$
+					.getJSON(
+							'listarHistorialClienteNombre',
+							{
+								"nombreClienteHistorial" : nom
+							},
+							function(data) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													$("#tablaReservas")
+															.append(
+																	"<tr><td>"
+																			+ item.idReserva.idReserva
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.idReserva.idCliente.nombre
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.idReserva.idMascota.nombre
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.fecha
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.hora
+																			+ "</td>"
+																			+ "<td>"
+																			+ "<button type='button' onclick=\"verModalHistorialVeterinario('"
 																			+ item.idReserva.idReserva
 																			+ "','"
 																			+ item.idReserva.idMascota.nombre
@@ -311,6 +577,60 @@
 																			+ item.fecha
 																			+ "','"
 																			+ item.hora
+																			+ "');\" class='btn btn-primary'> Ver </button>"
+																			+ "</td></tr>");
+												});
+							});
+		}
+	</script>
+
+	<script type="text/javascript">
+		$("#id_nombreClienteHistorialReserva").on("keypress", function(event) {
+			if (event.which == 13) {
+				buscarClienteHistorialReserva();
+			}
+		});
+
+		function buscarClienteHistorialReserva() {
+			var nom = $("#id_nombreClienteHistorialReserva").val();
+			$("#tablaReservas tbody tr").remove();
+			$
+					.getJSON(
+							'listarHistorialClienteNombre',
+							{
+								"nombreClienteHistorial" : nom
+							},
+							function(data) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													$("#tablaReservas")
+															.append(
+																	"<tr><td>"
+																			+ item.idReserva.idReserva
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.idReserva.idCliente.nombre
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.idReserva.idMascota.nombre
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.fecha
+																			+ "</td>"
+																			+ "<td>"
+																			+ item.idReserva.horario
+																			+ "</td>"
+																			+ "<td>"
+																			+ "<button type='button' onclick=\"verModalHistorialReserva('"
+																			+ item.idReserva.idReserva
+																			+ "','"
+																			+ item.idReserva.idMascota.nombre
+																			+ "','"
+																			+ item.fecha
+																			+ "','"
+																			+ item.idReserva.horario
 																			+ "');\" class='btn btn-primary'> Ver </button>"
 																			+ "</td></tr>");
 												});
