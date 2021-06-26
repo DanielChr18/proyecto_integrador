@@ -219,7 +219,7 @@
 			</div>
 		</div>
 
-		<!-- Modal de Filtro Historial Mascota-->
+		<!-- Modal de Filtro Historial Mascota de Cliente -->
 		<div class="modal fade" id="idModalHistorialMascota"
 			data-backdrop="static" tabindex="-1" role="dialog">
 			<div class="modal-dialog" style="width: 55%;">
@@ -252,10 +252,9 @@
 									<div class="col-md-12">
 										<label class="bmd-label-floating"></label>
 										<textarea id="editor4" disabled="disabled"
-											name="descripcionLarga"></textarea>
+											name="descripcionLarga" readonly="readonly"></textarea>
 										<small id="id_mensajeDescripcionLargaConsMascota"></small>
 									</div>
-
 								</div>
 								<button type="button" onclick="cerrarModalHistorialMascota();"
 									class="btn btn-primary pull-right">Cerrar</button>
@@ -311,7 +310,6 @@
 											readonly="readonly"></textarea>
 										<small id="id_mensajeDescripcionLargaConsCliente"></small>
 									</div>
-
 								</div>
 								<button type="button"
 									onclick="cerrarModalHistorialVeterinario();"
@@ -362,9 +360,10 @@
 									<div class="col-md-12">
 										<label class="bmd-label-floating">Observación</label>
 										<textarea id="editor6" name="descripcionLarga"></textarea>
-										<small id="id_mensajeDescripcionLargaConsReserva"></small>
+										<small id="id_mensajeDescripcionLargaConsReserva"
+											style="color: #cc0000;">La observación debe tener 30
+											caracteres como mínimo</small>
 									</div>
-
 								</div>
 								<button type="button" onclick="cerrarModalHistorialReserva();"
 									class="btn btn-primary pull-right">Cerrar</button>
@@ -377,15 +376,10 @@
 				</div>
 			</div>
 		</div>
-
-
-
 	</div>
 
 	<!-- Modal Historial Mascota -->
 	<script type="text/javascript">
-		$('#id_menuHistorialMascotas').addClass('active');
-
 		function verModalHistorialMascota(id, nombreServicio, nombreVeterinario) {
 			$("#id_idHistorialMascota").val(id);
 			$("#id_nombreServicioHistorialMascota").val(nombreServicio);
@@ -410,8 +404,6 @@
 
 	<!-- Modal Historial Veterinario -->
 	<script type="text/javascript">
-		$('#id_menuHistorialMascotas').addClass('active');
-
 		function verModalHistorialVeterinario(id, nombreMascota, fecha, horario) {
 			$("#id_idHistorialVeterinario").val(id);
 			$("#id_nombreMascotaHistorialVeterinario").val(nombreMascota);
@@ -436,20 +428,11 @@
 
 	<!-- Modal Historial Reserva -->
 	<script type="text/javascript">
-		$('#id_menuHistorialMascotas').addClass('active');
-
 		function verModalHistorialReserva(id, nombreMascota, fecha, horario) {
 			$("#id_idHistorialReserva").val(id);
 			$("#id_nombreMascotaHistorialReserva").val(nombreMascota);
 			$("#id_fechaHistorialReserva").val(fecha);
 			$("#id_horarioHistorialReserva").val(horario);
-
-			$.getJSON('obtenerHtmlHistorialMascota', {
-				"idHistorialMascota" : id
-			}, function(data) {
-				CKEDITOR.instances['editor6'].setData(data.descripcion);
-				$("#id_idHistorialReserva").val(data.idHistorialMascota);
-			});
 			$("#id_formHistorialReserva .col-md-12 .form-group").addClass(
 					"is-filled");
 			$("#idModalHistorialReserva").modal("show");
@@ -464,67 +447,48 @@
 	<!-- Script de TextArea  -->
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$('#id_mensajeDescripcionLargaConsReserva').hide();
+			$('#id_menuHistorialMascotas').addClass('active');
 			modificarTextArea('editor4', 'ConsMascota');
 			modificarTextArea('editor5', 'ConsCliente');
 			modificarTextArea('editor6', 'ConsReserva');
 		});
 	</script>
 
-
-	<script type="text/javascript">
-		function editarReserva() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					'idReserva' : $("#id_idHistorialReserva").val(),
-					'estado' : $("#id_estadoReservaEditar").val()
-				},
-				url : 'editarReserva',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Éxito!", data.MENSAJE, "success");
-						setTimeout(function() {
-							window.location = 'trackingCliente';
-						}, 1500);
-					} else {
-						swal("¡Error!", data.MENSAJE, "error");
-					}
-				},
-				error : function() {
-					swal("¡Error!", "¡Comunicate con el administrador!",
-							"error");
-				}
-			});
-		}
-	</script>
-
-
 	<script type="text/javascript">
 		function registrarHistorialMascota() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					'idReserva' : $("#id_idHistorialReserva").val(),
-					'descripcionLarga' : CKEDITOR.instances['editor6']
-							.getData()
-
-				},
-				url : 'registrarHistorialMascota',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Éxito!", data.MENSAJE, "success");
-						setTimeout(function() {
-							window.location = 'trackingCliente';
-						}, 1500);
-					} else {
-						swal("¡Error!", data.MENSAJE, "error");
+			var c = "SI";
+			if (CKEDITOR.instances['editor6'].document.getBody().getText() == ""
+					|| CKEDITOR.instances['editor6'].document.getBody()
+							.getText().length < 30) {
+				$('#id_mensajeDescripcionLargaConsReserva').show();
+				c = "NO";
+			}
+			if (c === 'SI') {
+				$.ajax({
+					type : 'POST',
+					data : {
+						'idReserva' : $("#id_idHistorialReserva").val(),
+						'descripcionLarga' : CKEDITOR.instances['editor6']
+								.getData()
+					},
+					url : 'registrarHistorialMascota',
+					success : function(data) {
+						if (data.CONFIRMACION == 'SI') {
+							swal("¡Éxito!", data.MENSAJE, "success");
+							setTimeout(function() {
+								window.location = 'historialMascotas';
+							}, 1500);
+						} else {
+							swal("¡Error!", data.MENSAJE, "error");
+						}
+					},
+					error : function() {
+						swal("¡Error!", "¡Comunicate con el administrador!",
+								"error");
 					}
-				},
-				error : function() {
-					swal("¡Error!", "¡Comunicate con el administrador!",
-							"error");
-				}
-			});
+				});
+			}
 		}
 	</script>
 

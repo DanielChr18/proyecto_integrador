@@ -60,8 +60,8 @@ public class historialMascotaController {
 					Reserva reser = new Reserva();
 					reser.setIdReserva(Integer.parseInt(idReserva));
 
-					obj.setFecha(LocalDate.now().toString().split("T")[0]);
-					obj.setHora(LocalDateTime.now().toString());
+					obj.setFecha(LocalDateTime.now().toString().split("T")[0]);
+					obj.setHora(LocalDate.now().toString().substring(0, 8));
 					obj.setDescripcion(descripcionLarga);
 					obj.setIdTrabajador(trabajador);
 					obj.setIdReserva(reser);
