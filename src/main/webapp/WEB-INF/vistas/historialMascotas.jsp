@@ -132,13 +132,13 @@
 																				<td>${h.hora}</td>
 																				<c:if test="${objCargo == 'Cliente'}">
 																					<td><button
-																							onclick="verModalHistorialMascota('${h.idReserva.idReserva}','${h.idReserva.idServicio.nombre}','${h.idTrabajador.nombre}');"
+																							onclick="verModalHistorialMascota('${h.idHistorialMascota}','${h.idReserva.idServicio.nombre}','${h.idTrabajador.nombre}');"
 																							type="button" id="id_btnBuscar"
 																							class="btn btn-primary">Ver</button></td>
 																				</c:if>
 																				<c:if test="${objCargo == 'Veterinario'}">
 																					<td><button
-																							onclick="verModalHistorialVeterinario('${h.idReserva.idReserva}','${h.idReserva.idMascota.nombre}','${h.fecha}','${h.hora}');"
+																							onclick="verModalHistorialVeterinario('${h.idHistorialMascota}','${h.idReserva.idMascota.nombre}','${h.fecha}','${h.hora}');"
 																							type="button" id="id_btnBuscar"
 																							class="btn btn-primary">Ver</button></td>
 
@@ -384,7 +384,7 @@
 			$("#id_idHistorialMascota").val(id);
 			$("#id_nombreServicioHistorialMascota").val(nombreServicio);
 			$("#id_nombreVeterinarioHistorialMascota").val(nombreVeterinario);
-
+			CKEDITOR.instances['editor4'].setData("");
 			$.getJSON('obtenerHtmlHistorialMascota', {
 				"idHistorialMascota" : id
 			}, function(data) {
@@ -409,7 +409,7 @@
 			$("#id_nombreMascotaHistorialVeterinario").val(nombreMascota);
 			$("#id_fechaHistorialVeterinario").val(fecha);
 			$("#id_horarioHistorialVeterinario").val(horario);
-
+			CKEDITOR.instances['editor5'].setData("");
 			$.getJSON('obtenerHtmlHistorialMascota', {
 				"idHistorialMascota" : id
 			}, function(data) {
@@ -516,7 +516,7 @@
 													$("#tablaHistoriales")
 															.append(
 																	"<tr><td>"
-																			+ item.idReserva.idReserva
+																			+ item.idHistorialMascota
 																			+ "</td>"
 																			+ "<td>"
 																			+ item.idReserva.idMascota.nombre
@@ -529,7 +529,7 @@
 																			+ "</td>"
 																			+ "<td>"
 																			+ "<button type='button' onclick=\"verModalHistorialMascota('"
-																			+ item.idReserva.idReserva
+																			+ item.idHistorialMascota
 																			+ "','"
 																			+ item.idReserva.idServicio.nombre
 																			+ "','"
@@ -583,7 +583,7 @@
 																			+ "</td>"
 																			+ "<td>"
 																			+ "<button type='button' onclick=\"verModalHistorialVeterinario('"
-																			+ item.idReserva.idReserva
+																			+ item.idHistorialMascota
 																			+ "','"
 																			+ item.idReserva.idMascota.nombre
 																			+ "','"
