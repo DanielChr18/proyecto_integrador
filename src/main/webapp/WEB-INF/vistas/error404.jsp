@@ -39,8 +39,8 @@ a {
 					Mantenimiento Productos </a>
 			</c:if>
 			<c:if test="${objCargo == 'Veterinario'}">
-				<a href="javascript: history.go(-1)" class="btn btn-primary">
-					REGRESAR </a>
+				<a href="historialMascotas" class="btn btn-primary"> Ir a
+					Historial de Mascotas </a>
 			</c:if>
 		</c:if>
 	</div>

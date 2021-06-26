@@ -51,62 +51,72 @@ public class usuarioController {
 	@RequestMapping("/validacionLogin")
 	@ResponseBody
 	public Map<String, Object> validacionLogin(HttpServletRequest request, String nom_usuario, String con_usuario) {
-		HttpSession session = request.getSession(true);
 		Map<String, Object> salida = new HashMap<>();
-		Usuario usu = service.findByNomUsuario(nom_usuario);
-		if (usu == null) {
-			salida.put("CONFIRMACION", "NO");
-			salida.put("MENSAJE", "Usuario Incorrecto");
-			return salida;
-		}
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		boolean confirmar = passwordEncoder.matches(con_usuario, usu.getContrasenia());
-		if (confirmar) {
-			session.setAttribute("objUsuario", usu.getNomUsuario());
-			if (usu.getCargo().equals("Cliente")) {
-				Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
-				if (cli != null) {
-					salida.put("USUARIO", cli.getApellido() + ", " + cli.getNombre());
-				}
-			} else if (!usu.getCargo().equals("Cliente")) {
-				Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
-				if (tra != null) {
-					salida.put("USUARIO", tra.getApellido() + ", " + tra.getNombre());
-				}
+		try {
+			HttpSession session = request.getSession(true);
+			Usuario usu = service.findByNomUsuario(nom_usuario);
+			if (usu == null) {
+				salida.put("CONFIRMACION", "NO");
+				salida.put("MENSAJE", "Usuario Incorrecto");
+				return salida;
 			}
-			salida.put("CONFIRMACION", "SI");
-			return salida;
-		} else {
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			boolean confirmar = passwordEncoder.matches(con_usuario, usu.getContrasenia());
+			if (confirmar) {
+				session.setAttribute("objUsuario", usu.getNomUsuario());
+				if (usu.getCargo().equals("Cliente")) {
+					Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
+					if (cli != null) {
+						salida.put("USUARIO", cli.getApellido() + ", " + cli.getNombre());
+					}
+				} else if (!usu.getCargo().equals("Cliente")) {
+					Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
+					if (tra != null) {
+						salida.put("USUARIO", tra.getApellido() + ", " + tra.getNombre());
+					}
+				}
+				salida.put("CONFIRMACION", "SI");
+				return salida;
+			} else {
+				salida.put("CONFIRMACION", "NO");
+				salida.put("MENSAJE", "Contreña Incorrecta");
+				return salida;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			salida.put("CONFIRMACION", "NO");
-			salida.put("MENSAJE", "Contreña Incorrecta");
+			salida.put("MENSAJE", "Error al ingresar");
 			return salida;
 		}
 	}
 
 	@RequestMapping("/redireccionar")
 	public String redireccionar(HttpServletRequest request) {
-		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objUsuario") != null) {
-			session.setAttribute("mensajeLogin", null);
-			String nomUsu = session.getAttribute("objUsuario").toString();
-			Usuario usu = service.findByNomUsuario(nomUsu);
-			session.setAttribute("objCargo", usu.getCargo());
-			if (usu.getCargo().equals("Cliente")) {
-				Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
-				session.setAttribute("objIdCliente", cli.getIdCliente());
-				return "redirect:datosMascotas";
-			} else if (!usu.getCargo().equals("Cliente")) {
-				Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
-				session.setAttribute("objIdTrabajador", tra.getIdTrabajador());
-				if (usu.getCargo().equals("Personal de Ventas"))
-					return "redirect:crudProductos";
-				else if (usu.getCargo().equals("Veterinario"))
-					return "redirect:trackingCliente";
+		try {
+			HttpSession session = request.getSession(true);
+			if (session.getAttribute("objUsuario") != null) {
+				session.setAttribute("mensajeLogin", null);
+				String nomUsu = session.getAttribute("objUsuario").toString();
+				Usuario usu = service.findByNomUsuario(nomUsu);
+				session.setAttribute("objCargo", usu.getCargo());
+				if (usu.getCargo().equals("Cliente")) {
+					Cliente cli = serviceCli.listaClienteUsuario(usu.getIdUsuario());
+					session.setAttribute("objIdCliente", cli.getIdCliente());
+					return "redirect:datosMascotas";
+				} else if (!usu.getCargo().equals("Cliente")) {
+					Trabajador tra = serviceTra.buscarTrabajadorUsuario(usu.getIdUsuario());
+					session.setAttribute("objIdTrabajador", tra.getIdTrabajador());
+					if (usu.getCargo().equals("Personal de Ventas"))
+						return "redirect:crudProductos";
+					else if (usu.getCargo().equals("Veterinario"))
+						return "redirect:historialMascotas";
+				}
 			}
-		} else {
+			return "redirect:error404";
+		} catch (Exception e) {
+			e.printStackTrace();
 			return "redirect:error404";
 		}
-		return "redirect:error404";
 	}
 
 	@RequestMapping("/salir")

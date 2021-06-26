@@ -30,6 +30,11 @@ public class FechasServiciosServiceImpl implements FechasServiciosService {
 	}
 
 	@Override
+	public FechasServicios findByHoraFechaServicio(int idHorario, String fecha) {
+		return repository.findByHoraFechaServicio(idHorario, fecha);
+	}
+
+	@Override
 	public List<FechasServicios> findAll() {
 		return repository.findAll();
 	}

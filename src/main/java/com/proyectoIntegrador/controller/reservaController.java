@@ -37,40 +37,64 @@ public class reservaController {
 	@Autowired
 	private FechasServiciosService serviceFec;
 
-	@RequestMapping("/registrarReserva")
+	@RequestMapping("/registrarReservaMascota")
 	@Transactional
-	public String registrarReserva(HttpServletRequest request, Reserva obj) {
-		HttpSession session = request.getSession(true);
+	@ResponseBody
+	public Map<String, Object> registrarReserva(HttpServletRequest request, Reserva obj) {
+		Map<String, Object> salida = new HashMap<>();
 		try {
+			HttpSession session = request.getSession(true);
 			if (session.getAttribute("objIdCliente") != null) {
-				int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
-				String fec = obj.getFecha().substring(6, 10) + "-" + obj.getFecha().substring(3, 5) + "-"
-						+ obj.getFecha().substring(0, 2);
-				obj.setFecha(fec);
-				obj.setEstado("pendiente de pago");
-				obj.setIdCliente(serviceCli.listaClientesId(idCliente));
-				service.registrarReserva(obj);
-				HorariosServicios horario = serviceHor.listarHoraServicio(obj.getIdServicio().getIdServicio(),
-						obj.getHorario());
-				horario.setEstado("reservado");
-				serviceHor.agregarHorario(horario);
-				List<FechasServicios> fechas = serviceFec.findByFechaServicio(obj.getFecha(),
-						obj.getIdServicio().getIdServicio());
-				for (FechasServicios f : fechas) {
-					if (f.getIdHorariosServicios().getIdHorariosServicios() == horario.getIdHorariosServicios()) {
-						f.setEstado("reservado");
-						serviceFec.agregarFechaServicio(f);
+
+				String confirmacion = "SI";
+				String fecha = obj.getFecha();
+				String fechaReserva = fecha.substring(6, 10) + "-" + fecha.substring(3, 5) + "-"
+						+ fecha.substring(0, 2);
+				List<Reserva> reservasMascota = service.listarReservasMascota(obj.getIdMascota().getIdMascota());
+				for (Reserva r : reservasMascota) {
+					if (r.getIdServicio().getIdServicio() == obj.getIdServicio().getIdServicio()) {
+						confirmacion = "NO";
+						salida.put("MENSAJE", "La mascota ya tiene una reserva del mismo servicio.");
+						break;
+					} else if (r.getFecha().equals(fechaReserva) && r.getHorario().equals(obj.getHorario())) {
+						confirmacion = "NO";
+						salida.put("MENSAJE", "La mascota tiene una reserva el mismo día y hora que se seleccionó.");
 						break;
 					}
 				}
-				Thread.sleep(2000);
-				return "redirect:listaServicios";
+
+				if (!confirmacion.equals("NO")) {
+					int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
+					String fec = obj.getFecha().substring(6, 10) + "-" + obj.getFecha().substring(3, 5) + "-"
+							+ obj.getFecha().substring(0, 2);
+					obj.setFecha(fec);
+					obj.setEstado("pendiente de pago");
+					obj.setIdCliente(serviceCli.listaClientesId(idCliente));
+					service.registrarReserva(obj);
+					HorariosServicios horario = serviceHor.listarHoraServicio(obj.getIdServicio().getIdServicio(),
+							obj.getHorario());
+					horario.setEstado("ocupado");
+					serviceHor.agregarHorario(horario);
+					List<FechasServicios> fechas = serviceFec.findByFechaServicio(obj.getFecha(),
+							obj.getIdServicio().getIdServicio());
+					for (FechasServicios f : fechas) {
+						if (f.getIdHorariosServicios().getIdHorariosServicios() == horario.getIdHorariosServicios()) {
+							f.setEstado("reservado");
+							serviceFec.agregarFechaServicio(f);
+							break;
+						}
+					}
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Reserva realizada con éxito.");
+				}
 			} else {
-				return "redirect:error404";
+				salida.put("MENSAJE", "Error en la Reserva para la mascota.");
 			}
-		} catch (InterruptedException e) {
+			return salida;
+		} catch (Exception e) {
 			e.printStackTrace();
-			return "redirect:error404";
+			salida.put("MENSAJE", "Error en la Reserva para la mascota.");
+			return salida;
 		}
 	}
 
@@ -131,30 +155,6 @@ public class reservaController {
 		}
 		salida.put("CONFIRMACION", "NO");
 		salida.put("MENSAJE", "Error al editar la Reserva.");
-		return salida;
-	}
-
-	@RequestMapping("/validacionReservaServicio")
-	@ResponseBody
-	public Map<String, Object> validacionReservaServicio(String idMascota, String idServicio, String fecha,
-			String horario) {
-		Map<String, Object> salida = new HashMap<>();
-		int id = Integer.parseInt(idMascota);
-		String f = fecha.substring(6, 10) + "-" + fecha.substring(3, 5) + "-" + fecha.substring(0, 2);
-		List<Reserva> reservasMascota = service.listarReservasMascota(id);
-		for (Reserva r : reservasMascota) {
-			if (r.getIdServicio().getIdServicio() == Integer.parseInt(idServicio)) {
-				salida.put("CONFIRMACION", "NO");
-				salida.put("MENSAJE", "La mascota ya tiene una reserva del mismo servicio.");
-				return salida;
-			} else if (r.getFecha().equals(f) && r.getHorario().equals(horario)) {
-				salida.put("CONFIRMACION", "NO");
-				salida.put("MENSAJE", "La mascota tiene una reserva el mismo día y hora que se seleccionó.");
-				return salida;
-			}
-		}
-		salida.put("CONFIRMACION", "SI");
-		salida.put("MENSAJE", "Reserva realizada con éxito.");
 		return salida;
 	}
 

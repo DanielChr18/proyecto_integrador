@@ -11,16 +11,19 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.proyectoIntegrador.entity.FechasServicios;
 import com.proyectoIntegrador.entity.HistorialMascota;
+import com.proyectoIntegrador.entity.HorariosServicios;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.entity.Trabajador;
+import com.proyectoIntegrador.service.FechasServiciosService;
 import com.proyectoIntegrador.service.HistorialMascotaService;
-import com.proyectoIntegrador.service.MascotaService;
+import com.proyectoIntegrador.service.HorariosServiciosService;
 import com.proyectoIntegrador.service.ReservaService;
-import com.proyectoIntegrador.service.TrabajadorService;
 
 @Controller
 public class historialMascotaController {
@@ -29,52 +32,80 @@ public class historialMascotaController {
 	private HistorialMascotaService service;
 
 	@Autowired
-	private TrabajadorService serviceTra;
+	private HorariosServiciosService serviceHorSer;
 
 	@Autowired
-	private MascotaService serviceMas;
+	private FechasServiciosService serviceFecSer;
 
 	@Autowired
 	private ReservaService serviceReser;
 
 	@RequestMapping("/registrarHistorialMascota")
+	@Transactional
 	@ResponseBody
 	public Map<String, Object> editarReserva(HttpServletRequest request, String descripcionLarga, String idReserva) {
 		Map<String, Object> salida = new HashMap<>();
-		HttpSession session = request.getSession(true);
-		if (session.getAttribute("objCargo") != null) {
-			if (session.getAttribute("objCargo").equals("Veterinario")) {
-				HistorialMascota obj = new HistorialMascota();
+		try {
+			HttpSession session = request.getSession(true);
+			if (session.getAttribute("objCargo") != null) {
+				if (session.getAttribute("objCargo").equals("Veterinario")) {
+					HistorialMascota obj = new HistorialMascota();
 
-				int idTrabajador = Integer.parseInt(session.getAttribute("objIdTrabajador").toString());
+					int idTrabajador = Integer.parseInt(session.getAttribute("objIdTrabajador").toString());
 
-				Trabajador trabajador = new Trabajador();
+					Trabajador trabajador = new Trabajador();
 
-				trabajador.setIdTrabajador(idTrabajador);
+					trabajador.setIdTrabajador(idTrabajador);
 
-				Reserva reser = new Reserva();
-				reser.setIdReserva(Integer.parseInt(idReserva));
+					Reserva reser = new Reserva();
+					reser.setIdReserva(Integer.parseInt(idReserva));
 
-				obj.setFecha(LocalDate.now().toString().split("T")[0]);
-				obj.setHora(LocalDateTime.now().toString());
-				obj.setDescripcion(descripcionLarga);
-				obj.setIdTrabajador(trabajador);
-				obj.setIdReserva(reser);
+					obj.setFecha(LocalDate.now().toString().split("T")[0]);
+					obj.setHora(LocalDateTime.now().toString());
+					obj.setDescripcion(descripcionLarga);
+					obj.setIdTrabajador(trabajador);
+					obj.setIdReserva(reser);
 
-				service.registrarHistorialMas(obj);
+					service.registrarHistorialMas(obj);
 
-				Reserva reserva = serviceReser.listarReservasId(Integer.parseInt(idReserva));
-				reserva.setEstado("realizado");
-				serviceReser.actualizaReserva(reserva);
+					Reserva reserva = serviceReser.listarReservasId(Integer.parseInt(idReserva));
+					reserva.setEstado("realizado");
+					serviceReser.actualizaReserva(reserva);
 
-				salida.put("CONFIRMACION", "SI");
-				salida.put("MENSAJE", "Éxito al registrar la cita para historial de mascota.");
-				return salida;
+					HorariosServicios horarioServicio = serviceHorSer
+							.listarHoraServicio(reserva.getIdServicio().getIdServicio(), reserva.getHorario());
+
+					FechasServicios fechaServicio = serviceFecSer
+							.findByHoraFechaServicio(horarioServicio.getIdHorariosServicios(), reserva.getFecha());
+
+					serviceFecSer.eliminarFechaServicio(fechaServicio.getIdFechasServicios());
+
+					List<FechasServicios> listaFechasServicio = serviceFecSer
+							.findByServicio(reserva.getIdServicio().getIdServicio());
+					String confirmar = "SI";
+					for (FechasServicios f : listaFechasServicio) {
+						if (f.getEstado().equals("ocupado")) {
+							confirmar = "NO";
+							break;
+						}
+					}
+
+					if (confirmar.equals("SI")) {
+						horarioServicio.setEstado("activado");
+						serviceHorSer.agregarHorario(horarioServicio);
+					}
+					salida.put("CONFIRMACION", "SI");
+					salida.put("MENSAJE", "Éxito al registrar la cita para historial de mascota.");
+					return salida;
+				}
 			}
+			salida.put("MENSAJE", "Error al registrar.");
+			return salida;
+		} catch (Exception e) {
+			e.printStackTrace();
+			salida.put("MENSAJE", "Error al registrar.");
+			return salida;
 		}
-		salida.put("CONFIRMACION", "NO");
-		salida.put("MENSAJE", "Error al registrar.");
-		return salida;
 	}
 
 	@RequestMapping("/obtenerHtmlHistorialMascota")
@@ -84,15 +115,15 @@ public class historialMascotaController {
 		return service.listarHistorialMascotaId(id);
 	}
 
-	
 	@RequestMapping("/listarHistorialMascotaNombre")
 	@ResponseBody
-	public List<HistorialMascota> listarHistorialMascotaNombre(String nombreMascotaP) {
-		System.out.println("Listar Mascotas por Nombre : Filtro -----> " + nombreMascotaP);
-		List<HistorialMascota> lista = service.listarHistorialMascotaNombre("%" + nombreMascotaP + "%");
+	public List<HistorialMascota> listarHistorialMascotaNombre(String nombreMascotaP, HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		List<HistorialMascota> lista = service.listarHistorialMascotaNombreCliente(
+				Integer.parseInt(session.getAttribute("objIdCliente").toString()), "%" + nombreMascotaP + "%");
 		return lista;
 	}
-	
+
 	@RequestMapping("/listarHistorialClienteNombre")
 	@ResponseBody
 	public List<HistorialMascota> listarHistorialClienteNombre(String nombreClienteHistorial) {
@@ -100,15 +131,4 @@ public class historialMascotaController {
 		List<HistorialMascota> lista = service.listarHistorialClienteNombre("%" + nombreClienteHistorial + "%");
 		return lista;
 	}
-	
-	
-	/*solo puse esto*/
-	@RequestMapping("/listarHistorialClienteNombreId")
-	@ResponseBody
-	public List<HistorialMascota> listarHistorialClienteNombreId(int nombreClienteHistorialId) {
-		System.out.println("Listar Cliente por Nombre : Filtro -----> " + nombreClienteHistorialId);
-		List<HistorialMascota> lista = service.listarHistorialClienteNombreId( nombreClienteHistorialId);
-		return lista;
-	}
-
 }

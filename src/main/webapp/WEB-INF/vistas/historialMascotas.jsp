@@ -47,10 +47,10 @@
 														<div class="nav-tabs-wrapper">
 															<ul class="nav nav-tabs" data-tabs="tabs">
 																<c:if test="${objCargo == 'Veterinario'}">
-																	<li class="nav-item" style="margin-right: 10px;"><a class="nav-link active"
-																		href="#historiales" data-toggle="tab"> <i
-																			class="material-icons">history_edu</i>Historial de
-																			Mascotas
+																	<li class="nav-item" style="margin-right: 10px;"><a
+																		class="nav-link active" href="#historiales"
+																		data-toggle="tab"> <i class="material-icons">history_edu</i>Historial
+																			de Mascotas
 																	</a></li>
 																	<li class="ripple-container"></li>
 																	<li class="nav-item"><a class="nav-link"
@@ -88,111 +88,122 @@
 																	</div>
 																</div>
 															</c:if>
-														
+
 															<c:if test="${objCargo == 'Veterinario'}">
 																<div class="row" style="margin: 10px 0px;">
 																	<div class="col-md-9">
 																		<div class="form-group" style="padding-left: 10px;">
-																			<label class="bmd-label-floating">Nombre del Cliente
-																			</label> <input type="text" class="form-control"
+																			<label class="bmd-label-floating">Nombre del
+																				Cliente </label> <input type="text" class="form-control"
 																				id="id_nombreClienteHistorial">
 																		</div>
 																	</div>
 																	<div class="col-md-1 offset-1">
-																		<button onclick="buscarClienteHistorial();" type="button"
-																			id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																		<button onclick="buscarClienteHistorial();"
+																			type="button" id="id_btnBuscar"
+																			class="btn btn-primary pull-right">Buscar</button>
 																	</div>
 																</div>
 															</c:if>
 															<c:if test="${historiales != null}">
 																<table id="tablaHistoriales" class="table table-hover">
-																<thead class="text-primary">
-																	<tr>
-																		<th style="width: 40px;">ID</th>
-																		<c:if test="${objCargo == 'Veterinario'}">
+																	<thead class="text-primary">
+																		<tr>
+																			<th style="width: 40px;">ID</th>
+																			<c:if test="${objCargo == 'Veterinario'}">
 																				<th>Cliente</th>
 																			</c:if>
-																		<th>Mascota</th>
-																		<th>Fecha</th>
-																		<th>Hora</th>
-																		<th>Observacion</th>
-																		
-																	</tr>
-																</thead>
-																<tbody>
-																	<c:forEach items="${historiales}" var="h">
-																		<tr>
-																			<td>${h.idHistorialMascota}</td>
-																			<c:if test="${objCargo == 'Veterinario'}">
-																			<td>${h.idReserva.idCliente.nombre}</td>
-																			</c:if>
-																			<td>${h.idReserva.idMascota.nombre}</td>
-																			<td>${h.fecha}</td>
-																			<td>${h.hora}</td>
-																	<c:if test="${objCargo == 'Cliente'}">
-																			<td><button onclick="verModalHistorialMascota('${h.idReserva.idReserva}','${h.idReserva.idServicio.nombre}','${h.idTrabajador.nombre}');" type="button"
-																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
-																	</c:if>		
-																	<c:if test="${objCargo == 'Veterinario'}">
-																			<td><button onclick="verModalHistorialVeterinario('${h.idReserva.idReserva}','${h.idReserva.idMascota.nombre}','${h.fecha}','${h.hora}');" type="button"
-																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
-																			
-																	</c:if>	
-																	
+																			<th>Mascota</th>
+																			<th>Fecha</th>
+																			<th>Hora</th>
+																			<th>Observación</th>
+
 																		</tr>
-																	</c:forEach>
-																</tbody>
-															</table>
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${historiales}" var="h">
+																			<tr>
+																				<td>${h.idHistorialMascota}</td>
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<td>${h.idReserva.idCliente.nombre}</td>
+																				</c:if>
+																				<td>${h.idReserva.idMascota.nombre}</td>
+																				<td>${h.fecha}</td>
+																				<td>${h.hora}</td>
+																				<c:if test="${objCargo == 'Cliente'}">
+																					<td><button
+																							onclick="verModalHistorialMascota('${h.idReserva.idReserva}','${h.idReserva.idServicio.nombre}','${h.idTrabajador.nombre}');"
+																							type="button" id="id_btnBuscar"
+																							class="btn btn-primary">Ver</button></td>
+																				</c:if>
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<td><button
+																							onclick="verModalHistorialVeterinario('${h.idReserva.idReserva}','${h.idReserva.idMascota.nombre}','${h.fecha}','${h.hora}');"
+																							type="button" id="id_btnBuscar"
+																							class="btn btn-primary">Ver</button></td>
+
+																				</c:if>
+
+																			</tr>
+																		</c:forEach>
+																	</tbody>
+																</table>
+															</c:if>
+															<c:if test="${historiales == null}">
+																<h4>No hay historiales de tus mascotas.</h4>
 															</c:if>
 														</div>
 														<div class="tab-pane" id="reservas">
-														<c:if test="${objCargo == 'Veterinario'}">
+															<c:if test="${objCargo == 'Veterinario'}">
 																<div class="row" style="margin: 10px 0px;">
 																	<div class="col-md-9">
 																		<div class="form-group" style="padding-left: 10px;">
-																			<label class="bmd-label-floating">Nombre del Cliente
-																			</label> <input type="text" class="form-control"
+																			<label class="bmd-label-floating">Nombre del
+																				Cliente </label> <input type="text" class="form-control"
 																				id="id_nombreClienteHistorialReserva">
 																		</div>
 																	</div>
 																	<div class="col-md-1 offset-1">
-																		<button onclick="buscarClienteHistorialReserva();" type="button"
-																			id="id_btnBuscar" class="btn btn-primary pull-right">Buscar</button>
+																		<button onclick="buscarClienteHistorialReserva();"
+																			type="button" id="id_btnBuscar"
+																			class="btn btn-primary pull-right">Buscar</button>
 																	</div>
 																</div>
 															</c:if>
-														<c:if test="${reservas != null}">
+															<c:if test="${reservas != null}">
 																<table id="tablaReservas" class="table table-hover">
-																<thead class="text-primary">
-																	<tr>
-																		<th style="width: 40px;">ID</th>
-																		<th>Cliente</th>
-																		<th>Mascota</th>
-																		<th>Fecha</th>
-																		<th>Hora</th>
-																		<th>Atender</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<c:forEach items="${reservas}" var="h">
+																	<thead class="text-primary">
 																		<tr>
-																			<td>${h.idReserva}</td>
-																			<td>${h.idCliente.nombre}</td>
-																			<td>${h.idMascota.nombre}</td>
-																			<td>${h.fecha}</td>
-																			<td>${h.horario}</td>
-																			<c:if test="${objCargo == 'Veterinario'}">
-																			<td><button onclick="verModalHistorialReserva('${h.idReserva}','${h.idMascota.nombre}','${h.fecha}','${h.horario}');" type="button"
-																			id="id_btnBuscar" class="btn btn-primary">Ver</button></td>
-																			
-																	</c:if>	
+																			<th style="width: 40px;">ID</th>
+																			<th>Cliente</th>
+																			<th>Mascota</th>
+																			<th>Fecha</th>
+																			<th>Hora</th>
+																			<th>Atender</th>
 																		</tr>
-																	</c:forEach>
-																</tbody>
-															</table>
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${reservas}" var="h">
+																			<tr>
+																				<td>${h.idReserva}</td>
+																				<td>${h.idCliente.nombre}</td>
+																				<td>${h.idMascota.nombre}</td>
+																				<td>${h.fecha}</td>
+																				<td>${h.horario}</td>
+																				<c:if test="${objCargo == 'Veterinario'}">
+																					<td><button
+																							onclick="verModalHistorialReserva('${h.idReserva}','${h.idMascota.nombre}','${h.fecha}','${h.horario}');"
+																							type="button" id="id_btnBuscar"
+																							class="btn btn-primary">Ver</button></td>
+
+																				</c:if>
+																			</tr>
+																		</c:forEach>
+																	</tbody>
+																</table>
 															</c:if>
 															<c:if test="${reservas == null}">
-																<h4>No hay historiales de tus mascotas.</h4>
+																<h4>No hay reservas para atender.</h4>
 															</c:if>
 														</div>
 													</div>
@@ -216,7 +227,7 @@
 				<div class="modal-content">
 					<div class="card">
 						<div class="card-header card-header-primary">
-							<h3 class="card-title">Observacion</h3>
+							<h3 class="card-title">Observación</h3>
 						</div>
 						<div class="card-body" style="padding: 20px 18px;">
 							<form accept-charset="UTF-8" id="id_formHistorialMascota">
@@ -234,12 +245,14 @@
 										<div class="form-group">
 											<label class="bmd-label-floating">Veterinario</label> <input
 												class="form-control" type="text"
-												id="id_nombreVeterinarioHistorialMascota" readonly="readonly">
+												id="id_nombreVeterinarioHistorialMascota"
+												readonly="readonly">
 										</div>
 									</div>
 									<div class="col-md-12">
 										<label class="bmd-label-floating"></label>
-										<textarea id="editor4" disabled="disabled" name="descripcionLarga"></textarea>
+										<textarea id="editor4" disabled="disabled"
+											name="descripcionLarga"></textarea>
 										<small id="id_mensajeDescripcionLargaConsMascota"></small>
 									</div>
 
@@ -268,12 +281,14 @@
 							<form accept-charset="UTF-8" id="id_formHistorialVeterinario">
 								<div class="row">
 									<input class="form-control" type="text"
-										id="id_idHistorialVeterinario" hidden="hidden" name="idReserva">
+										id="id_idHistorialVeterinario" hidden="hidden"
+										name="idReserva">
 									<div class="col-md-12">
 										<div class="form-group">
 											<label class="bmd-label-floating">Mascota</label> <input
 												class="form-control" type="text"
-												id="id_nombreMascotaHistorialVeterinario" readonly="readonly">
+												id="id_nombreMascotaHistorialVeterinario"
+												readonly="readonly">
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -291,13 +306,15 @@
 										</div>
 									</div>
 									<div class="col-md-12">
-										<label class="bmd-label-floating">Observacion</label>
-										<textarea id="editor5" name="descripcionLarga"></textarea>
+										<label class="bmd-label-floating">Observación</label>
+										<textarea id="editor5" name="descripcionLarga"
+											readonly="readonly"></textarea>
 										<small id="id_mensajeDescripcionLargaConsCliente"></small>
 									</div>
 
 								</div>
-								<button type="button" onclick="cerrarModalHistorialVeterinario();"
+								<button type="button"
+									onclick="cerrarModalHistorialVeterinario();"
 									class="btn btn-primary pull-right">Cerrar</button>
 							</form>
 						</div>
@@ -343,7 +360,7 @@
 										</div>
 									</div>
 									<div class="col-md-12">
-										<label class="bmd-label-floating">Observacion</label>
+										<label class="bmd-label-floating">Observación</label>
 										<textarea id="editor6" name="descripcionLarga"></textarea>
 										<small id="id_mensajeDescripcionLargaConsReserva"></small>
 									</div>
@@ -373,7 +390,6 @@
 			$("#id_idHistorialMascota").val(id);
 			$("#id_nombreServicioHistorialMascota").val(nombreServicio);
 			$("#id_nombreVeterinarioHistorialMascota").val(nombreVeterinario);
-			
 
 			$.getJSON('obtenerHtmlHistorialMascota', {
 				"idHistorialMascota" : id
@@ -390,8 +406,8 @@
 			$("#idModalHistorialMascota").modal("hide");
 		}
 	</script>
-	
-	
+
+
 	<!-- Modal Historial Veterinario -->
 	<script type="text/javascript">
 		$('#id_menuHistorialMascotas').addClass('active');
@@ -481,17 +497,17 @@
 			});
 		}
 	</script>
-	
-	
+
+
 	<script type="text/javascript">
 		function registrarHistorialMascota() {
 			$.ajax({
 				type : 'POST',
 				data : {
 					'idReserva' : $("#id_idHistorialReserva").val(),
-					'descripcionLarga' : CKEDITOR.instances['editor6'].getData()
-					
-					
+					'descripcionLarga' : CKEDITOR.instances['editor6']
+							.getData()
+
 				},
 				url : 'registrarHistorialMascota',
 				success : function(data) {
@@ -545,7 +561,7 @@
 																			+ item.fecha
 																			+ "</td>"
 																			+ "<td>"
-																			+ item.Hora
+																			+ item.hora
 																			+ "</td>"
 																			+ "<td>"
 																			+ "<button type='button' onclick=\"verModalHistorialMascota('"
@@ -562,7 +578,7 @@
 	</script>
 
 
-<!-- HISTORIAL cosultar YA ESTAA -->
+	<!-- HISTORIAL cosultar YA ESTAA -->
 	<script type="text/javascript">
 		$("#id_nombreClienteHistorial").on("keypress", function(event) {
 			if (event.which == 13) {

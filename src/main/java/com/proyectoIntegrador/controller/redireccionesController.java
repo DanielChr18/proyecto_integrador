@@ -11,11 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoIntegrador.entity.Boleta;
-import com.proyectoIntegrador.entity.Cliente;
 import com.proyectoIntegrador.entity.HistorialMascota;
 import com.proyectoIntegrador.entity.Reserva;
 import com.proyectoIntegrador.service.BoletaService;
-import com.proyectoIntegrador.service.ClienteService;
 import com.proyectoIntegrador.service.HistorialMascotaService;
 import com.proyectoIntegrador.service.ReservaService;
 
@@ -27,9 +25,6 @@ public class redireccionesController {
 
 	@Autowired
 	private ReservaService serviceReserva;
-
-	@Autowired
-	private ClienteService serviceCliente;
 
 	@Autowired
 	private HistorialMascotaService serviceHistorialMascota;
@@ -60,16 +55,17 @@ public class redireccionesController {
 			HttpSession session = request.getSession(true);
 			if (session.getAttribute("objCargo") != null) {
 				if (session.getAttribute("objCargo").equals("Veterinario")) {
-					List<Reserva> listaServicios = serviceReserva.listarReservas();
+					List<Reserva> listaReservas = serviceReserva.listarReservasClienteNombre("%");
 					List<HistorialMascota> listaHistorialMascota = serviceHistorialMascota
-							.listarHistorialMascotaNombre("%");
-					model.addAttribute("reservas", listaServicios == null ? null : listaServicios);
-					model.addAttribute("historiales", listaHistorialMascota == null ? null : listaHistorialMascota);
+							.listarHistorialClienteNombre("%");
+					model.addAttribute("reservas", listaReservas.isEmpty() ? null : listaReservas);
+					model.addAttribute("historiales", listaHistorialMascota.isEmpty() ? null : listaHistorialMascota);
 					return "historialMascotas";
 				} else if (session.getAttribute("objCargo").equals("Cliente")) {
 					List<HistorialMascota> listaHistorialMascota = serviceHistorialMascota
-							.listarHistorialClienteNombreId(Integer.parseInt(session.getAttribute("objIdCliente").toString()));
-					model.addAttribute("historiales", listaHistorialMascota == null ? null : listaHistorialMascota);
+							.listarHistorialMascotaNombreCliente(
+									Integer.parseInt(session.getAttribute("objIdCliente").toString()), "%");
+					model.addAttribute("historiales", listaHistorialMascota.isEmpty() ? null : listaHistorialMascota);
 					return "historialMascotas";
 				}
 			}
@@ -88,15 +84,15 @@ public class redireccionesController {
 				if (session.getAttribute("objCargo").equals("Personal de Ventas")) {
 					List<Boleta> listaPedidos = serviceBoleta.listarBoletas();
 					List<Reserva> listaServicios = serviceReserva.listarReservas();
-					model.addAttribute("pedidos", listaPedidos == null ? null : listaPedidos);
-					model.addAttribute("servicios", listaServicios == null ? null : listaPedidos);
+					model.addAttribute("pedidos", listaPedidos.isEmpty() ? null : listaPedidos);
+					model.addAttribute("servicios", listaServicios.isEmpty() ? null : listaPedidos);
 					return "trackingCliente";
 				} else if (session.getAttribute("objCargo").equals("Cliente")) {
 					int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
 					List<Boleta> listaPedidos = serviceBoleta.listarBoletasCliente(idCliente);
 					List<Reserva> listaServicios = serviceReserva.listarReservasCliente(idCliente);
-					model.addAttribute("pedidos", listaPedidos == null ? null : listaPedidos);
-					model.addAttribute("servicios", listaServicios == null ? null : listaServicios);
+					model.addAttribute("pedidos", listaPedidos.isEmpty() ? null : listaPedidos);
+					model.addAttribute("servicios", listaServicios.isEmpty() ? null : listaServicios);
 					return "trackingCliente";
 				}
 			}

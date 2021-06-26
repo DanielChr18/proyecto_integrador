@@ -370,6 +370,84 @@ $(function() {
 
 // ------------------- Funciones ------------------- //
 
+
+function registrarBoleta() {
+	var validator = $('#form_boletaCompra').data('bootstrapValidator');
+	validator.validate();
+	if (validator.isValid()) {
+		$.ajax({
+			type: 'POST',
+			data: $("#form_boletaCompra").serialize(),
+			url: 'agregarBoleta',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
+			success: function(data) {
+				if (data.CONFIRMACION == 'SI') {
+					swal("¡Pago Exitoso!", data.MENSAJE, "success");
+					setTimeout(function() {
+						location.reload(true);
+					}, 1500);
+				} else {
+					swal("¡Aviso!", data.MENSAJE, "warning");
+				}
+			},
+			error: function() {
+				swal("¡Error!", "¡Comunicate con el administrador!",
+					"error");
+			}
+		});
+	}
+}
+
+
+function registrarReservaMascota() {
+	var horario = $("#id_horarioReserva").val();
+	var fecha = $("#id_fechaReserva").val();
+	var confirmar = 'SI';
+	if (horario == '') {
+		$('#id_mensajeHorarioReserva').show();
+		$("#id_btnRegistrarReserva").attr('disabled', false);
+		confirmar = "NO";
+	}
+	if (fecha == '') {
+		$('#id_mensajeFechaReserva').show();
+		$("#id_btnRegistrarReserva").attr('disabled', false);
+		confirmar = "NO";
+	}
+	var validator = $('#id_formRegistrarReserva').data(
+		'bootstrapValidator');
+	validator.validate();
+	if (confirmar == 'SI' && validator.isValid()) {
+		$
+			.ajax({
+				type: 'POST',
+				data: $("#id_formRegistrarReserva").serialize(),
+				url: 'registrarReservaMascota',
+				beforeSend: function() {
+					swal("Cargando...");
+				},
+				success: function(data) {
+					if (data.CONFIRMACION === 'SI') {
+						swal("¡Registrado con éxito!",
+							data.MENSAJE, "success");
+						setTimeout(function() {
+							window.location = 'listaServicios';
+						}, 1500);
+					} else {
+						swal("¡Aviso!", data.MENSAJE, "warning");
+					}
+				},
+				error: function() {
+					swal("¡Error!", "¡Comunicate con el administrador!",
+						"error");
+				}
+			});
+	}
+}
+
+
+
 // ------------------- 1.- Script Validar Números ------------------- //
 function validaNumericos(event) {
 	if (event.charCode >= 48 && event.charCode <= 57) {
@@ -426,6 +504,9 @@ function registrarMarca() {
 			type: 'POST',
 			data: $("#id_formRegistrarMarca").serialize(),
 			url: 'registrarMarca',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -453,6 +534,9 @@ function modificarMarca() {
 			type: 'POST',
 			data: $("#id_formModificarMarca").serialize(),
 			url: 'modificarMarca',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -476,6 +560,9 @@ function eliminarMarca() {
 		type: 'POST',
 		data: $("#id_formEliminarMarca").serialize(),
 		url: 'eliminarMarca',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Éxito!", data.MENSAJE, "success");
@@ -510,6 +597,9 @@ function registrarProveedor() {
 			type: 'POST',
 			data: $("#id_formRegistrarProveedor").serialize(),
 			url: 'registrarProveedor',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -537,6 +627,9 @@ function modificarProveedor() {
 			type: 'POST',
 			data: $("#id_formModificarProveedor").serialize(),
 			url: 'modificarProveedor',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -560,6 +653,9 @@ function eliminarProveedor() {
 		type: 'POST',
 		data: $("#id_formEliminarProveedor").serialize(),
 		url: 'eliminarProveedor',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Éxito!", data.MENSAJE, "success");
@@ -626,6 +722,9 @@ function registrarProducto() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -673,6 +772,9 @@ function modificarProducto() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -696,6 +798,9 @@ function eliminarProducto() {
 		type: 'POST',
 		data: $("#id_formEliminarProducto").serialize(),
 		url: 'eliminarProducto',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Éxito!", data.MENSAJE, "success");
@@ -839,6 +944,9 @@ function registrarServicio() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -878,6 +986,9 @@ function modificarServicio() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -901,6 +1012,9 @@ function eliminarServicio() {
 		type: 'POST',
 		data: $("#id_formEliminarServicio").serialize(),
 		url: 'eliminarServicio',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Éxito!", data.MENSAJE, "success");
@@ -928,6 +1042,9 @@ function validarFechas() {
 	$.ajax({
 		type: 'GET',
 		url: 'validarFechas',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Excelente!", data.MENSAJE, "success");
@@ -1147,6 +1264,9 @@ function registrarCliente() {
 			type: 'POST',
 			data: $("#id_formRegistrarCliente").serialize(),
 			url: 'registrarCliente',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -1171,6 +1291,9 @@ function modificarCliente() {
 			type: 'POST',
 			data: $("#id_formModificarClienteModal").serialize(),
 			url: 'modificarCliente',
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -1218,11 +1341,14 @@ function registrarMascota() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
 					setTimeout(function() {
-						window.location = 'datosMascotas';
+						location.reload(true);
 					}, 1500);
 				} else {
 					swal("¡Aviso!", data.MENSAJE, "warning");
@@ -1252,6 +1378,9 @@ function modificarMascota() {
 			cache: false,
 			contentType: false,
 			processData: false,
+			beforeSend: function() {
+				swal("Cargando...");
+			},
 			success: function(data) {
 				if (data.CONFIRMACION == 'SI') {
 					swal("¡Éxito!", data.MENSAJE, "success");
@@ -1275,6 +1404,9 @@ function eliminarMascota() {
 		type: 'POST',
 		data: $("#id_formEliminarMascota").serialize(),
 		url: 'eliminarMascota',
+		beforeSend: function() {
+			swal("Cargando...");
+		},
 		success: function(data) {
 			if (data.CONFIRMACION == 'SI') {
 				swal("¡Éxito!", data.MENSAJE, "success");

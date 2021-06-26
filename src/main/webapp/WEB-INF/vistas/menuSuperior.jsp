@@ -226,34 +226,6 @@
 </div>
 
 <script type="text/javascript">
-	function registrarBoleta() {
-		var validator = $('#form_boletaCompra').data('bootstrapValidator');
-		validator.validate();
-		if (validator.isValid()) {
-			$.ajax({
-				type : 'POST',
-				data : $("#form_boletaCompra").serialize(),
-				url : 'agregarBoleta',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Pago exitoso!", data.MENSAJE, "success");
-						setTimeout(function() {
-							location.reload(true);
-						}, 1500);
-					} else {
-						swal("¡Aviso!", data.MENSAJE, "warning");
-					}
-				},
-				error : function() {
-					swal("¡Error!", "¡Comunicate con el administrador!",
-							"error");
-				}
-			});
-		}
-	}
-</script>
-
-<script type="text/javascript">
 	function verModalDetallePedido() {
 		$.ajax({
 			type : 'POST',

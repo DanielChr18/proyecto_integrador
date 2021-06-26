@@ -10,6 +10,8 @@ public interface FechasServiciosService {
 
 	public abstract List<FechasServicios> findByHoraServicio(String hora, int idServicio);
 
+	public abstract FechasServicios findByHoraFechaServicio(int idHorario, String fecha);
+
 	public abstract List<FechasServicios> findByServicio(int idServicio);
 
 	public abstract List<FechasServicios> findAll();

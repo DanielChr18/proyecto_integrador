@@ -36,14 +36,14 @@
 								</div>
 								<div class="card-body">
 									<form accept-charset="UTF-8" id="id_formRegistrarReserva"
-										action="registrarReserva" method="post"
 										enctype="multipart/form-data">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row" hidden="hidden">
 													<input class="form-control" type="text" id="id_idServicio"
-														name="idServicio" value="${servicio.idServicio}">
-													<input class="form-control" type="text" id="id_diaServicio"
+														name="idServicio.idServicio"
+														value="${servicio.idServicio}"> <input
+														class="form-control" type="text" id="id_diaServicio"
 														name="dia" value="${objNumeroDia}">
 												</div>
 												<div class="card-header"
@@ -131,7 +131,8 @@
 														</a>
 													</c:if>
 													<c:if test="${objIdCliente != null}">
-														<button type="submit" id="id_btnRegistrarReserva"
+														<button type="button" onclick="registrarReservaMascota();"
+															id="id_btnRegistrarReserva"
 															class="btn btn-primary pull-left">Reservar
 															Servicio</button>
 													</c:if>
@@ -160,7 +161,7 @@
 			$("#datepicker")
 					.datepicker(
 							{
-								minDate : 0,
+								minDate : "+1",
 								maxDate : "+1M",
 								dateFormat : 'dd/mm/yy',
 								dayNamesMin : [ "Do", "Lu", "Ma", "Mi", "Ju",
@@ -238,59 +239,6 @@
 			$("#id_horarioReserva").val(horario);
 			$("#id_btnRegistrarReserva").attr('disabled', false);
 		}
-
-		$("#id_btnRegistrarReserva").on(
-				'click',
-				function(evt) {
-					evt.preventDefault();
-					var idServicio = $("#id_idServicio").val();
-					var horario = $("#id_horarioReserva").val();
-					var fecha = $("#id_fechaReserva").val();
-					var idMascota = $("#id_mascotaReserva option:selected")
-							.val();
-					var validator = $('#id_formRegistrarReserva').data(
-							'bootstrapValidator');
-					var confirmar = 'SI';
-					if (horario == '') {
-						$('#id_mensajeHorarioReserva').show();
-						$("#id_btnRegistrarReserva").attr('disabled', false);
-						confirmar = "NO";
-					}
-					if (fecha == '') {
-						$('#id_mensajeFechaReserva').show();
-						$("#id_btnRegistrarReserva").attr('disabled', false);
-						confirmar = "NO";
-					}
-					if (confirmar == 'SI') {
-						if (validator.isValid()) {
-							$.ajax({
-								type : 'POST',
-								data : {
-									'idMascota' : idMascota,
-									'idServicio' : idServicio,
-									'fecha' : fecha,
-									'horario' : horario
-								},
-								url : 'validacionReservaServicio',
-								success : function(data) {
-									if (data.CONFIRMACION === 'SI') {
-										swal("¡Registrado con éxito!",
-												data.MENSAJE, "success");
-										setTimeout(function() {
-											$("#id_formRegistrarReserva")
-													.submit();
-										}, 1000);
-									} else {
-										swal("¡Error!", data.MENSAJE, "error");
-									}
-								},
-								error : function() {
-									swal("¡Error!", "", "error");
-								}
-							});
-						}
-					}
-				});
 	</script>
 
 	<script type="text/javascript">

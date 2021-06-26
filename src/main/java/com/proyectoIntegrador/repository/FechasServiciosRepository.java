@@ -22,4 +22,8 @@ public interface FechasServiciosRepository extends JpaRepository<FechasServicios
 	@Query("select f from FechasServicios f where f.idHorariosServicios.idServicio.idServicio = :param_servicio")
 	public abstract List<FechasServicios> findByServicio(@Param("param_servicio") int idServicio);
 
+	@Query("select f from FechasServicios f where f.idHorariosServicios.idHorariosServicios = :param_horario"
+			+ " and f.fecha like :param_fecha")
+	public abstract FechasServicios findByHoraFechaServicio(@Param("param_horario") int idHorario,
+			@Param("param_fecha") String fecha);
 }

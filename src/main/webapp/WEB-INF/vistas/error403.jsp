@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="vendor/main.css">
 
 <link rel="icon" type="image/png" href="images/logo.png">
-<title>Error 404</title>
+<title>Error 403</title>
 
 <style type="text/css">
 a {
@@ -20,6 +20,7 @@ a {
 	text-decoration: none;
 	color: white;
 }
+
 a:hover {
 	color: white;
 }
@@ -42,8 +43,8 @@ a:hover {
 					Mantenimiento Productos </a>
 			</c:if>
 			<c:if test="${objCargo == 'Veterinario'}">
-				<a href="javascript: history.go(-1)" class="btn btn-primary">
-					REGRESAR </a>
+				<a href="historialMascotas" class="btn btn-primary"> Ir a
+					Historial de Mascotas </a>
 			</c:if>
 		</c:if>
 	</div>
