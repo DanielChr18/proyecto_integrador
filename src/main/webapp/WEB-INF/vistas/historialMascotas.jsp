@@ -170,6 +170,7 @@
 																		<th>Mascota</th>
 																		<th>Fecha</th>
 																		<th>Hora</th>
+																		<th>Atender</th>
 																	</tr>
 																</thead>
 																<tbody>
