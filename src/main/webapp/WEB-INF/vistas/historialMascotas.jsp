@@ -459,10 +459,40 @@
 			$.ajax({
 				type : 'POST',
 				data : {
-					'idReserva' : $("#id_idReservaEditar").val(),
+					'idReserva' : $("#id_idHistorialReserva").val(),
 					'estado' : $("#id_estadoReservaEditar").val()
 				},
 				url : 'editarReserva',
+				success : function(data) {
+					if (data.CONFIRMACION == 'SI') {
+						swal("¡Éxito!", data.MENSAJE, "success");
+						setTimeout(function() {
+							window.location = 'trackingCliente';
+						}, 1500);
+					} else {
+						swal("¡Error!", data.MENSAJE, "error");
+					}
+				},
+				error : function() {
+					swal("¡Error!", "¡Comunicate con el administrador!",
+							"error");
+				}
+			});
+		}
+	</script>
+	
+	
+	<script type="text/javascript">
+		function registrarHistorialMascota() {
+			$.ajax({
+				type : 'POST',
+				data : {
+					'idReserva' : $("#id_idHistorialReserva").val(),
+					'descripcionLarga' : CKEDITOR.instances['editor6'].getData()
+					
+					
+				},
+				url : 'registrarHistorialMascota',
 				success : function(data) {
 					if (data.CONFIRMACION == 'SI') {
 						swal("¡Éxito!", data.MENSAJE, "success");
