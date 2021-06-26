@@ -156,9 +156,6 @@
 																			<c:if test="${objCargo == 'Cliente'}">
 																				<th style="width: 102.4px;">Pagar</th>
 																			</c:if>
-																			<c:if test="${objCargo == 'Personal de Ventas'}">
-																				<th style="width: 102.4px;">Editar</th>
-																			</c:if>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -192,16 +189,6 @@
 																						</button>
 																					</td>
 																				</c:if>
-																				<c:if test="${objCargo == 'Personal de Ventas'}">
-																					<td>
-																						<button type="button"
-																							onclick="verModalEditarReserva('${s.idReserva}','${s.idCliente.nombre}','${s.idMascota.nombre}','${s.fecha}','${s.horario}','${s.estado}');"
-																							class="btn btn-primary">
-																							<img src="images/edit.gif" width="auto"
-																								height="auto" />
-																						</button>
-																					</td>
-																				</c:if>
 																			</tr>
 																		</c:forEach>
 																	</tbody>
@@ -212,7 +199,7 @@
 																	<h4>No tienes reservas realizadas.</h4>
 																</c:if>
 																<c:if test="${objCargo == 'Personal de Ventas'}">
-																	<h4>No hay reservas para atender.</h4>
+																	<h4>No existen reservas.</h4>
 																</c:if>
 															</c:if>
 														</div>
@@ -289,76 +276,6 @@
 								<button type="button" onclick="cerrarModalEditarBoleta();"
 									class="btn btn-primary pull-right">Cerrar</button>
 								<button id="id_btnEditarBoleta" onclick="editarBoleta();"
-									type="button" class="btn btn-primary pull-right">Editar</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Modal de Editar Reserva-->
-		<div class="modal fade" id="idModalEditarReserva"
-			data-backdrop="static" tabindex="-1" role="dialog">
-			<div class="modal-dialog" style="width: 50%;">
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="card">
-						<div class="card-header card-header-primary">
-							<h3 class="card-title">Editar Reserva</h3>
-						</div>
-						<div class="card-body" style="padding: 20px 18px;">
-							<form accept-charset="UTF-8" id="id_formEditarReserva">
-								<div class="row">
-									<input class="form-control" type="text" id="id_idReservaEditar"
-										hidden="hidden" name="idReserva">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="bmd-label-floating">Nombre Cliente</label> <input
-												class="form-control" type="text"
-												id="id_nombreClienteReservaEditar" readonly="readonly">
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="bmd-label-floating">Nombre Mascota</label> <input
-												class="form-control" type="text"
-												id="id_nombreMascotaClienteReservaEditar"
-												readonly="readonly">
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="bmd-label-floating">Fecha</label> <input
-												class="form-control" type="text" id="id_fechaReservaEditar"
-												readonly="readonly">
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="bmd-label-floating">Horario</label> <input
-												class="form-control" type="text"
-												id="id_horarioReservaEditar" readonly="readonly">
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="bmd-label">Estado</label>
-											<div class="caja">
-												<select class="estilo-select" id="id_estadoReservaEditar"
-													name="estado">
-													<option value="pendiente de pago">pendiente de
-														pago</option>
-													<option value="pagado">pagado</option>
-													<option value="realizado">realizado</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-								<button type="button" onclick="cerrarModalEditarReserva();"
-									class="btn btn-primary pull-right">Cerrar</button>
-								<button id="id_btnEditarReserva" onclick="editarReserva();"
 									type="button" class="btn btn-primary pull-right">Editar</button>
 							</form>
 						</div>
@@ -514,33 +431,6 @@
 	</script>
 
 	<script type="text/javascript">
-		function editarReserva() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					'idReserva' : $("#id_idReservaEditar").val(),
-					'estado' : $("#id_estadoReservaEditar").val()
-				},
-				url : 'editarReserva',
-				success : function(data) {
-					if (data.CONFIRMACION == 'SI') {
-						swal("¡Éxito!", data.MENSAJE, "success");
-						setTimeout(function() {
-							window.location = 'trackingCliente';
-						}, 1500);
-					} else {
-						swal("¡Error!", data.MENSAJE, "error");
-					}
-				},
-				error : function() {
-					swal("¡Error!", "¡Comunicate con el administrador!",
-							"error");
-				}
-			});
-		}
-	</script>
-
-	<script type="text/javascript">
 		function verModalDetalleBoleta(id) {
 			$("#tablaDetallePedido tbody tr").remove();
 			$.getJSON('listadoDetalleBoleta', {
@@ -585,23 +475,6 @@
 
 		function cerrarModalEditarBoleta() {
 			$("#idModalEditarBoleta").modal("hide");
-		}
-
-		function verModalEditarReserva(id, nomCliente, nomMascota, fecha,
-				horario, estado) {
-			$("#id_idReservaEditar").val(id);
-			$("#id_nombreClienteReservaEditar").val(nomCliente);
-			$("#id_nombreMascotaClienteReservaEditar").val(nomMascota);
-			$("#id_fechaReservaEditar").val(fecha);
-			$("#id_horarioReservaEditar").val(horario);
-			$("#id_estadoReservaEditar").val(estado);
-			$("#id_formEditarReserva .col-md-12 .form-group").addClass(
-					"is-filled");
-			$("#idModalEditarReserva").modal("show");
-		}
-
-		function cerrarModalEditarReserva() {
-			$("#idModalEditarReserva").modal("hide");
 		}
 
 		$('#id_menuTrackingClientes').addClass('active');

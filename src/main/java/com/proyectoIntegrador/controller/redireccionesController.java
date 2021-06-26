@@ -85,7 +85,7 @@ public class redireccionesController {
 					List<Boleta> listaPedidos = serviceBoleta.listarBoletas();
 					List<Reserva> listaServicios = serviceReserva.listarReservas();
 					model.addAttribute("pedidos", listaPedidos.isEmpty() ? null : listaPedidos);
-					model.addAttribute("servicios", listaServicios.isEmpty() ? null : listaPedidos);
+					model.addAttribute("servicios", listaServicios.isEmpty() ? null : listaServicios);
 					return "trackingCliente";
 				} else if (session.getAttribute("objCargo").equals("Cliente")) {
 					int idCliente = Integer.parseInt(session.getAttribute("objIdCliente").toString());
