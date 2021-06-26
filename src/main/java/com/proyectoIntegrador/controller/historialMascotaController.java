@@ -1,7 +1,7 @@
 package com.proyectoIntegrador.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,7 @@ public class historialMascotaController {
 					reser.setIdReserva(Integer.parseInt(idReserva));
 
 					obj.setFecha(LocalDateTime.now().toString().split("T")[0]);
-					obj.setHora(LocalDate.now().toString().substring(0, 8));
+					obj.setHora(LocalTime.now().toString().substring(0, 8));
 					obj.setDescripcion(descripcionLarga);
 					obj.setIdTrabajador(trabajador);
 					obj.setIdReserva(reser);
