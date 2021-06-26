@@ -530,6 +530,8 @@
 		}
 	</script>
 
+
+<!-- HISTORIAL cosultar YA ESTAA -->
 	<script type="text/javascript">
 		$("#id_nombreClienteHistorial").on("keypress", function(event) {
 			if (event.which == 13) {
@@ -539,7 +541,7 @@
 
 		function buscarClienteHistorial() {
 			var nom = $("#id_nombreClienteHistorial").val();
-			$("#tablaReservas tbody tr").remove();
+			$("#tablaHistoriales tbody tr").remove();
 			$
 					.getJSON(
 							'listarHistorialClienteNombre',
@@ -551,10 +553,10 @@
 										.each(
 												data,
 												function(index, item) {
-													$("#tablaReservas")
+													$("#tablaHistoriales")
 															.append(
 																	"<tr><td>"
-																			+ item.idReserva.idReserva
+																			+ item.idHistorialMascota
 																			+ "</td>"
 																			+ "<td>"
 																			+ item.idReserva.idCliente.nombre
@@ -596,9 +598,9 @@
 			$("#tablaReservas tbody tr").remove();
 			$
 					.getJSON(
-							'listarHistorialClienteNombre',
+							'listarReservasCliente',
 							{
-								"nombreClienteHistorial" : nom
+								"nombreClienten" : nom
 							},
 							function(data) {
 								$
@@ -608,29 +610,29 @@
 													$("#tablaReservas")
 															.append(
 																	"<tr><td>"
-																			+ item.idReserva.idReserva
+																			+ item.idReserva
 																			+ "</td>"
 																			+ "<td>"
-																			+ item.idReserva.idCliente.nombre
+																			+ item.idCliente.nombre
 																			+ "</td>"
 																			+ "<td>"
-																			+ item.idReserva.idMascota.nombre
+																			+ item.idMascota.nombre
 																			+ "</td>"
 																			+ "<td>"
 																			+ item.fecha
 																			+ "</td>"
 																			+ "<td>"
-																			+ item.idReserva.horario
+																			+ item.horario
 																			+ "</td>"
 																			+ "<td>"
 																			+ "<button type='button' onclick=\"verModalHistorialReserva('"
-																			+ item.idReserva.idReserva
+																			+ item.idReserva
 																			+ "','"
-																			+ item.idReserva.idMascota.nombre
+																			+ item.idMascota.nombre
 																			+ "','"
 																			+ item.fecha
 																			+ "','"
-																			+ item.idReserva.horario
+																			+ item.horario
 																			+ "');\" class='btn btn-primary'> Ver </button>"
 																			+ "</td></tr>");
 												});
